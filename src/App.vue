@@ -8,19 +8,77 @@
       clipped
       left
     >
-      <v-list shaped>
-        <v-list-item-group v-model="selectedOrg" color="accent">
-          <v-list-item
-            v-for="(item, i) in organisms"
-            :key="i"
-            @click.stop="left = !left">
+      <v-list shaped >
+        <v-list-item-group v-model="selectedPage" color="accent">
+        <v-list-item @click="showHome">
+          <v-list-item-action>
+            <v-icon>fas fa-home</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Home</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-group
+          prepend-icon="fas fa-search"
+          value="false">
+          <template v-slot:activator><v-list-item-title>Search</v-list-item-title></template>
+          <v-list-item @click="showProteins" right>
             <v-list-item-action>
-              <v-icon v-text="item.icon"></v-icon>
+              <v-icon>fas fa-folder</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title><i>{{item.text}}</i></v-list-item-title>
+              <v-list-item-title>Protein</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item @click="showPeptides" right>
+            <v-list-item-action>
+              <v-icon>fas fa-folder</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Peptide</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+        <v-list-item @click="showProjects">
+          <v-list-item-action>
+            <v-icon>fas fa-folder</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Project</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="showAnalytics">
+          <v-list-item-action>
+            <v-icon>fas fa-chart-pie</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Analytics</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="showApi">
+          <v-list-item-action>
+            <v-icon>fas fa-terminal</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>API</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="showFaq">
+          <v-list-item-action>
+            <v-icon>fas fa-question-circle</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>FAQ</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="showAbout">
+          <v-list-item-action>
+            <v-icon>fas fa-info-circle</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>About Us</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -38,6 +96,7 @@
       color="primary"
       dark
     >
+    <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>ProteomicsDB</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
@@ -63,15 +122,20 @@
       clipped
       right
       expand-on-hover>
-      <v-list dense>
-        <v-list-item @click.stop="right = !right">
-          <v-list-item-action>
-            <v-icon>mdi-exit-to-app</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Previous Help Menu...</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+      <v-list shaped>
+        <v-list-item-group v-model="selectedOrg" color="accent">
+          <v-list-item
+            v-for="(item, i) in organisms"
+            :key="i"
+            @click.stop="right = !right">
+            <v-list-item-action>
+              <v-icon v-text="item.icon"></v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title><i>{{item.text}}</i></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
 
@@ -133,6 +197,7 @@
       source: String,
     },
     data: () => ({
+      selectedPage: 0,
       selectedOrg: 0,
       organisms: [
         {text: 'Homo sapiens', icon: 'fas fa-user'},
