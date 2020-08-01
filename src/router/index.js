@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../App.vue'
+import Home from '../views/Home.vue'
+import Analytics from '../views/Analytics.vue'
 
 Vue.use(VueRouter)
 
@@ -28,7 +29,7 @@ Vue.use(VueRouter)
   {
     path: '/analytics/',
     name: 'analytics',
-    component: Home
+    component: Analytics
   },
   {
     path: '/api/',
