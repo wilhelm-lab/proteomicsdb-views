@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Analytics from '../views/Analytics.vue'
+import Protein from '../views/Protein.vue'
 
 Vue.use(VueRouter)
 
@@ -14,7 +15,7 @@ Vue.use(VueRouter)
   {
     path: '/protein/',
     name: 'protein',
-    component: Home
+    component: Protein
   },
   {
     path: '/peptide/',

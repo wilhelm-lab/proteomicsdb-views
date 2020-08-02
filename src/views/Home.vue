@@ -19,29 +19,46 @@
             </v-simple-table>
           </v-card>
         </v-col>
-        <v-col cols="8">
+        <v-col cols="6">
           <v-card flat offset-y>
             <v-card-title>ProteomicsDB is an effort......</v-card-title>
           </v-card>
         </v-col>
         <v-col cols="2">
+          <v-card>
+            <v-list two-line>
+              <v-subheader >News</v-subheader>
+              <template v-for="(item, index) in news">
+                <v-divider v-if="index !== 0" :key="index"></v-divider>
+                <v-list-item :key="item.id" @click="openNews">
+                  <v-list-item-content>
+                    <v-list-item-title v-html="item.title"></v-list-item-title>
+                    <v-list-item-subtitle v-html="item.description"></v-list-item-subtitle>
+                  </v-list-item-content>
+                  <v-btn small fab icon><v-icon>mdi-greater-than</v-icon></v-btn>
+                </v-list-item>
+              </template>
+            </v-list>
+          </v-card>
+        </v-col>
+        <v-col cols="2">
           <v-card outlined>
-              <v-list-item>
-                <div class="overline mb-4">News</div>
-              </v-list-item>
-              <v-col cols="12"
-              v-for="item in news"
-              :key="item.id"
-              :value="item.id"
-               >
-            <v-card 
-              >
-              <v-card-title>{{item.title}}</v-card-title>
-              <v-card-subtitle>{{item.description}}</v-card-subtitle>
+            <v-list-item>
+              <div class="overline mb-4">News</div>
+            </v-list-item>
+            <v-col cols="12"
+                   v-for="item in news"
+                   :key="item.id"
+                   :value="item.id"
+                   >
+                   <v-card 
+                   >
+                   <v-card-title>{{item.title}}</v-card-title>
+                     <v-card-subtitle>{{item.description}}</v-card-subtitle>
               <v-card-actions>
                 <v-btn text link>Read more!</v-btn>
               </v-card-actions>
-            </v-card>
+                   </v-card>
             </v-col>
           </v-card>
         </v-col>
@@ -62,12 +79,14 @@ export default {
     {id: 2, displayName: 'Isoforms', value: '13000', icon: 'fas fa-user', taxcode: 9606},
     ],
     news: [
-    {title: "News #1", description: "Short Desc1", id:1},
-    {title: "News #2", description: "Short Desc2", id:2},
-    {title: "News #3", description: "Short Desc3", id:3},
+    {title: "News #1", description: "Short Desc1", id:0},
+    {title: "News #2", description: "Short Desc2", id:1},
+    {title: "News #3", description: "Short Desc3", id:2},
     ]
   }),
   methods: {
+    openNews: function() {
+    }
   },
   computed: {
   },
