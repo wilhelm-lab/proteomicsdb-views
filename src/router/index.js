@@ -2,20 +2,21 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Analytics from '../views/Analytics.vue'
-import Protein from '../views/Protein.vue'
+import ProteinSearch from '../views/ProteinSearch.vue'
+import ProteinWrapper from '../views/protein/ProteinWrapper.vue'
 
 Vue.use(VueRouter)
 
   const routes = [
   {
-    path: '/home/',
+    path: '/',
     name: 'home',
     component: Home
   },
   {
-    path: '/protein/',
-    name: 'protein',
-    component: Protein
+    path: '/protein/search/:searchString',
+    name: 'proteinSearch',
+    component: ProteinSearch
   },
   {
     path: '/peptide/',
@@ -25,7 +26,7 @@ Vue.use(VueRouter)
   {
     path: '/project/',
     name: 'project',
-    component: Home
+    component: ProteinWrapper
   },
   {
     path: '/analytics/',
