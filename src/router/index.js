@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Analytics from '../views/Analytics.vue'
-import ProteinSearch from '../views/ProteinSearch.vue'
+import ProteinSearch from '../views/search/ProteinSearch.vue'
 import ProteinWrapper from '../views/protein/ProteinWrapper.vue'
 
 Vue.use(VueRouter)
@@ -14,9 +14,14 @@ Vue.use(VueRouter)
     component: Home
   },
   {
-    path: '/protein/search/:searchString',
+    path: '/protein/search',
     name: 'proteinSearch',
-    component: ProteinSearch
+    component: ProteinSearch,
+    props: (route) => ({ 
+      searchString: route.query.q,
+      searchType: route.query.s
+     })
+
   },
   {
     path: '/peptide/',

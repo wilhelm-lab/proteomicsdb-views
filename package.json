@@ -11,10 +11,14 @@
     "@fortawesome/fontawesome-free": "^5.14.0",
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
     "core-js": "^3.6.5",
+    "devextreme": "20.1.6",
+    "devextreme-vue": "20.1.6",
     "material-design-icons-iconfont": "^5.0.1",
     "vue": "^2.6.11",
+    "vue-cookie": "^1.1.4",
     "vue-router": "^3.2.0",
-    "vuetify": "^2.3.6"
+    "vuetify": "^2.3.6",
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.30",

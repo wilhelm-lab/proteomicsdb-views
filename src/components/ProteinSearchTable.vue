@@ -5,15 +5,32 @@
       :data-source="dataSource"
       :show-borders="true"
       :repaint-changes-only="false"
-      :column-auto-width="true"
+      :column-auto-width="false"
       :selection="{ mode: 'single' }"
       @selection-changed="onSelectionChanged"
       >
-        <DxPaging :page-size="25"/>
-        <DxPager
-        :show-page-size-selector="true"
-        :allowed-page-sizes="[20, 25, 50]"
-        />
+      <DxFilterRow :visible="true" :apply-filter="currentFilter"/>
+      <DxColumn :width="30" caption="" :allow-filtering="false" :allow-sorting="false" data-field="EVIDENCE" cell-template="cellTemplate"/>
+      <DxColumn caption="Protein" data-field='PROTEIN'/>
+      <!--      <DxColumn data-field='EVIDENCE'/> -->
+      <DxColumn caption="Uniprot Accession" data-field='UNIPROT_AC'/>
+      <DxColumn caption="Uniprot Identifier" data-field='UNIPROT_ID'/>
+      <DxColumn caption="Database Source" data-field='DATABASE_NAME'/>
+      <DxColumn caption="Description" data-field='DESCRIPTION'/>
+      <DxColumn caption="Length" data-field='SEQUENCE_LENGTH'/>
+      <DxColumn caption="Unique Peptides" data-field='DISTINCT_UNIQUE_PEPTIDES_PROTEIN'/>
+      <DxColumn caption="Unique Peptides (Protein)" data-field='DISTINCT_UNIQUE_PEPTIDES'/>
+      <DxColumn caption="Unique PSMS" data-field='UNIQUE_PSMS'/>
+      <DxColumn caption="Shared PSMS" data-field='SHARED_PSMS'/>
+      <DxColumn caption="Sequence Coverage" data-field='COVERAGE_ALL'/>
+      <DxColumn caption="Projects" data-field='NUMBER_OF_PROJECTS'/>
+      <DxColumn caption="Experiments" data-field='NUMBER_OF_EXPERIMENTS'/>
+      <template #cellTemplate="{ data }"><img :src="data.value === 2 ? green : (data.value === 1 ? yellow : red)"></template>
+      <DxPaging :page-size="10"/>
+      <DxPager
+                :show-page-size-selector="true"
+                :allowed-page-sizes="[10, 25, 50]"
+                />
       </DxDataGrid>
     </v-container>
   </v-main>
@@ -21,12 +38,14 @@
 
 <script>
 import 'devextreme/data/odata/store';
-import { DxDataGrid, DxPaging, DxPager } from 'devextreme-vue/data-grid';
+import { DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow } from 'devextreme-vue/data-grid';
 export default {
   components: {
     DxDataGrid,
+    DxColumn,
     DxPaging,
-    DxPager
+    DxPager,
+    DxFilterRow
   },
   props: {
     searchString: {
@@ -40,7 +59,14 @@ export default {
   },
   data: () => ({
     dataSource: {
-    }
+    },
+    currentFilter: null,
+    green: require('@/assets/commons/green.png'),
+    yellow: require('@/assets/commons/yellow.png'),
+    red: require('@/assets/commons/red.png'),
+    evidence: [
+      {}
+    ]
   }),
   methods: {
     onSelectionChanged: function(row) {
@@ -76,7 +102,10 @@ export default {
         'NUMBER_OF_EXPERIMENTS'
         ]
       }
-    }
+    },
+    isCloneIconVisible(e) {
+      console.log(e)
+    },
   },
   computed: {
   },
