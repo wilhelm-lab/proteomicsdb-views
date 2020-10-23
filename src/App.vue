@@ -311,7 +311,7 @@ export default {
   mounted() {
     this.organismsFiltered = Object.assign(this.organisms);
     var iTaxcode = parseInt(this.$cookie.get('organism'));
-    if (iTaxcode === null) {
+    if (iTaxcode === null || isNaN(iTaxcode)) {
       //open dialog
       this.noOrganismSelected = true;
     } else {
