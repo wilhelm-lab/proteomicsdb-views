@@ -1,0 +1,6 @@
+[submodule "src/vue-d3-components"]
+	path = src/vue-d3-components
+	url = git@gitlab.lrz.de:prdb/vue-ui/vue-d3-components.git
+[submodule "src/vue-d3-component-wrappers"]
+	path = src/vue-d3-component-wrappers
+	url = git@gitlab.lrz.de:prdb/vue-ui/vue-d3-component-wrappers.git
