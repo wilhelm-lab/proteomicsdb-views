@@ -4,6 +4,10 @@ import Home from '../views/Home.vue'
 import Analytics from '../views/Analytics.vue'
 import ProteinSearch from '../views/search/ProteinSearch.vue'
 import ProteinWrapper from '../views/protein/ProteinWrapper.vue'
+import ProteinSummary from '@/views/protein/ProteinSummary.vue'
+import PeptidesMSMS from '@/views/protein/PeptidesMSMS.vue'
+import FDR from '@/views/protein/FDR.vue'
+import InteractionNetwork from '@/views/protein/InteractionNetwork.vue'
 
 Vue.use(VueRouter)
 
@@ -13,6 +17,33 @@ Vue.use(VueRouter)
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/protein/',
+      name: 'proteinHome',
+      component: ProteinWrapper,
+      children: [
+        {
+          path: 'summary/:proteinId',
+          name: 'proteinSummary',
+          component: ProteinSummary
+        },
+        {
+          path: 'peptides/:proteinId',
+          name: 'PeptidesMSMS',
+          component: PeptidesMSMS
+        },
+        {
+          path: 'fdr/:proteinId',
+          name: 'FDR',
+          component: FDR
+        },
+        {
+          path: 'interactions/:proteinId',
+          name: 'InteractionNetwork',
+          component: InteractionNetwork
+        }
+      ]
     },
     {
       path: '/protein/search',

@@ -1,60 +1,275 @@
 <template>
-  <v-main>
   <v-container fluid>
     <v-row>
-      <h1>EGFR - Protein Summary</h1>
       <v-col>
-        <v-btn
-             color="primary"
-             style="right:80px;top:80px;"
-             fixed dark top right
-             fab small
-             >
-             <v-icon>fas fa-question</v-icon>
-        </v-btn>
-        <v-btn
-             color="red"
-             style="right:80px;top:130px;"
-             fixed dark top right
-             fab small
-             >
-             <v-icon>fas fa-bug</v-icon>
-        </v-btn>
-        <v-btn
-             color="primary"
-             style="right:80px;bottom:130px;"
-             fixed dark bottom right
-             fab small
-             >
-             <v-icon>fas fa-question</v-icon>
-        </v-btn>
-        <v-btn
-             color="red"
-             style="right:80px;bottom:80px;"
-             fixed dark bottom right
-             fab small
-             >
-             <v-icon>fas fa-bug</v-icon>
-        </v-btn>
-      </v-col>
-    </v-row>
-  </v-container>
-  </v-main>
+        <v-row>
+          <h1>{{title}}</h1>
+        </v-row>
+        <v-row class="mt-2">
+          <v-col cols ="6">
+            <v-card class="ma-1">
+              <v-toolbar color="primary" dark>
+                <v-card-title>Protein Summary</v-card-title>
+                <v-btn
+                         icon
+                         @click="expandPanel('summary')"
+                         >
+                         <v-icon>{{ showSummary ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                </v-btn>
+              </v-toolbar>
+              <v-expand-transition>
+                <div v-show="showSummary">
+                  <v-list-item two-line>
+                    <v-list-item-content>
+                      <v-list-item-title>Localization</v-list-item-title>
+                      <v-list-item-subtitle>{{summary.LOCALIZATION}}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-divider/>
+                    <v-list-item two-line>
+                      <v-list-item-content>
+                        <v-list-item-title>Gene Name</v-list-item-title>
+                        <v-list-item-subtitle>{{summary.GENE_NAME}} ({{summary.ALTERNATIVE_GENE_NAMES}})</v-list-item-subtitle>
+                      </v-list-item-content>
+                      <v-btn small color="primary">Gene Relatives</v-btn>
+                    </v-list-item>
+                    <v-divider/>
+                      <v-list-item two-line>
+                        <v-list-item-content>
+                          <v-list-item-title>UniProt AC/ID</v-list-item-title>
+                          <v-list-item-subtitle>{{summary.UNIPROT_ID}}/{{summary.UNIPROT_AC}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                        <v-btn small color="primary">Isoforms</v-btn>
+                      </v-list-item>
+                      <v-divider/>
+                        <v-list-item two-line>
+                          <v-list-item-content>
+                            <v-list-item-title>Organism</v-list-item-title>
+                            <v-list-item-subtitle>{{summary.ORGANISM}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                        <v-divider/>
+                          <v-list-item two-line>
+                            <v-list-item-content>
+                              <v-list-item-title>Evidence</v-list-item-title>
+                              <v-list-item-subtitle>{{summary.PROTEIN_EVIDENCE}}
+                                <img :src="summary.PROTEIN_EVIDENCE === 'protein' ? green : (summary.PROTEIN_EVIDENCE === 'isoform' ? yellow : red)">
+                              </v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
+                </div>
+                        </v-expand-transition>
+                      </v-card>
+                      <v-card class="ma-1">
+                        <v-toolbar color="primary" dark>
+                          <v-card-title>Protein Statistics</v-card-title>
+                          <v-btn
+                                   icon
+                                   @click="expandPanel('stats')"
+                                   >
+                                   <v-icon>{{ showStats ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                          </v-btn>
+                        </v-toolbar>
+                        <v-expand-transition>
+                          <div v-show="showStats">
+                            <v-simple-table>
+                              <tbody>
+                                <tr
+                               v-for="item in statistics"
+                               :key="item.name"
+                               >
+                               <td>{{ item.name }}</td>
+                               <td>{{ item.value }}</td>
+                                </tr>
+                              </tbody>
+                            </v-simple-table>
+                          </div>
+                        </v-expand-transition>
+                      </v-card>
+                      <v-card class="ma-1">
+                        <v-toolbar color="primary" dark>
+                          <v-card-title>GO Annotation</v-card-title>
+                          <v-btn
+                            icon
+                            @click="expandPanel('go')"
+                            >
+                            <v-icon>{{ showGO ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                          </v-btn>
+                        </v-toolbar>
+                        <v-expand-transition>
+                          <div v-show="showGO">
+                            <v-expansion-panels class="pa-1">
+                              <v-expansion-panel>
+                                <v-expansion-panel-header>
+                                  Subcellular Localization
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content>
+                                  <v-chip
+                                    v-for="(item, i) in subcellLoc"
+                                    :key="i"
+                                    color="primary"
+                                    class="ma-1"
+                                    >
+                                    {{item}}
+                                  </v-chip>
+                                </v-expansion-panel-content>
+                              </v-expansion-panel>
+                              <v-expansion-panel>
+                                <v-expansion-panel-header>
+                                  Molecular Function
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content>
+                                  <v-chip
+                                    v-for="(item, i) in molFunc"
+                                    :key="i"
+                                    color="secondary"
+                                    class="ma-1"
+                                    >
+                                    {{item}}
+                                  </v-chip>
+                                </v-expansion-panel-content>
+                              </v-expansion-panel>
+                              <v-expansion-panel>
+                                <v-expansion-panel-header>
+                                  Biological Process
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content>
+                                  <v-chip
+                                    v-for="(item, i) in bioProc"
+                                    :key="i"
+                                    color="accent"
+                                    class="ma-1"
+                                    >
+                                    {{item}}
+                                  </v-chip>
+                                </v-expansion-panel-content>
+                              </v-expansion-panel>
+                            </v-expansion-panels>
+                          </div>
+                        </v-expand-transition>
+                      </v-card>
+                      <v-card class="ma-1">
+                        <v-toolbar color="primary" dark>
+                          <v-card-title>External links</v-card-title>
+                          <v-btn
+                                   icon
+                                   @click="expandPanel('links')"
+                                   >
+                                   <v-icon>{{ showLinks ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                          </v-btn>
+                        </v-toolbar>
+                        <v-expand-transition>
+                          <div v-show="showLinks">
+                            <v-card-text v-for="(item, i) in summary.LINKS"
+                                         :key="i">
+                              <a :href="item.LINK">{{item.LINK}}</a>
+                            </v-card-text>
+                          </div>
+                        </v-expand-transition>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+              </v-col>
+              <v-col>
+                <v-btn
+                                         color="primary"
+                                         style="right:80px;top:80px;"
+                                         fixed dark top right
+                                         fab small
+                                         >
+                                         <v-icon>fas fa-question</v-icon>
+                </v-btn>
+                <v-btn
+                  color="red"
+                  style="right:80px;top:130px;"
+                  fixed dark top right
+                  fab small
+                  >
+                  <v-icon>fas fa-bug</v-icon>
+                </v-btn>
+                <v-btn
+                  color="primary"
+                  style="right:80px;bottom:130px;"
+                  fixed dark bottom right
+                  fab small
+                  >
+                  <v-icon>fas fa-question</v-icon>
+                </v-btn>
+                <v-btn
+                  color="red"
+                  style="right:80px;bottom:80px;"
+                  fixed dark bottom right
+                  fab small
+                  >
+                  <v-icon>fas fa-bug</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   props: {
+    proteinName: String,
+    proteinId: String,
+    title: String
   },
   data: () => ({
+    showSummary: true,
+    showStats: false,
+    showGO: false,
+    showLinks: false,
+    summary: {},
+    subcellLoc: [],
+    molFunc: [],
+    bioProc: [],
+    statistics: [],
+    green: require('@/assets/commons/green.png'),
+    yellow: require('@/assets/commons/yellow.png'),
+    red: require('@/assets/commons/red.png')
   }),
   methods: {
+    expandPanel: function(panel) {
+      this.showSummary = panel === 'summary' ? !this.showSummary : false;
+      this.showGO = panel === 'go' ? !this.showGO : false;
+      this.showLinks = panel === 'links' ? !this.showLinks : false;
+      this.showStats = panel === 'stats' ? !this.showStats : false;
+
+    },
+    getSummary: function(){
+      let that = this
+      console.log('triggered')
+
+      if(this.proteinId != null) {
+        console.log('axios')
+        axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/getProteinSummary.xsjs', {params: {protein_id: that.proteinId }}).then(function (response) {
+          that.summary = response.data
+
+          that.subcellLoc = response.data.SUBC_LOC.split("\n ").map((x) => {return(x.replace("\n", ""))}).filter((y) => {return y !== ''})
+          that.molFunc = response.data.MOL_FUNC.split("\n ").map((x) => {return(x.replace("\n", ""))}).filter((y) => {return y !== ''})
+          that.bioProc = response.data.BIO_PROC.split("\n ").map((x) => {return(x.replace("\n", ""))}).filter((y) => {return y !== ''})
+
+          that.statistics = []
+          that.statistics.push({name: "Coverage", value: response.data.SEQUENCE_COVERAGE+"%"})
+          that.statistics.push({name: "Unique Peptides", value: response.data.UNIQUE_PEPTIDES})
+          that.statistics.push({name: "Unique Peptide Spectra", value: response.data.UNIQUE_PEPTIDES_SPECTRA})
+          that.statistics.push({name: "Unique Peptides on Protein Level", value: response.data.UNIQUE_PEPTIDES_PROTEIN})
+          console.log(that.summary)
+        })
+      }
+    }
   },
   computed: {
   },
   watch: {
   },
   mounted() {
+    this.getSummary()
+  },
+  created() {
+    this.getSummary()
   }
 }
 </script>

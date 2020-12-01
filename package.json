@@ -10,6 +10,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
+    "axios": "^0.21.0",
     "core-js": "^3.6.5",
     "devextreme": "20.1.6",
     "devextreme-vue": "20.1.6",

@@ -77,11 +77,11 @@
                 <v-list two-line>
                   <v-card-title>News</v-card-title>
                   <template v-for="item in news">
-                    <v-divider :key="item.title"></v-divider>
-                    <v-list-item :key="item.id" @click="openNews">
+                    <v-divider :key="item.SHORT_TITLE"></v-divider>
+                    <v-list-item :key="item.NEWS_ID" @click="openNews" three-line>
                       <v-list-item-content>
-                        <v-list-item-title v-html="item.title"></v-list-item-title>
-                        <v-list-item-subtitle v-html="item.description"></v-list-item-subtitle>
+                        <v-list-item-title v-html="item.SHORT_TITLE"></v-list-item-title>
+                        <v-list-item-subtitle v-html="item.SHORT_TEXT"></v-list-item-subtitle>
                       </v-list-item-content>
                       <v-btn x-small fab icon><v-icon>fas fa-ellipsis-h</v-icon></v-btn>
                     </v-list-item>
@@ -97,6 +97,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   props: {
     source: String,
@@ -108,9 +110,9 @@ export default {
     {id: 2, displayName: 'Isoforms', value: '13000', icon: 'fas fa-user', taxcode: 9606},
     ],
     news: [
-    {title: "News #1", description: "Short Desc1", id:0},
-    {title: "News #2", description: "Short Desc2", id:1},
-    {title: "News #3", description: "Short Desc3", id:2},
+    {SHORT_TITLE: "News #1", SHORT_TEXT: "Short Desc1", NEWS_ID:0},
+    {SHORT_TITLE: "News #2", SHORT_TEXT: "Short Desc2", NEWS_ID:1},
+    {SHORT_TITLE: "News #3", SHORT_TEXT: "Short Desc3", NEWS_ID:2},
     ],
     icons: {
       analyticsIcon: require('@/assets/home/protein_adopt_small.jpg'),
@@ -127,6 +129,13 @@ export default {
   }),
   methods: {
     openNews: function() {
+    },
+    getNews: function() {
+      let that = this
+
+      axios.get('https://www.proteomicsdb.org/logic/getNews.xsjs', {params: {top: 3}}).then(function (response) {
+        that.news = response.data.allNews
+      })
     }
   },
   computed: {
@@ -134,7 +143,7 @@ export default {
   watch: {
   },
   mounted() {
-
+    this.getNews()
   }
 }
 </script>

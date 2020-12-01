@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router/index.js'
-import routerProtein from './router/protein.js'
 import vuetify from './plugins/vuetify';
 import vueCookie from 'vue-cookie';
 import 'vuetify/dist/vuetify.min.css'
@@ -34,7 +33,6 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
-  routerProtein,
   vuetify,
   render: h => h(App)
 }).$mount('#app')

@@ -71,7 +71,7 @@ export default {
   methods: {
     onSelectionChanged: function(row) {
       console.log(row.selectedRowsData[0].PROTEIN_ID);
-      window.open("protein/summary/"+row.selectedRowsData[0].PROTEIN_ID, "_blank");
+      window.open("/protein/summary/"+row.selectedRowsData[0].PROTEIN_ID, "_blank");
     },
     setData: function () {
       this.dataSource = {
