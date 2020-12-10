@@ -11,7 +11,7 @@ module.exports = {
     config
       .plugin('html')
       .tap(args => {
-        args[0].title = 'TOPAS Explorer'
+        args[0].title = 'ProteomicsDB'
         return args
       })
   },
@@ -19,6 +19,6 @@ module.exports = {
     "vuetify"
   ],
   publicPath: process.env.NODE_ENV === 'production'
-    ? '/topas/'
+    ? '/proteomicsdb/'
     : '/'
 }

@@ -8,7 +8,7 @@
         <v-row class="mt-2">
           <v-col cols ="6">
             <v-card class="ma-1">
-              <v-toolbar color="primary" dark>
+              <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark>
                 <v-card-title>Protein Summary</v-card-title>
                 <v-btn
                          icon
@@ -31,7 +31,7 @@
                         <v-list-item-title>Gene Name</v-list-item-title>
                         <v-list-item-subtitle>{{summary.GENE_NAME}} ({{summary.ALTERNATIVE_GENE_NAMES}})</v-list-item-subtitle>
                       </v-list-item-content>
-                      <v-btn small color="primary">Gene Relatives</v-btn>
+                      <v-btn small :color="$store.state.selectedOrganismShown.secondaryColor">Gene Relatives</v-btn>
                     </v-list-item>
                     <v-divider/>
                       <v-list-item two-line>
@@ -39,7 +39,7 @@
                           <v-list-item-title>UniProt AC/ID</v-list-item-title>
                           <v-list-item-subtitle>{{summary.UNIPROT_ID}}/{{summary.UNIPROT_AC}}</v-list-item-subtitle>
                         </v-list-item-content>
-                        <v-btn small color="primary">Isoforms</v-btn>
+                        <v-btn small :color="$store.state.selectedOrganismShown.secondaryColor">Isoforms</v-btn>
                       </v-list-item>
                       <v-divider/>
                         <v-list-item two-line>
@@ -61,7 +61,7 @@
                         </v-expand-transition>
                       </v-card>
                       <v-card class="ma-1">
-                        <v-toolbar color="primary" dark>
+                        <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark>
                           <v-card-title>Protein Statistics</v-card-title>
                           <v-btn
                                    icon
@@ -87,7 +87,7 @@
                         </v-expand-transition>
                       </v-card>
                       <v-card class="ma-1">
-                        <v-toolbar color="primary" dark>
+                        <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark>
                           <v-card-title>GO Annotation</v-card-title>
                           <v-btn
                             icon
@@ -107,7 +107,7 @@
                                   <v-chip
                                     v-for="(item, i) in subcellLoc"
                                     :key="i"
-                                    color="primary"
+                                    :color="$store.state.selectedOrganismShown.secondaryColor"
                                     class="ma-1"
                                     >
                                     {{item}}
@@ -149,7 +149,7 @@
                         </v-expand-transition>
                       </v-card>
                       <v-card class="ma-1">
-                        <v-toolbar color="primary" dark>
+                        <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark>
                           <v-card-title>External links</v-card-title>
                           <v-btn
                                    icon
@@ -171,22 +171,6 @@
                   </v-row>
               </v-col>
               <v-col>
-                <v-btn
-                                         color="primary"
-                                         style="right:80px;top:80px;"
-                                         fixed dark top right
-                                         fab small
-                                         >
-                                         <v-icon>fas fa-question</v-icon>
-                </v-btn>
-                <v-btn
-                  color="red"
-                  style="right:80px;top:130px;"
-                  fixed dark top right
-                  fab small
-                  >
-                  <v-icon>fas fa-bug</v-icon>
-                </v-btn>
                 <v-btn
                   color="primary"
                   style="right:80px;bottom:130px;"
@@ -240,10 +224,8 @@ export default {
     },
     getSummary: function(){
       let that = this
-      console.log('triggered')
 
       if(this.proteinId != null) {
-        console.log('axios')
         axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/getProteinSummary.xsjs', {params: {protein_id: that.proteinId }}).then(function (response) {
           that.summary = response.data
 
@@ -256,7 +238,6 @@ export default {
           that.statistics.push({name: "Unique Peptides", value: response.data.UNIQUE_PEPTIDES})
           that.statistics.push({name: "Unique Peptide Spectra", value: response.data.UNIQUE_PEPTIDES_SPECTRA})
           that.statistics.push({name: "Unique Peptides on Protein Level", value: response.data.UNIQUE_PEPTIDES_PROTEIN})
-          console.log(that.summary)
         })
       }
     }

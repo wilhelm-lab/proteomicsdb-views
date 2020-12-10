@@ -8,6 +8,8 @@ import ProteinSummary from '@/views/protein/ProteinSummary.vue'
 import PeptidesMSMS from '@/views/protein/PeptidesMSMS.vue'
 import FDR from '@/views/protein/FDR.vue'
 import InteractionNetwork from '@/views/protein/InteractionNetwork.vue'
+import FeatureViewer from '@/views/protein/FeatureViewer.vue'
+//import FeatureViewer from '@/views/protein/InteractionNetwork.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +29,11 @@ Vue.use(VueRouter)
           path: 'summary/:proteinId',
           name: 'proteinSummary',
           component: ProteinSummary
+        },
+        {
+          path: 'featureViewer/:proteinId',
+          name: 'featureViewer',
+          component: FeatureViewer
         },
         {
           path: 'peptides/:proteinId',

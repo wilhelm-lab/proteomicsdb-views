@@ -5,17 +5,25 @@
     <v-navigation-drawer
       v-model="leftMenu"
       expand-on-hover
-      absolute
-      fixed
+      app
+      clipped
       >
       <v-list shaped>
-        <v-list-item-group v-model="selectedTab" color="accent" mandatory>
+        <v-list-item-group v-model="selectedTab" :color="$store.state.selectedOrganismShown.secondaryColor" mandatory>
           <v-list-item @click="showSummary">
             <v-list-item-action>
               <v-icon>far fa-file-alt</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>Summary</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item @click="showFeatures">
+            <v-list-item-action>
+              <v-icon>fas fa-align-left</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Feature viewer</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item @click="showPeptidesMSMS">
@@ -47,9 +55,7 @@
     </v-navigation-drawer>
     </v-row>
     <div class="ml-10">
-      <div class="ml-10">
-        <router-view :proteinName="proteinName" :proteinId= "proteinId" :title="title"/>
-      </div>
+        <router-view :proteinName="proteinName" :proteinId= "proteinId" :title="title" :proteinAccession="proteinAccession"/>
     </div>
   </v-container>
   </v-main>
@@ -68,11 +74,15 @@ export default {
     selectedTab: 0,
     proteinId: null,
     proteinName: '',
+    proteinAccession: '',
     title: ''
   }),
   methods: {
     showSummary: function(){
       router.push('/protein/summary/'+this.proteinId).catch(()=>{});
+    },
+    showFeatures: function(){
+      router.push('/protein/featureViewer/'+this.proteinId).catch(()=>{});
     },
     showPeptidesMSMS: function(){
       router.push('/protein/peptides/'+this.proteinId).catch(()=>{});
@@ -88,6 +98,7 @@ export default {
       axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/getProteinSummary.xsjs', {params: {protein_id: that.proteinId }}).then(function (response) {
         that.proteinName = response.data.GENE_NAME
         that.title = response.data.PROTEIN + " (" + response.data.UNIPROT_ID + ")"
+        that.proteinAccession = response.data.UNIPROT_ID
       })
     }
   },

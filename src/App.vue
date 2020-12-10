@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar app clipped-right clipped-left :color="selectedOrganismShown.color" dark>
+    <v-app-bar app clipped-right clipped-left :color="selectedOrganismShown.primaryColor" dark>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn x-large text dark @click="showHome">
           <v-avatar size=40>
@@ -92,7 +92,7 @@
                  bottom
                  >
                  <v-list>
-                   <v-list-item-group v-model="selectedPage" color="accent" mandatory>
+                   <v-list-item-group v-model="selectedPage" :color="selectedOrganismShown.secondaryColor" mandatory>
                      <v-list-item @click="showHome">
                        <v-list-item-action>
                          <v-icon>fas fa-home</v-icon>
@@ -148,7 +148,7 @@
       <router-view/> 
         <selectOrganismPopup :openDialog="noOrganismSelected" :organisms="organisms" @selectedOrganism="selectOrganism"/>
 
-        <v-footer app :color="selectedOrganismShown.color"
+        <v-footer app :color="selectedOrganismShown.primaryColor"
                       class="white--text"
                       >
                       <span>TUM &copy;{{ new Date().getFullYear() }}</span>
@@ -188,9 +188,9 @@ export default {
     selectedOrg: null,
     noOrganismSelected: false,
     organisms: [
-    {id: 0, text: 'Homo sapiens', icon: 'fas fa-user', taxcode: 9606, color: '#0065BD'},
-    {id: 1, text: 'Arabidopsis thaliana', icon: 'fas fa-seedling', taxcode: 3702, color: '#007C30'},
-    {id: 2, text: 'Mus musculus', icon: 'fas fa-paw', taxcode: 10090, color: 'black'}
+    {id: 0, text: 'Homo sapiens', icon: 'fas fa-user', taxcode: 9606, primaryColor: '#0065BD', secondaryColor: '#6cbbff'},
+    {id: 1, text: 'Arabidopsis thaliana', icon: 'fas fa-seedling', taxcode: 3702, primaryColor: '#007C30', secondaryColor: '#6fce94'},
+    {id: 2, text: 'Mus musculus', icon: 'fas fa-paw', taxcode: 10090, primaryColor: '#C4071B', secondaryColor: '#db606d'}
     ],
     organismsFiltered: [],
     searchOrganismInput: "",
@@ -241,6 +241,12 @@ export default {
     showKey: function(event) {
       console.log(event.key)
     },
+    setStoreShownOrganism: function() {
+      store.dispatch({
+        type: 'setShownOrganism',
+        value: this.selectedOrganismShown
+      });
+    },
     setStoreOrganism: function() {
       store.dispatch({
         type: 'setOrganism',
@@ -277,6 +283,7 @@ export default {
       this.$cookie.set('organism', taxcode);
       this.setStoreOrganism();
       this.selectedOrganismShown = Object.assign(this.organisms.filter((x) => { return(x.taxcode === this.selectedOrg)})[0])
+      this.setStoreShownOrganism();
 
     },
     focusInput: function () {
@@ -297,6 +304,7 @@ export default {
       this.selectedOrganismShown = Object.assign(this.organisms.filter((x) => { return(x.taxcode === parseInt(val))})[0])
       this.$cookie.set('organism', val, 14);
       this.setStoreOrganism();
+      this.setStoreShownOrganism();
       //TODO always change to Home page?
     }
   },

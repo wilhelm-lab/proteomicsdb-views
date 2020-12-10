@@ -7,7 +7,7 @@
       :repaint-changes-only="false"
       :column-auto-width="false"
       :selection="{ mode: 'single' }"
-      @selection-changed="onSelectionChanged"
+      @rowClick="onSelectionChanged"
       >
       <DxFilterRow :visible="true" :apply-filter="currentFilter"/>
       <DxColumn :width="30" caption="" :allow-filtering="false" :allow-sorting="false" data-field="EVIDENCE" cell-template="cellTemplate"/>
@@ -70,8 +70,7 @@ export default {
   }),
   methods: {
     onSelectionChanged: function(row) {
-      console.log(row.selectedRowsData[0].PROTEIN_ID);
-      window.open("/protein/summary/"+row.selectedRowsData[0].PROTEIN_ID, "_blank");
+      window.open("/protein/summary/"+row.data.PROTEIN_ID, "_blank");
     },
     setData: function () {
       this.dataSource = {
