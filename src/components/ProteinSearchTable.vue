@@ -25,6 +25,7 @@
       <DxColumn caption="Sequence Coverage" data-field='COVERAGE_ALL'/>
       <DxColumn caption="Projects" data-field='NUMBER_OF_PROJECTS'/>
       <DxColumn caption="Experiments" data-field='NUMBER_OF_EXPERIMENTS'/>
+      <DxColumn caption="Reference Spectra" data-field='REFERENCE_SPECTRA'/>
       <template #cellTemplate="{ data }"><img :src="data.value === 2 ? green : (data.value === 1 ? yellow : red)"></template>
       <DxPaging :page-size="10"/>
       <DxPager
@@ -76,7 +77,7 @@ export default {
       this.dataSource = {
         store: {
           type: 'odata',
-          url: 'https://www.proteomicsdb.org/proteomicsdb/logic/proteins.xsodata/InputParams(PROTEIN_NAME=\'' + this.searchString + '\'' + ',TAXCODE_IN=' + this.taxcode + ')/Results',
+          url: 'https://www.proteomicsdb.org/proteomicsdb/logic/proteinSearchEndpoint.xsodata/InputParams(PROTEIN_NAME=\'' + this.searchString + '\'' + ',TAXCODE_IN=' + this.taxcode + ')/Results',
         },
         reshapeOnPush: true,
         select: [
@@ -98,7 +99,8 @@ export default {
         //'TOTAL_PSMS',
         'COVERAGE_ALL',
         'NUMBER_OF_PROJECTS',
-        'NUMBER_OF_EXPERIMENTS'
+        'NUMBER_OF_EXPERIMENTS',
+        'REFERENCE_SPECTRA'
         ]
       }
     },
