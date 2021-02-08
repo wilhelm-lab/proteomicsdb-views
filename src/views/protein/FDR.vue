@@ -25,7 +25,7 @@
             <v-card-text>
               <proteinFdrWrapper :proteinId="proteinId" :targetName="proteinAccession" />
               <v-divider/>
-              <specificProteinFdrWrapper :proteinId="proteinId" :targetName="proteinName" />
+              <specificProteinFdrWrapper :proteinId="proteinId" :targetName="proteinAccession" />
             </v-card-text>
           </v-card>
         </v-col>

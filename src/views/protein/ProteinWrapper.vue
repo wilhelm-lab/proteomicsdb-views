@@ -42,6 +42,14 @@
               <v-list-item-title>FDR estimation</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item @click="showExpression">
+            <v-list-item-action>
+              <v-icon>fas fa-street-view</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Expression</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item @click="showNetwork">
             <v-list-item-action>
               <v-icon>mdi-apache-kafka</v-icon>
@@ -89,6 +97,9 @@ export default {
     },
     showFDR: function(){
       router.push('/protein/fdr/'+this.proteinId).catch(()=>{});
+    },
+    showExpression: function(){
+      router.push('/protein/expression/'+this.proteinId).catch(()=>{});
     },
     showNetwork: function(){
       router.push('/protein/interactions/'+this.proteinId).catch(()=>{});
