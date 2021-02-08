@@ -34,6 +34,14 @@
               <v-list-item-title>Peptides MS/MS</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item @click="showSpectrum">
+            <v-list-item-action>
+              <v-icon>far fa-chart-bar</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Spectrum Viewer</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item @click="showFDR">
             <v-list-item-action>
               <v-icon>fas fa-chart-area</v-icon>
@@ -42,12 +50,28 @@
               <v-list-item-title>FDR estimation</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item @click="showExpression">
+            <v-list-item-action>
+              <v-icon>fas fa-street-view</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Expression</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item @click="showNetwork">
             <v-list-item-action>
               <v-icon>mdi-apache-kafka</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>Interaction network</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item @click="SV">
+            <v-list-item-action>
+              <v-icon>mdi-apache-kafka</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Spec</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -87,11 +111,20 @@ export default {
     showPeptidesMSMS: function(){
       router.push('/protein/peptides/'+this.proteinId).catch(()=>{});
     },
+    showSpectrum: function(){
+      router.push('/protein/peptides/'+this.proteinId+'/5718774').catch(()=>{});
+    },
     showFDR: function(){
       router.push('/protein/fdr/'+this.proteinId).catch(()=>{});
     },
+    showExpression: function(){
+      router.push('/protein/expression/'+this.proteinId).catch(()=>{});
+    },
     showNetwork: function(){
       router.push('/protein/interactions/'+this.proteinId).catch(()=>{});
+    },
+    SV: function(){
+      router.push('/protein/spectrumViewer/'+this.proteinId).catch(()=>{});
     },
     getProteinInfo: function(){
       let that = this

@@ -8,6 +8,12 @@ module.exports = {
         .loader('file-loader')
         .options({name : `css/[name]`})
         .end()
+    config.module
+      .rule('raw')
+      .test(/\.txt$/)
+      .use('raw-loader')
+      .loader('raw-loader')
+      .end()
     config
       .plugin('html')
       .tap(args => {

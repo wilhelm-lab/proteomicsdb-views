@@ -7,9 +7,11 @@ import ProteinWrapper from '../views/protein/ProteinWrapper.vue'
 import ProteinSummary from '@/views/protein/ProteinSummary.vue'
 import PeptidesMSMS from '@/views/protein/PeptidesMSMS.vue'
 import FDR from '@/views/protein/FDR.vue'
+import Expression from '@/views/protein/Expression.vue'
 import InteractionNetwork from '@/views/protein/InteractionNetwork.vue'
 import FeatureViewer from '@/views/protein/FeatureViewer.vue'
-//import FeatureViewer from '@/views/protein/InteractionNetwork.vue'
+import PeptideDetails from '@/views/popup/PeptideDetailsPopUp.vue'
+import SpectrumWrapper from '@/vue-d3-component-wrappers/SpectrumWrapper.vue'
 
 Vue.use(VueRouter)
 
@@ -26,6 +28,11 @@ Vue.use(VueRouter)
       component: ProteinWrapper,
       children: [
         {
+          path: 'spectrumViewer/:proteinId',
+          name: 'spectrumViewer',
+          component: SpectrumWrapper
+        },
+        {
           path: 'summary/:proteinId',
           name: 'proteinSummary',
           component: ProteinSummary
@@ -38,7 +45,24 @@ Vue.use(VueRouter)
         {
           path: 'peptides/:proteinId',
           name: 'PeptidesMSMS',
-          component: PeptidesMSMS
+          component: PeptidesMSMS,
+          children: [
+            {
+              path: ':peptideId',
+              name: 'PeptideDetails',
+              component: PeptideDetails,
+              props: (route) => ({ 
+                proteinId: route.params.proteinId,
+                peptideId: route.params.peptideId,
+                openDialog: true
+              })
+            }
+          ]
+        },
+        {
+          path: 'expression/:proteinId',
+          name: 'Expression',
+          component: Expression
         },
         {
           path: 'fdr/:proteinId',
