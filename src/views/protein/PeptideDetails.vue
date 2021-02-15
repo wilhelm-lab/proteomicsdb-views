@@ -4,14 +4,16 @@
       <v-col cols="11">
         <DxDataGrid
              ref="peptideDetailsGrid"
+             :disabled="isLoading"
+             @initialized="saveGridInstance"
              :data-source="dataSource"
              :show-borders="true"
-             :repaint-changes-only="false"
+             :cache-enabled="false"
+             :repaint-changes-only="true"
              :column-auto-width="true"
              :selection="{ mode: 'single' }"
              :selectedRowKeys="selectedRows"
              @rowClick="onSelectionChanged"
-             @selectionChanged="onSelectionChanged"
              >
              <DxColumnChooser :enabled="true" :allow-search="true" mode="select"/>
              <DxFilterRow :visible="true" :apply-filter="currentFilter"/>
@@ -50,7 +52,7 @@
     </v-row>
     <v-row>
       <v-col cols = "11">
-        <spectrumWrapper :spectrumEntry="selectedIdentification" ref="spectrumWrapper"/>
+        <spectrumWrapper :spectrumEntry="selectedIdentification" :peptideId="peptideId" :peptideSequence="peptideSequence" @plottingFinished="stopLoading" ref="spectrumWrapper"/>
       </v-col>
     </v-row>
     <v-btn :color="$store.state.selectedOrganismShown.primaryColor"
@@ -93,33 +95,44 @@ export default {
     peptideId: String
   },
   data: () => ({
+    dataGridInstance: null,
+    isLoading: false,
     dataSource: {
     },
     currentFilter: null,
     selectedIdentification: null,
-    selectedRows: []
+    selectedRows: [],
+    peptideSequence: ''
   }),
   methods: {
+    saveGridInstance: function(e) {
+      this.dataGridInstance = e.component;
+    },
+    stopLoading: function () {
+      this.dataGridInstance.endCustomLoading();
+      this.isLoading=false;
+    },
     onSelectionChanged: function(row) {
-      var oData = row.data;
-      this.selectedIdentification = oData;
+      this.isLoading=true;
+      this.dataGridInstance.beginCustomLoading('Fetching Spectrum');
+      this.selectedIdentification = row.data;
       // spawn SpectrumViewer
     },
     resetAll: function () {
       this.$refs.spectrumWrapper.resetAll();
     },
     setData: function () {
+      var that = this;
       this.dataSource = {
         store: {
           type: 'odata',
           key: 'IDENTIFICATION_ID',
-          url: 'https://www.proteomicsdb.org/proteomicsdb/logic/peptideDetails.xsodata/InputParams(PROTEINFILTER=' + this.proteinId + ',PEPTIDEFILTER=' + this.peptideId + ')/Results'
-          //onLoaded: function(oData) {
-          //  if(oData.length > 0) {
-          //    that.selectedRows = [oData[0].IDENTIFICATION_ID];
-          //    that.selectedIdentification = oData[0];
-          //  }
-          //}
+          url: 'https://www.proteomicsdb.org/proteomicsdb/logic/peptideDetails.xsodata/InputParams(PROTEINFILTER=' + this.proteinId + ',PEPTIDEFILTER=' + this.peptideId + ')/Results',
+          onLoaded: function(oData) {
+            if(oData.length > 0 && that.peptideSequence === '') {
+              that.peptideSequence = oData[0].PEPTIDE_SEQUENCE;
+            }
+          }
         },
         reshapeOnPush: true,
         select: [
