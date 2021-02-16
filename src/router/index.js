@@ -14,6 +14,7 @@ import FeatureViewer from '@/views/protein/FeatureViewer.vue'
 import PeptideDetails from '@/views/popup/PeptideDetailsPopUp.vue'
 import RefPeptideDetails from '@/views/popup/ReferencePeptideDetailsPopUp.vue'
 import Proteotypicity from '@/views/protein/Proteotypicity.vue'
+import ProteinProjects from '@/views/protein/ProteinProjects.vue'
 
 Vue.use(VueRouter)
 
@@ -77,6 +78,11 @@ Vue.use(VueRouter)
           path: 'proteotypicity/:proteinId',
           name: 'Proteotypicity',
           component: Proteotypicity
+        },
+        {
+          path: 'projects/:proteinId',
+          name: 'ProteinProjects',
+          component: ProteinProjects
         },
         {
           path: 'expression/:proteinId',
