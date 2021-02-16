@@ -13,44 +13,86 @@
             <v-card-text>
               <geneFdrWrapper :proteinId="proteinId" :targetName="proteinName"/>
               <v-divider/>
-              <specificGeneFdrWrapper :proteinId="proteinId" :targetName="proteinName"/>
-            </v-card-text>
-          </v-card>
-        </v-col>
-        <v-col cols="5">
-          <v-card class="ma-2 text-xs-center">
-            <v-toolbar dark dense :color="$store.state.selectedOrganismShown.secondaryColor">
-              <v-card-title>Protein FDR Estimate</v-card-title>
-            </v-toolbar>
-            <v-card-text>
-              <proteinFdrWrapper :proteinId="proteinId" :targetName="proteinAccession" />
-              <v-divider/>
-              <specificProteinFdrWrapper :proteinId="proteinId" :targetName="proteinAccession" />
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-        <v-btn
-                       color="primary"
-                       style="right:80px;bottom:130px;"
-                       fixed dark bottom right
-                       fab small
-                       >
-                       <v-icon>fas fa-question</v-icon>
-        </v-btn>
-        <v-btn
-                       color="red"
-                       style="right:80px;bottom:80px;"
-                       fixed dark bottom right
-                       fab small
-                       >
-                       <v-icon>fas fa-bug</v-icon>
-        </v-btn>
-    </v-row>
-  </v-container>
+                <specificGeneFdrWrapper :proteinId="proteinId" :targetName="proteinName"/>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="5">
+            <v-card class="ma-2 text-xs-center">
+              <v-toolbar dark dense :color="$store.state.selectedOrganismShown.secondaryColor">
+                <v-card-title>Protein FDR Estimate</v-card-title>
+              </v-toolbar>
+              <v-card-text>
+                <proteinFdrWrapper :proteinId="proteinId" :targetName="proteinAccession" />
+                <v-divider/>
+                  <specificProteinFdrWrapper :proteinId="proteinId" :targetName="proteinAccession" />
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-speed-dial
+                    v-model="fab"
+                    top
+                    right
+                    direction="left"
+                    transition="slide-x-reverse-transition"
+                    >
+                    <template v-slot:activator>
+                      <v-btn 
+                    v-model="fab"
+                    :color="$store.state.selectedOrganismShown.primaryColor"
+                    dark
+                    fab
+                    >
+                    <v-icon v-if="fab">
+                      mdi-close
+                    </v-icon>
+                        <v-icon v-else>
+                          fas fa-download
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                    <v-btn
+                            fab
+                            dark
+                            small
+                            :color="$store.state.selectedOrganismShown.secondaryColor"
+                            @click="downloadSVG"
+                            >
+                            SVG
+                    </v-btn>
+                      <v-btn 
+                            fab
+                            dark
+                            small
+                            :color="$store.state.selectedOrganismShown.secondaryColor"
+                            @click="downloadPNG"
+                            >
+                            PNG
+                      </v-btn>
+          </v-speed-dial>
+          <v-btn
+                            color="primary"
+                            style="right:80px;bottom:130px;"
+                            fixed dark bottom right
+                            fab small
+                            >
+                            <v-icon>fas fa-question</v-icon>
+          </v-btn>
+          <v-btn
+                            color="red"
+                            style="right:80px;bottom:80px;"
+                            fixed dark bottom right
+                            fab small
+                            >
+                            <v-icon>fas fa-bug</v-icon>
+          </v-btn>
+        </v-row>
+      </v-container>
 </template>
 
 <script>
+//import downloader from '@/components/DownloadSpeedDial'
 import geneFdrWrapper from '@/vue-d3-component-wrappers/GeneFDRGraph'
 import specificGeneFdrWrapper from '@/vue-d3-component-wrappers/SpecificGeneFDRGraph'
 import proteinFdrWrapper from '@/vue-d3-component-wrappers/ProteinFDRGraph'
@@ -63,12 +105,14 @@ export default {
     proteinAccession: String
   },
   components: {
+ //   downloader: downloader,
     geneFdrWrapper: geneFdrWrapper,
     specificGeneFdrWrapper: specificGeneFdrWrapper,
     proteinFdrWrapper: proteinFdrWrapper,
     specificProteinFdrWrapper: specificProteinFdrWrapper
   },
   data: () => ({
+    fab: false
   }),
   methods: {
   },
@@ -81,4 +125,9 @@ export default {
 }
 </script>
 <style lang="scss">
+.v-speed-dial--direction-left .v-speed-dial__list, .v-speed-dial--direction-right .v-speed-dial__list{
+  height: inherit;
+}
+
+
 </style>
