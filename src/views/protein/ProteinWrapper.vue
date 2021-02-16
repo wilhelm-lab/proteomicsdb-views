@@ -66,6 +66,14 @@
               <v-list-item-title>Interaction network</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item @click="showProteotypicity">
+            <v-list-item-action>
+              <v-icon>fas fa-balance-scale-right</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Proteotypicity</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -114,6 +122,9 @@ export default {
     },
     showNetwork: function(){
       router.push('/protein/interactions/'+this.proteinId).catch(()=>{});
+    },
+    showProteotypicity: function(){
+      router.push('/protein/proteotypicity/'+this.proteinId).catch(()=>{});
     },
     getProteinInfo: function(){
       let that = this
