@@ -41,18 +41,8 @@
                 class="mx-1"
                 >
                 </v-combobox>
-                  <v-select
-                v-if="sexVisible"
-                dense
-                :items="bodyModel"
-                label="Body visualization"
-                v-model="bodySelected"
-                outlined
-                class="mx-1"
-                >
-                  </v-select>
     </v-row>
-    <v-row>
+    <v-row justify="center">
       <v-col cols = "4">
         <proteinExpression v-if="filtersLoaded"
                 ref="bodymap"
@@ -63,7 +53,6 @@
                 scope="1"
                 group_by_tissue= "1"
                 :calculation="quantSelected.unit"
-                :selectedGender="bodySelected"
                 :selectedOrganism="selectedOrganism"
                 @dataLoaded="retrieveData"
                 @organSelected="organSelected"
@@ -130,9 +119,6 @@ export default {
     quantSelected: null,
     bioSourceModel: [],
     bioSourceSelected: [],
-    bodySelected: 'female',
-    sexVisible: true,
-    bodyModel: ['male', 'female'],
     filtersLoaded: false,
     dataLoaded: false,
     selectedOrganism: { taxcode: 9606 },
@@ -143,12 +129,14 @@ export default {
     selectedSampleId: null
   }),
   watch: {
+    '$store.state.cookie': function(str){
+      this.selectedOrganism.taxcode = parseInt(str);
+    },
   },
   methods: {
     resetBindings: function() {
       this.aTissueSelected = [];
       this.aTissueIdSelected = [];
-
     },
     organSelected: function (SAP_SYNONYM) {
       // selected TISSUES in Bodymap
