@@ -34,6 +34,14 @@
               <v-list-item-title>Peptides MS/MS</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item @click="showReferencePeptides">
+            <v-list-item-action>
+              <v-icon>mdi-chart-bar-stacked</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Reference Peptides</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item @click="showFDR">
             <v-list-item-action>
               <v-icon>fas fa-chart-area</v-icon>
@@ -94,6 +102,9 @@ export default {
     },
     showPeptidesMSMS: function(){
       router.push('/protein/peptides/'+this.proteinId).catch(()=>{});
+    },
+    showReferencePeptides: function(){
+      router.push('/protein/referencePeptides/'+this.proteinId).catch(()=>{});
     },
     showFDR: function(){
       router.push('/protein/fdr/'+this.proteinId).catch(()=>{});

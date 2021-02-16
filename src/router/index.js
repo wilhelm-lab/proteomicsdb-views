@@ -6,11 +6,13 @@ import ProteinSearch from '../views/search/ProteinSearch.vue'
 import ProteinWrapper from '../views/protein/ProteinWrapper.vue'
 import ProteinSummary from '@/views/protein/ProteinSummary.vue'
 import PeptidesMSMS from '@/views/protein/PeptidesMSMS.vue'
+import ReferencePeptides from '@/views/protein/ReferencePeptides.vue'
 import FDR from '@/views/protein/FDR.vue'
 import Expression from '@/views/protein/Expression.vue'
 import InteractionNetwork from '@/views/protein/InteractionNetwork.vue'
 import FeatureViewer from '@/views/protein/FeatureViewer.vue'
 import PeptideDetails from '@/views/popup/PeptideDetailsPopUp.vue'
+import RefPeptideDetails from '@/views/popup/ReferencePeptideDetailsPopUp.vue'
 import SpectrumWrapper from '@/vue-d3-component-wrappers/SpectrumWrapper.vue'
 
 Vue.use(VueRouter)
@@ -51,6 +53,23 @@ Vue.use(VueRouter)
               path: ':peptideId',
               name: 'PeptideDetails',
               component: PeptideDetails,
+              props: (route) => ({ 
+                proteinId: route.params.proteinId,
+                peptideId: route.params.peptideId,
+                openDialog: true
+              })
+            }
+          ]
+        },
+        {
+          path: 'referencePeptides/:proteinId',
+          name: 'ReferencePeptides',
+          component: ReferencePeptides,
+          children: [
+            {
+              path: ':peptideId',
+              name: 'RefPeptideDetails',
+              component: RefPeptideDetails,
               props: (route) => ({ 
                 proteinId: route.params.proteinId,
                 peptideId: route.params.peptideId,
