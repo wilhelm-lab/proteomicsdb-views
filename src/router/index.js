@@ -13,7 +13,7 @@ import InteractionNetwork from '@/views/protein/InteractionNetwork.vue'
 import FeatureViewer from '@/views/protein/FeatureViewer.vue'
 import PeptideDetails from '@/views/popup/PeptideDetailsPopUp.vue'
 import RefPeptideDetails from '@/views/popup/ReferencePeptideDetailsPopUp.vue'
-import SpectrumWrapper from '@/vue-d3-component-wrappers/SpectrumWrapper.vue'
+import Proteotypicity from '@/views/protein/Proteotypicity.vue'
 
 Vue.use(VueRouter)
 
@@ -29,11 +29,6 @@ Vue.use(VueRouter)
       name: 'proteinHome',
       component: ProteinWrapper,
       children: [
-        {
-          path: 'spectrumViewer/:proteinId',
-          name: 'spectrumViewer',
-          component: SpectrumWrapper
-        },
         {
           path: 'summary/:proteinId',
           name: 'proteinSummary',
@@ -77,6 +72,11 @@ Vue.use(VueRouter)
               })
             }
           ]
+        },
+        {
+          path: 'proteotypicity/:proteinId',
+          name: 'Proteotypicity',
+          component: Proteotypicity
         },
         {
           path: 'expression/:proteinId',
