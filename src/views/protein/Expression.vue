@@ -42,7 +42,7 @@
                 >
                 </v-combobox>
     </v-row>
-    <v-row justify="center">
+    <v-row>
       <v-col cols = "4">
         <proteinExpression v-if="filtersLoaded"
                 ref="bodymap"
