@@ -74,6 +74,14 @@
               <v-list-item-title>Proteotypicity</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item @click="showProjects">
+            <v-list-item-action>
+              <v-icon>far fa-folder</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Projects</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -125,6 +133,9 @@ export default {
     },
     showProteotypicity: function(){
       router.push('/protein/proteotypicity/'+this.proteinId).catch(()=>{});
+    },
+    showProjects: function(){
+      router.push('/protein/projects/'+this.proteinId).catch(()=>{});
     },
     getProteinInfo: function(){
       let that = this

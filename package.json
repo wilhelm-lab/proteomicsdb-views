@@ -20,6 +20,8 @@
     "d3v4": "^4.2.2",
     "devextreme": "20.1.6",
     "devextreme-vue": "20.1.6",
+    "exceljs": "^4.2.0",
+    "file-saver": "^2.0.5",
     "litemol": "^2.4.2",
     "material-design-icons-iconfont": "^5.0.1",
     "protvista-uniprot": "git+ssh://git@gitlab.lrz.de:prdb/prot-vista/feature-viewer.git#master",
