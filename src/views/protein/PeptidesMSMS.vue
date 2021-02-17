@@ -3,9 +3,8 @@
     <v-row>
       <h1>{{this.proteinName}} - Peptides MSMS</h1>
     </v-row>
-    <v-row justify="space-around" align="center">
+    <v-row align="center" no-gutters>
       <searchTable :proteinId="proteinId" @selectedPeptideId="setPeptideId"/>
-      <!--     <peptideDetailsPopup :proteinId="proteinId" :peptideId="peptideIdIn" :openDialog="openPopUp" @closePopUp="closePopUp" /> -->
       <router-view />
     </v-row>
     <v-row>
@@ -16,7 +15,6 @@
 <script>
 import searchTable from '@/components/PeptideMSMSTable'
 import router from '@/router';
-//import peptideDetailsPopup from '@/views/popup/PeptideDetailsPopUp'
 export default {
   props: {
     proteinName: String,
@@ -24,8 +22,7 @@ export default {
     peptideId: String
   },
   components: {
-    searchTable,
- //   peptideDetailsPopup
+    searchTable
   },
   data: () => ({
     openPopUp: false,

@@ -238,9 +238,6 @@ export default {
     resetOrganism: function() {
       this.organismsFiltered = Object.assign(this.organisms);
     },
-    showKey: function(event) {
-      console.log(event.key)
-    },
     setStoreShownOrganism: function() {
       store.dispatch({
         type: 'setShownOrganism',
@@ -329,7 +326,6 @@ export default {
 }
 </script>
 <style lang="scss">
-@import './assets/styles/dx.material.custom-scheme.css';
 .prdbIcon{
   border: 2px solid lightgray;
   background-color: lightgray;

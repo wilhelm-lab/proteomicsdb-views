@@ -86,9 +86,9 @@ export default {
           excelCell.alignment = { horizontal: 'left' };
         } 
       }).then(function() {
-        workbook.xlsx.writeBuffer()
+        workbook.csv.writeBuffer()
         .then(function(buffer) {
-          saveAs(new Blob([buffer], { type: 'application/octet-stream' }), that.proteinAccession+'_projects.xlsx');
+          saveAs(new Blob([buffer], { type: 'application/octet-stream' }), that.proteinAccession+'_projects.csv');
         });
       });
       e.cancel = true;
@@ -113,6 +113,4 @@ export default {
 }
 </script>
 <style lang="scss">
-@import 'https://cdn3.devexpress.com/jslib/20.1.6/css/dx.common.css';
-@import 'https://cdn3.devexpress.com/jslib/20.1.6/css/dx.greenmist.css';
 </style>
