@@ -329,6 +329,7 @@ export default {
 }
 </script>
 <style lang="scss">
+@import './assets/styles/dx.material.custom-scheme.css';
 .prdbIcon{
   border: 2px solid lightgray;
   background-color: lightgray;
