@@ -1,7 +1,18 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <h1>{{title}}</h1>
+    <v-row dense no-gutters>
+      <v-col cols="9">
+        <h1>{{title}}</h1>
+      </v-col>
+      <v-spacer></v-spacer>
+      <downloader top
+        right
+        direction='bottom'
+        svg
+        png
+        @svg="getSVG"
+        @png="getPNG"
+      />
     </v-row>
     <v-row>
       <v-row>
@@ -11,9 +22,9 @@
               <v-card-title>Gene FDR Estimate</v-card-title>
             </v-toolbar>
             <v-card-text>
-              <geneFdrWrapper :proteinId="proteinId" :targetName="proteinName"/>
+              <geneFdrWrapper :proteinId="proteinId" :targetName="proteinName" ref="geneFdr"/>
               <v-divider/>
-                <specificGeneFdrWrapper :proteinId="proteinId" :targetName="proteinName"/>
+                <specificGeneFdrWrapper :proteinId="proteinId" :targetName="proteinName" ref="geneSpecFdr"/>
               </v-card-text>
             </v-card>
           </v-col>
@@ -23,77 +34,38 @@
                 <v-card-title>Protein FDR Estimate</v-card-title>
               </v-toolbar>
               <v-card-text>
-                <proteinFdrWrapper :proteinId="proteinId" :targetName="proteinAccession" />
+                <proteinFdrWrapper :proteinId="proteinId" :targetName="proteinAccession" ref="proteinFdr"/>
                 <v-divider/>
-                  <specificProteinFdrWrapper :proteinId="proteinId" :targetName="proteinAccession" />
+                  <specificProteinFdrWrapper :proteinId="proteinId" :targetName="proteinAccession" ref="proteinSpecFdr"/>
                 </v-card-text>
               </v-card>
             </v-col>
           </v-row>
-          <v-speed-dial
-                    v-model="fab"
-                    top
-                    right
-                    direction="left"
-                    transition="slide-x-reverse-transition"
-                    >
-                    <template v-slot:activator>
-                      <v-btn 
-                    v-model="fab"
-                    :color="$store.state.selectedOrganismShown.primaryColor"
-                    dark
-                    fab
-                    >
-                    <v-icon v-if="fab">
-                      mdi-close
-                    </v-icon>
-                        <v-icon v-else>
-                          fas fa-download
-                        </v-icon>
-                      </v-btn>
-                    </template>
-                    <v-btn
-                            fab
-                            dark
-                            small
-                            :color="$store.state.selectedOrganismShown.secondaryColor"
-                            @click="downloadSVG"
-                            >
-                            SVG
-                    </v-btn>
-                      <v-btn 
-                            fab
-                            dark
-                            small
-                            :color="$store.state.selectedOrganismShown.secondaryColor"
-                            @click="downloadPNG"
-                            >
-                            PNG
-                      </v-btn>
-          </v-speed-dial>
+          <canvas id="canvasId" style=display:none></canvas>
           <v-btn
-                            color="primary"
-                            style="right:80px;bottom:130px;"
-                            fixed dark bottom right
-                            fab small
-                            >
-                            <v-icon>fas fa-question</v-icon>
+                    color="primary"
+                    style="right:80px;bottom:130px;"
+                    fixed dark bottom right
+                    fab small
+                    >
+                    <v-icon>fas fa-question</v-icon>
           </v-btn>
           <v-btn
-                            color="red"
-                            style="right:80px;bottom:80px;"
-                            fixed dark bottom right
-                            fab small
-                            >
-                            <v-icon>fas fa-bug</v-icon>
+                    color="red"
+                    style="right:80px;bottom:80px;"
+                    fixed dark bottom right
+                    fab small
+                    >
+                    <v-icon>fas fa-bug</v-icon>
           </v-btn>
         </v-row>
       </v-container>
 </template>
 
 <script>
-//import downloader from '@/components/DownloadSpeedDial'
+import downloader from '@/components/DownloadSpeedDial'
 import geneFdrWrapper from '@/vue-d3-component-wrappers/GeneFDRGraph'
+import utils from '@/vue-d3-component-wrappers/common-lib/Utils.js'
 import specificGeneFdrWrapper from '@/vue-d3-component-wrappers/SpecificGeneFDRGraph'
 import proteinFdrWrapper from '@/vue-d3-component-wrappers/ProteinFDRGraph'
 import specificProteinFdrWrapper from '@/vue-d3-component-wrappers/SpecificProteinFDRGraph'
@@ -105,16 +77,34 @@ export default {
     proteinAccession: String
   },
   components: {
- //   downloader: downloader,
+    downloader: downloader,
     geneFdrWrapper: geneFdrWrapper,
     specificGeneFdrWrapper: specificGeneFdrWrapper,
     proteinFdrWrapper: proteinFdrWrapper,
     specificProteinFdrWrapper: specificProteinFdrWrapper
   },
   data: () => ({
-    fab: false
+    fab: false,
+    svgCss: [require('@/vue-d3-components/FDRGraph.css.prdb')]
   }),
   methods: {
+    downloadPlots: function (type) {
+      var aPlots = [];
+      aPlots.push(this.$refs.geneFdr.getSVG());
+      aPlots.push(this.$refs.geneSpecFdr.getSVG());
+      aPlots.push(this.$refs.proteinFdr.getSVG());
+      aPlots.push(this.$refs.proteinSpecFdr.getSVG());
+
+      if(aPlots) {
+        utils.downloadSVGs(aPlots, 'FDR Distributions: ', type === 'svg', 'canvasId', this.svgCss);
+      }
+    },
+    getSVG: function() {
+      this.downloadPlots('svg');
+    },
+    getPNG: function() {
+      this.downloadPlots('png');
+    },
   },
   computed: {
   },

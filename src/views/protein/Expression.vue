@@ -1,95 +1,110 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <h1>{{title}}</h1>
+    <v-row dense no-gutters>
+      <v-col cols="9">
+        <h1>{{title}}</h1>
+      </v-col>
+      <v-spacer></v-spacer>
+      <downloader top
+        right
+        direction='left'
+        csv
+        svg
+        png
+        :loading="loading"
+        @csv="getCSV"
+        @svg="getSVG"
+        @png="getPNG"
+      />
     </v-row>
     <v-row>
-          <v-card-title>Data Filters</v-card-title>
+      <v-card-title>Data Filters</v-card-title>
     </v-row>
     <v-row>
-            <v-combobox
-                dense
-                outlined
-                :items="omicstypesModel"
-                :item-text="formatOmicsType"
-                label="OmicsType"
-                v-model="omicsSelected"
-                class="mx-1"
-                return-object
-                @change="getQuantCalc"
-                >
-            </v-combobox>
-              <v-combobox
-                dense
-                outlined
-                :items="quantModel"
-                :item-text="quantTextFormat"
-                label="Quantification"
-                v-model="quantSelected"
-                class="mx-1"
-                return-object
-                @change="getAvailableBioSources"
-                >
-              </v-combobox>
-                <v-combobox
-                dense
-                outlined
-                multiple
-                :items="bioSourceModel"
-                label="Biological source"
-                v-model="bioSourceSelected"
-                class="mx-1"
-                >
-                </v-combobox>
+      <v-combobox
+        dense
+        outlined
+        :items="omicstypesModel"
+        :item-text="formatOmicsType"
+        label="OmicsType"
+        v-model="omicsSelected"
+        class="mx-1"
+        return-object
+        @change="getQuantCalc"
+        >
+      </v-combobox>
+        <v-combobox
+        dense
+        outlined
+        :items="quantModel"
+        :item-text="quantTextFormat"
+        label="Quantification"
+        v-model="quantSelected"
+        class="mx-1"
+        return-object
+        @change="getAvailableBioSources"
+        >
+        </v-combobox>
+          <v-combobox
+        dense
+        outlined
+        multiple
+        :items="bioSourceModel"
+        label="Biological source"
+        v-model="bioSourceSelected"
+        class="mx-1"
+        >
+          </v-combobox>
     </v-row>
     <v-row>
       <v-col cols = "4">
         <proteinExpression v-if="filtersLoaded"
-                ref="bodymap"
-                :proteinId="proteinId"
-                :omicsType="omicsSelected.omicTypes"
-                :quantification="quantSelected.method"
-                :tissue_category="tissueCategoryString"
-                scope="1"
-                group_by_tissue= "1"
-                :calculation="quantSelected.unit"
-                :selectedOrganism="selectedOrganism"
-                @dataLoaded="retrieveData"
-                @organSelected="organSelected"
-                ></proteinExpression>
+                           ref="bodymap"
+                           :proteinId="proteinId"
+                           :omicsType="omicsSelected.omicTypes"
+                           :quantification="quantSelected.method"
+                           :tissue_category="tissueCategoryString"
+                           scope="1"
+                           group_by_tissue= "1"
+                           :calculation="quantSelected.unit"
+                           :selectedOrganism="selectedOrganism"
+                           @dataLoaded="retrieveData"
+                           @organSelected="organSelected"
+                           ></proteinExpression>
       </v-col>
       <v-col cols = "4" v-if="dataLoaded">
         <tissueBars ref="tissuebarsref" :data="expressionData" @barSelected="tissueBarSelected" ></tissueBars>
       </v-col>
       <v-col cols = "4">
         <sampleBars ref="samplebarsref" v-if="sTissueSelected !== ''"
-                    :proteinId="proteinId"
-                    :quantification="quantSelected.method"
-                    :tissue_category="tissueCategoryString"
-                    scope="1"
-                    :tissues_selected="sTissueSelected"
-                    group_by_tissue="0"
-                    :calculation="quantSelected.unit"
-                    :omicsType="omicsSelected.omicTypes"
-                    ></sampleBars>
+                                        :proteinId="proteinId"
+                                        :quantification="quantSelected.method"
+                                        :tissue_category="tissueCategoryString"
+                                        scope="1"
+                                        :tissues_selected="sTissueSelected"
+                                        group_by_tissue="0"
+                                        :calculation="quantSelected.unit"
+                                        :omicsType="omicsSelected.omicTypes"
+                                        ></sampleBars>
       </v-col>
     </v-row>
+    <canvas id="canvasId" style=display:none></canvas>
     <v-row>
       <v-btn
-                color="primary"
-                style="right:80px;bottom:130px;"
-                fixed dark bottom right
-                fab small
-                >
-                <v-icon>fas fa-question</v-icon>
+                                        color="primary"
+                                        style="right:80px;bottom:130px;"
+                                        fixed dark bottom right
+                                        fab small
+                                        >
+                                        <v-icon>fas fa-question</v-icon>
       </v-btn>
       <v-btn
-                color="red"
-                style="right:80px;bottom:80px;"
-                fixed dark bottom right
-                fab small
-                >
-                <v-icon>fas fa-bug</v-icon>
+                                        color="red"
+                                        style="right:80px;bottom:80px;"
+                                        fixed dark bottom right
+                                        fab small
+                                        >
+                                        <v-icon>fas fa-bug</v-icon>
       </v-btn>
     </v-row>
   </v-container>
@@ -97,9 +112,11 @@
 
 <script>
 import axios from 'axios'
+import utils from '@/vue-d3-component-wrappers/common-lib/Utils.js'
 import proteinExpression from '@/vue-d3-component-wrappers/ProteinExpressionBodymapWrapper'
 import tissueBars from '@/vue-d3-component-wrappers/TissueExpressionBars'
 import sampleBars from '@/vue-d3-component-wrappers/SampleExpressionBars'
+import downloader from '@/components/DownloadSpeedDial'
 export default {
   props: {
     proteinName: String,
@@ -108,6 +125,7 @@ export default {
     proteinAccession: String
   },
   components: {
+    downloader,
     proteinExpression,
     tissueBars,
     sampleBars
@@ -126,7 +144,9 @@ export default {
     aTissueSelected: [],
     aTissueIdSelected: [],
     publicSampleSelected: false,
-    selectedSampleId: null
+    selectedSampleId: null,
+    loading: false,
+    svgCss: [require('@/vue-d3-components/Bodymap.css.prdb'), require('@/vue-d3-components/ExpressionBars.css.prdb')]
   }),
   watch: {
     '$store.state.cookie': function(str){
@@ -134,6 +154,32 @@ export default {
     },
   },
   methods: {
+    getCSV: function () {
+      this.loading = true;
+      
+      this.loading = false;
+    },
+    getSVG: function () {
+      this.downloadPlots('svg');
+    },
+    getPNG: function () {
+      this.downloadPlots('png');
+    },
+    downloadPlots: function (type ) {
+      this.loading = true;
+      var aPlots = [];
+      aPlots.push(this.$refs.bodymap.getSVG());
+      aPlots = aPlots.concat(this.$refs.tissuebarsref.getSVG());
+      
+      // is sample bar is visible --> tissue bars selected
+      if (this.sTissueSelected !== '') {
+        aPlots = aPlots.concat(this.$refs.samplebarsref.getSVG());
+      }
+      if(aPlots) {
+        utils.downloadSVGs(aPlots, 'Protein Expression: ' + this.proteinAccession, type === 'svg', 'canvasId', this.svgCss);
+      }
+      this.loading = false;
+    },
     resetBindings: function() {
       this.aTissueSelected = [];
       this.aTissueIdSelected = [];

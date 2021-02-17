@@ -14,7 +14,9 @@
              :selection="{ mode: 'single' }"
              :selectedRowKeys="selectedRows"
              @rowClick="onSelectionChanged"
+             @exporting="onExporting"
              >
+             <DxExport :enabled="true"/>
              <DxColumnChooser :enabled="true" :allow-search="true" mode="select"/>
              <DxFilterRow :visible="true" :apply-filter="currentFilter"/>
              <DxColumn caption="Plain Sequence" data-field='PEPTIDE_SEQUENCE'/>
@@ -56,27 +58,30 @@
       </v-col>
     </v-row>
     <v-btn :color="$store.state.selectedOrganismShown.primaryColor"
-                       style="right:80px;bottom:130px;"
-                       fixed dark bottom right
-                       fab small
-                       >
-                       <v-icon>fas fa-question</v-icon>
+                                                                                                                                                           style="right:80px;bottom:130px;"
+                                                                                                                                                           fixed dark bottom right
+                                                                                                                                                           fab small
+                                                                                                                                                           >
+                                                                                                                                                           <v-icon>fas fa-question</v-icon>
     </v-btn>
     <v-btn
-                       color="red"
-                       style="right:80px;bottom:80px;"
-                       fixed dark bottom right
-                       fab small
-                       >
-                       <v-icon>fas fa-bug</v-icon>
+                                                                                                                                                           color="red"
+                                                                                                                                                           style="right:80px;bottom:80px;"
+                                                                                                                                                           fixed dark bottom right
+                                                                                                                                                           fab small
+                                                                                                                                                           >
+                                                                                                                                                           <v-icon>fas fa-bug</v-icon>
     </v-btn>
   </v-container>
 </template>
 
 <script>
 import 'devextreme/data/odata/store';
-import { DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow, DxColumnChooser } from 'devextreme-vue/data-grid';
+import { DxExport, DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow, DxColumnChooser } from 'devextreme-vue/data-grid';
 import spectrumWrapper from '@/vue-d3-component-wrappers/SpectrumWrapper'
+import { exportDataGrid } from 'devextreme/excel_exporter';
+import { Workbook } from 'exceljs';
+import saveAs from 'file-saver';
 export default {
   components: {
     DxDataGrid,
@@ -85,6 +90,7 @@ export default {
     DxPager,
     DxFilterRow,
     DxColumnChooser,
+    DxExport,
     spectrumWrapper
   },
   props: {
@@ -105,6 +111,26 @@ export default {
     peptideSequence: ''
   }),
   methods: {
+    onExporting(e) {
+      var that = this;
+      const workbook = new Workbook();
+      const worksheet = workbook.addWorksheet('PSMs');
+      exportDataGrid({
+        component: e.component,
+        worksheet: worksheet,
+        customizeCell: function(options) {
+          const excelCell = options;
+          excelCell.font = { name: 'Arial', size: 12 };
+          excelCell.alignment = { horizontal: 'left' };
+        } 
+      }).then(function() {
+        workbook.csv.writeBuffer()
+        .then(function(buffer) {
+          saveAs(new Blob([buffer], { type: 'application/octet-stream' }), that.peptideSequence+'_psms.csv');
+        });
+      });
+      e.cancel = true;
+    },
     saveGridInstance: function(e) {
       this.dataGridInstance = e.component;
     },
@@ -166,9 +192,6 @@ export default {
         'PEPTIDE_ID'
         ]
       }
-    },
-    isCloneIconVisible(e) {
-      console.log(e)
     },
   },
   computed: {

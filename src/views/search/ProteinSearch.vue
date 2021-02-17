@@ -56,7 +56,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.searchStr);
     this.setStoreSearchString();
     this.taxcode = this.$cookie.get('organism');
   }

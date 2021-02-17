@@ -4,12 +4,14 @@
       <DxDataGrid
       :data-source="dataSource"
       :show-borders="true"
-      :repaint-changes-only="false"
+      :repaint-changes-only="true"
       :column-auto-width="true"
+      :allowColumnReordering="false"
       :selection="{ mode: 'single' }"
       @rowClick="onSelectionChanged"
+      @exporting="onExporting"
       >
-      <DxColumnChooser :enabled="true" :allow-search="true" mode="select"/>
+      <DxExport :enabled="true"/>
       <DxFilterRow :visible="true" :apply-filter="currentFilter"/>
       <DxColumn caption="Sequence" data-field="PEPTIDE.SEQUENCE"/>
       <DxColumn caption="Plain Sequence" data-field="PEPTIDE.PLAIN_SEQUENCE" columnHidingEnabled="true"/>
@@ -33,8 +35,11 @@
 <script>
 import axios from 'axios';
 import 'devextreme/data/odata/store';
-import { DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow, DxColumnChooser } from 'devextreme-vue/data-grid';
+import { DxExport, DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow} from 'devextreme-vue/data-grid';
 
+import { exportDataGrid } from 'devextreme/excel_exporter';
+import { Workbook } from 'exceljs';
+import saveAs from 'file-saver';
 export default {
   components: {
     DxDataGrid,
@@ -42,12 +47,16 @@ export default {
     DxPaging,
     DxPager,
     DxFilterRow,
-    DxColumnChooser
+    DxExport
   },
   props: {
     proteinId: {
       type: String,
       default: '51261'
+    },
+    proteinAccession: {
+      type: String,
+      default: ''
     }
   },
   data: () => ({
@@ -56,6 +65,26 @@ export default {
     currentFilter: null
   }),
   methods: {
+    onExporting(e) {
+      var that = this;
+      const workbook = new Workbook();
+      const worksheet = workbook.addWorksheet('Reference peptides');
+      exportDataGrid({
+        component: e.component,
+        worksheet: worksheet,
+        customizeCell: function(options) {
+          const excelCell = options;
+          excelCell.font = { name: 'Arial', size: 12 };
+          excelCell.alignment = { horizontal: 'left' };
+        } 
+      }).then(function() {
+        workbook.csv.writeBuffer()
+        .then(function(buffer) {
+          saveAs(new Blob([buffer], { type: 'application/octet-stream' }), that.proteinAccession+'_referencePeptides.csv');
+        });
+      });
+      e.cancel = true;
+    },
     onSelectionChanged: function(row) {
       var peptideId = row.data.PEPTIDE.PEPTIDE_ID;
       this.$emit('selectedPeptideId', { peptideId: peptideId });
@@ -65,10 +94,7 @@ export default {
       axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/getReferencePeptidesByProtein.xsjs', {params: {protein_id: that.proteinId}}).then(function(response) {
         that.dataSource = response.data.PEPTIDES;
       })
-    },
-    isCloneIconVisible(e) {
-      console.log(e)
-    },
+    }
   },
   computed: {
   },
@@ -83,6 +109,4 @@ export default {
 }
 </script>
 <style lang="scss">
-@import 'https://cdn3.devexpress.com/jslib/20.1.6/css/dx.common.css';
-@import 'https://cdn3.devexpress.com/jslib/20.1.6/css/dx.greenmist.css';
 </style>

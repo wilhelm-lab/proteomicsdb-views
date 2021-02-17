@@ -136,9 +136,6 @@ export default {
           ]
       }
     },
-    isCloneIconVisible(e) {
-      console.log(e)
-    },
   },
   computed: {
   },

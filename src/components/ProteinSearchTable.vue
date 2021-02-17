@@ -1,5 +1,4 @@
 <template>
-  <v-main>
     <v-container xs12 sm12 md12 offset4>
       <DxDataGrid
       :data-source="dataSource"
@@ -8,7 +7,9 @@
       :column-auto-width="false"
       :selection="{ mode: 'single' }"
       @rowClick="onSelectionChanged"
+      @exporting="onExporting"
       >
+      <DxExport :enabled="true"/>
       <DxFilterRow :visible="true" :apply-filter="currentFilter"/>
       <DxColumn :width="30" caption="" :allow-filtering="false" :allow-sorting="false" data-field="EVIDENCE" cell-template="cellTemplate"/>
       <DxColumn caption="Protein" data-field='PROTEIN'/>
@@ -34,19 +35,22 @@
                 />
       </DxDataGrid>
     </v-container>
-  </v-main>
 </template>
 
 <script>
 import 'devextreme/data/odata/store';
-import { DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow } from 'devextreme-vue/data-grid';
+import { DxExport, DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow } from 'devextreme-vue/data-grid';
+import { exportDataGrid } from 'devextreme/excel_exporter';
+import { Workbook } from 'exceljs';
+import saveAs from 'file-saver';
 export default {
   components: {
     DxDataGrid,
     DxColumn,
     DxPaging,
     DxPager,
-    DxFilterRow
+    DxFilterRow,
+    DxExport
   },
   props: {
     searchString: {
@@ -70,6 +74,26 @@ export default {
     ]
   }),
   methods: {
+    onExporting(e) {
+      var that = this;
+      const workbook = new Workbook();
+      const worksheet = workbook.addWorksheet('ProteinSearch');
+      exportDataGrid({
+        component: e.component,
+        worksheet: worksheet,
+        customizeCell: function(options) {
+          const excelCell = options;
+          excelCell.font = { name: 'Arial', size: 12 };
+          excelCell.alignment = { horizontal: 'left' };
+        } 
+      }).then(function() {
+        workbook.csv.writeBuffer()
+        .then(function(buffer) {
+          saveAs(new Blob([buffer], { type: 'application/octet-stream' }), that.searchString+'.csv');
+        });
+      });
+      e.cancel = true;
+    },
     onSelectionChanged: function(row) {
       window.open("/protein/summary/"+row.data.PROTEIN_ID, "_blank");
     },
@@ -103,10 +127,7 @@ export default {
         'REFERENCE_SPECTRA'
         ]
       }
-    },
-    isCloneIconVisible(e) {
-      console.log(e)
-    },
+    }
   },
   computed: {
   },
@@ -124,6 +145,4 @@ export default {
 }
 </script>
 <style lang="scss">
-@import 'https://cdn3.devexpress.com/jslib/20.1.6/css/dx.common.css';
-@import 'https://cdn3.devexpress.com/jslib/20.1.6/css/dx.greenmist.css';
 </style>
