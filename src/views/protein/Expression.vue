@@ -61,6 +61,7 @@
         <proteinExpression v-if="filtersLoaded"
                            ref="bodymap"
                            :proteinId="proteinId"
+                           :proteinAccession="proteinAccession"
                            :omicsType="omicsSelected.omicTypes"
                            :quantification="quantSelected.method"
                            :tissue_category="tissueCategoryString"
@@ -156,6 +157,7 @@ export default {
   methods: {
     getCSV: function () {
       this.loading = true;
+      this.$refs.bodymap.getCSV();
       
       this.loading = false;
     },
