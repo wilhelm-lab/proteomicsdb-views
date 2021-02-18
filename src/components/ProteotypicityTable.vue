@@ -1,6 +1,8 @@
 <template>
     <v-container xs12 sm12 md12 offset4>
       <DxDataGrid
+    ref="peptideGrid"
+    @initialized="saveGridInstance"
       :data-source="dataSource"
       :show-borders="true"
       :repaint-changes-only="false"
@@ -60,11 +62,18 @@ export default {
     }
   },
   data: () => ({
+    dataGridInstance: null,
     dataSource: {
     },
     currentFilter: null
   }),
   methods: {
+    saveGridInstance: function(e) {
+      this.dataGridInstance = e.component;
+    },
+    stopLoading: function () {
+      this.dataGridInstance.endCustomLoading();
+    },
     onExporting(e) {
       var that = this;
       const workbook = new Workbook();
@@ -90,10 +99,15 @@ export default {
       this.$emit('selectedPeptideId', { peptideId: peptideId });
     },
     setData: function () {
+      var that = this;
+      this.dataGridInstance.beginCustomLoading();
       this.dataSource = {
         store: {
           type: 'odata',
-          url: 'https://www.proteomicsdb.org/proteomicsdb/logic/proteotypicity.xsodata/InputParams(LABEL_TYPES_IN=\''+this.labelTypes+'\',METHOD_IN=2,PROTEIN_ID_IN='+ this.proteinId +')/Results'
+          url: 'https://www.proteomicsdb.org/proteomicsdb/logic/proteotypicity.xsodata/InputParams(LABEL_TYPES_IN=\''+this.labelTypes+'\',METHOD_IN=2,PROTEIN_ID_IN='+ this.proteinId +')/Results',
+          onLoaded: function(){
+            that.stopLoading();
+          },
         },
         reshapeOnPush: true,
         sort: [{selector:'RANK_ORDER', desc:false}]

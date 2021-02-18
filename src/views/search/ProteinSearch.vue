@@ -1,16 +1,10 @@
 <template>
   <v-main>
     <v-container>
-      <v-row justify="space-around" align="center">
-        <v-col align="center">
-          <v-chip-group mandatory align>
-            <v-chip>Protein</v-chip>
-            <v-chip>Peptide</v-chip>
-            <v-chip>Project</v-chip>
-            <v-chip>Drug</v-chip>
-            <v-chip>Cell line</v-chip>
+      <v-row justify="center" align="center">
+          <v-chip-group mandatory active-class="primary--text" v-model="selectedChip">
+            <v-chip v-for="item in chips" :key="item" >{{item}}</v-chip>
           </v-chip-group>
-        </v-col>
       </v-row>
       <v-row justify="space-around" align="center">
       <searchTable :searchString="searchString" :taxcode="taxcode"/>
@@ -39,6 +33,8 @@ export default {
   data: () => ({
     searchStr: '',
     taxcode: 9606,
+    chips: [ "Protein", "Peptide", "Project", "Drug", "Cell line" ],
+    selectedChip: null
   }),
   methods: {
     setStoreSearchString: function() {
@@ -58,6 +54,7 @@ export default {
   mounted() {
     this.setStoreSearchString();
     this.taxcode = this.$cookie.get('organism');
+    this.selectedChip = this.searchType;
   }
 }
 </script>

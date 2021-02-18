@@ -1,7 +1,8 @@
 <template>
-  <v-main>
     <v-container xs12 sm12 md12 offset4>
       <DxDataGrid
+      ref="peptideDetailsGrid"
+      @initialized="saveGridInstance"
       :data-source="dataSource"
       :show-borders="true"
       :repaint-changes-only="true"
@@ -29,7 +30,6 @@
                 />
       </DxDataGrid>
     </v-container>
-  </v-main>
 </template>
 
 <script>
@@ -60,11 +60,18 @@ export default {
     }
   },
   data: () => ({
+    dataGridInstance: null,
     dataSource: {
     },
     currentFilter: null
   }),
   methods: {
+    saveGridInstance: function(e) {
+      this.dataGridInstance = e.component;
+    },
+    stopLoading: function () {
+      this.dataGridInstance.endCustomLoading();
+    },
     onExporting(e) {
       var that = this;
       const workbook = new Workbook();
@@ -93,6 +100,7 @@ export default {
       var that = this;
       axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/getReferencePeptidesByProtein.xsjs', {params: {protein_id: that.proteinId}}).then(function(response) {
         that.dataSource = response.data.PEPTIDES;
+        that.stopLoading();
       })
     }
   },
