@@ -17,7 +17,7 @@
       </v-card>
     </v-row>
     <v-row align="center">
-      <searchTable :proteinId="proteinId" :labelTypes="selectedLabelTypes" @selectedPeptideId="setPeptideId"/>
+      <searchTable :proteinId="proteinId" :proteinAccession="proteinAccession" :labelTypes="selectedLabelTypes" @selectedPeptideId="setPeptideId"/>
       <router-view />
     </v-row>
     <v-row>
@@ -32,7 +32,8 @@ export default {
   props: {
     proteinName: String,
     proteinId: String,
-    peptideId: String
+    peptideId: String,
+    proteinAccession: String
   },
   components: {
     searchTable

@@ -4,7 +4,7 @@
       <h1>{{this.proteinName}} - Peptides MSMS</h1>
     </v-row>
     <v-row align="center" no-gutters>
-      <searchTable :proteinId="proteinId" @selectedPeptideId="setPeptideId"/>
+      <searchTable :proteinId="proteinId" :proteinAccession="proteinAccession" @selectedPeptideId="setPeptideId"/>
       <router-view />
     </v-row>
     <v-row>
@@ -19,7 +19,8 @@ export default {
   props: {
     proteinName: String,
     proteinId: String,
-    peptideId: String
+    peptideId: String,
+    proteinAccession: String
   },
   components: {
     searchTable

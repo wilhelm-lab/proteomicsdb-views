@@ -138,11 +138,11 @@ export default {
       router.push('/protein/projects/'+this.proteinId).catch(()=>{});
     },
     getProteinInfo: function(){
-      let that = this
+      let that = this;
       axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/getProteinSummary.xsjs', {params: {protein_id: that.proteinId }}).then(function (response) {
-        that.proteinName = response.data.GENE_NAME
-        that.title = response.data.PROTEIN + " (" + response.data.UNIPROT_ID + ")"
-        that.proteinAccession = response.data.UNIPROT_ID
+        that.proteinName = response.data.GENE_NAME;
+        that.title = response.data.PROTEIN + " (" + response.data.UNIPROT_ID + ")";
+        that.proteinAccession = response.data.UNIPROT_ID;
       })
     }
   },
