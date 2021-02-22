@@ -12,6 +12,18 @@
              @pdf="exportGrid"
              />
     </v-row>
+    <v-row>
+      <v-col cols="2">
+        <v-card class="mt-6">
+          <v-toolbar :color="$store.state.selectedOrganismShown.primaryColor" class="white--text">
+            <v-card-title>Dataset selection</v-card-title></v-toolbar>
+          <v-card-text>
+            <v-select v-model="selectedCategory" :items="category" outlined label="Category" @change="getTableData">
+            </v-select>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="10">
     <v-container xs12 sm12 md12 offset4 mt-3>
       <DxDataGrid
              ref="assayGrid"
@@ -25,8 +37,11 @@
              <DxFilterRow :visible="true"/>
              <DxColumn caption="Inhibitor" data-field="properties.TREATMENT"/>
              <DxColumn caption="System" data-field="properties.SYSTEM"/>
-             <DxColumn caption="Tm" data-field='properties.Tm' format="#0.##"/>
-             <DxColumn caption="R2" data-field='properties.cod'
+             <DxColumn v-if="this.selectedCategory === 2" caption="Tm" data-field='properties.Tm' format="#0.##"/>
+             <DxColumn v-if="this.selectedCategory === -1" caption="Delta Tm" data-field='properties.DeltaTm' format="#0.##"/>
+             <DxColumn v-if="this.selectedCategory === -1" caption="R2 treated" data-field='properties.r2Untreated' format="#0.##" selectedFilterOperation='>=' :filterValue="rSqFilterValue" sortOrder='desc' />
+             <DxColumn v-if="this.selectedCategory === -1" caption="R2 untreated" data-field='properties.r2Treated' format="#0.##"/>
+             <DxColumn v-if="this.selectedCategory === 2" caption="R2" data-field='properties.cod'
                        :filterValue="rSqFilterValue"
                        selectedFilterOperation='>='
                        sortOrder='desc'
@@ -65,6 +80,8 @@
       <DxPager :show-page-size-selector="true" :allowed-page-sizes="[5, 10, 25]"/>
       </DxDataGrid>
     </v-container>
+      </v-col>
+    </v-row>
     <canvas id="canvasId" style=display:none></canvas>
     <v-row>
       <v-btn
@@ -119,7 +136,12 @@ export default {
     dataSource: null,
     loading: false,
     svgCss: [],
-    dataGridInstance: null
+    dataGridInstance: null,
+    selectedCategory: 2,
+    category: [
+      {text: "Melting protein", value: 2},
+      {text: "CETSA", value: -1}
+    ]
   }),
   watch: {
   },
@@ -159,7 +181,7 @@ export default {
       var that = this;
       axios.get('https://www.proteomicsdb.org/logic/getCurveInformationByProteinID.xsjs', {params: {
           protein_id: that.proteinId,
-          drug_id: 2,
+          drug_id: that.selectedCategory,
           assay_type: 'PDB:101015',
           assay_variable: 'temperature'
         }

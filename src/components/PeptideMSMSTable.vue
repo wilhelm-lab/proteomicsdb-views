@@ -9,9 +9,7 @@
     :column-auto-width="true"
     :selection="{ mode: 'single' }"
     @rowClick="onSelectionChanged"
-    @exporting="onExporting"
     >
-    <DxExport :enabled="true"/>
     <DxColumnChooser :enabled="true" :allow-search="true" mode="select"/>
     <DxFilterRow :visible="true" :apply-filter="currentFilter"/>
     <DxColumn caption="Sequence" data-field="PEPTIDE.SEQUENCE"/>
@@ -42,7 +40,7 @@
 <script>
 import axios from 'axios';
 import 'devextreme/data/odata/store';
-import { DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow, DxColumnChooser, DxExport } from 'devextreme-vue/data-grid';
+import { DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow, DxColumnChooser } from 'devextreme-vue/data-grid';
 
 import { exportDataGrid } from 'devextreme/excel_exporter';
 import { Workbook } from 'exceljs';
@@ -55,7 +53,6 @@ export default {
     DxPager,
     DxFilterRow,
     DxColumnChooser,
-    DxExport
   },
   props: {
     proteinId: {
@@ -80,12 +77,12 @@ export default {
     stopLoading: function () {
       this.dataGridInstance.endCustomLoading();
     },
-    onExporting(e) {
+    onExporting: function() {
       var that = this;
       const workbook = new Workbook();
       const worksheet = workbook.addWorksheet('Peptides MSMS');
       exportDataGrid({
-        component: e.component,
+        component: this.dataGridInstance,
         worksheet: worksheet,
         customizeCell: function(options) {
           const excelCell = options;
@@ -98,7 +95,6 @@ export default {
           saveAs(new Blob([buffer], { type: 'application/octet-stream' }), that.proteinAccession+'_peptidesMSMS.csv');
         });
       });
-      e.cancel = true;
     },
     onSelectionChanged: function(row) {
       var peptideId = row.data.PEPTIDE.PEPTIDE_ID;

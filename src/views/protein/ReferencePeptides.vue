@@ -1,10 +1,19 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <h1>{{this.proteinName}} - Reference Peptides</h1>
+    <v-row dense no-gutters>
+      <v-col cols="9">
+        <h1>{{this.proteinName}} - Reference Peptides</h1>
+      </v-col>
+      <v-spacer></v-spacer>
+      <downloader top
+        right
+        direction='left'
+        csv
+        @csv="getCSV"
+      />
     </v-row>
     <v-row justify="space-around" align="center">
-      <searchTable :proteinId="proteinId" :proteinAccession="proteinAccession" @selectedPeptideId="setPeptideId"/>
+      <searchTable ref="searchTable" :proteinId="proteinId" :proteinAccession="proteinAccession" @selectedPeptideId="setPeptideId"/>
       <router-view />
     </v-row>
     <v-row>
@@ -13,6 +22,7 @@
 </template>
 
 <script>
+import downloader from '@/components/DownloadSpeedDial'
 import searchTable from '@/components/ReferencePeptideTable'
 import router from '@/router';
 export default {
@@ -24,7 +34,7 @@ export default {
   },
   components: {
     searchTable,
- //   peptideDetailsPopup
+    downloader
   },
   data: () => ({
     openPopUp: false,
@@ -37,6 +47,9 @@ export default {
     setPeptideId: function(o) {
       this.peptideIdIn = o.peptideId + ''; 
       router.push(this.proteinId + '/'  +this.peptideIdIn).catch(()=>{});
+    },
+    getCSV: function () {
+      this.$refs.searchTable.onExporting();
     }
   },
   computed: {

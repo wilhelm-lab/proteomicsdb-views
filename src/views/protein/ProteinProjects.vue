@@ -1,11 +1,19 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <h1>{{this.proteinName}} - Projects</h1>
+    <v-row dense no-gutters>
+      <v-col cols="9">
+        <h1>{{this.proteinName}} - Projects</h1>
+      </v-col>
+      <v-spacer></v-spacer>
+      <downloader top
+        right
+        direction='left'
+        csv
+        @csv="getCSV"
+      />
     </v-row>
     <v-row justify="space-around" align="center">
-      <searchTable :proteinId="proteinId" :proteinAccession="proteinAccession"/>
-      <router-view />
+      <searchTable ref="searchTable" :proteinId="proteinId" :proteinAccession="proteinAccession"/>
     </v-row>
     <v-row>
     </v-row>
@@ -13,6 +21,7 @@
 </template>
 
 <script>
+import downloader from '@/components/DownloadSpeedDial'
 import searchTable from '@/components/ProteinProjectTable'
 export default {
   props: {
@@ -21,7 +30,8 @@ export default {
     proteinAccession: String
   },
   components: {
-    searchTable
+    searchTable,
+    downloader
   },
   data: () => ({
     openPopUp: false
@@ -30,6 +40,9 @@ export default {
     closePopUp: function() {
       this.openPopUp = false;
     },
+    getCSV: function () {
+      this.$refs.searchTable.onExporting();
+    }
   },
   computed: {
   },

@@ -4,7 +4,38 @@
       <v-card-title>Sequence Coverage</v-card-title>
     </v-toolbar>
     <v-card-text>
-      <div v-html="oSequenceHtml"></div>
+      <v-row dense>
+        <v-col cols="2">
+          Length: 
+        </v-col>
+        <v-col cols="10">
+          {{data.LENGTH}}
+        </v-col>
+      </v-row>
+      <v-row dense>
+        <v-col cols="2">
+          Mass:
+        </v-col>
+        <v-col cols="10">
+          {{ data.MASS }}
+        </v-col>
+      </v-row>
+      <v-row dense>
+        <v-col cols="2">
+          Sequence Coverage:
+        </v-col>
+        <v-col cols="10">
+          {{ data.SEQUENCE_COVERAGE }}
+        </v-col>
+      </v-row>
+      <v-row dense>
+        <v-col cols="2">
+          Sequence:
+        </v-col>
+        <v-col cols="10">
+          <div v-html="oSequenceHtml" style=" max-height:500px;overflow-y:auto;"></div>
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>
@@ -19,6 +50,10 @@ export default {
       default: '200px'
     },
     proteinId: String,
+    charsPerRow: {
+      type: Number,
+      default: 40
+    }
   },
   watch: {
   },
@@ -60,7 +95,7 @@ export default {
       while (i <= oSequenceString.length) {
         j = i + 1;
         tenChar = (i + 1) / 10;
-        characterNum = (i + 1) / 50;
+        characterNum = (i + 1) / this.charsPerRow;
         prevCharacter = character;
         character = oSequenceString.charAt(i);
 

@@ -1,18 +1,15 @@
 <template>
     <v-container xs12 sm12 md12 offset4>
       <DxDataGrid
-    ref="peptideGrid"
-    @initialized="saveGridInstance"
+      ref="peptideGrid"
+      @initialized="saveGridInstance"
       :data-source="dataSource"
       :show-borders="true"
       :repaint-changes-only="false"
       :column-auto-width="true"
       :selection="{ mode: 'single' }"
       @rowClick="onSelectionChanged"
-      @exporting="onExporting"
       >
-      <DxExport :enabled="true"/>
-      <DxColumnChooser :enabled="true" :allow-search="true" mode="select"/>
       <DxFilterRow :visible="true" :apply-filter="currentFilter"/>
       <DxColumn caption="Sequence" data-field="SEQUENCE"/>
       <DxColumn caption="Rank Order" data-field="RANK_ORDER" columnHidingEnabled="true"/>
@@ -32,7 +29,7 @@
 
 <script>
 import 'devextreme/data/odata/store';
-import { DxExport, DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow, DxColumnChooser } from 'devextreme-vue/data-grid';
+import { DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow } from 'devextreme-vue/data-grid';
 
 import { exportDataGrid } from 'devextreme/excel_exporter';
 import { Workbook } from 'exceljs';
@@ -44,8 +41,6 @@ export default {
     DxPaging,
     DxPager,
     DxFilterRow,
-    DxColumnChooser,
-    DxExport
   },
   props: {
     proteinId: {
@@ -73,13 +68,14 @@ export default {
     },
     stopLoading: function () {
       this.dataGridInstance.endCustomLoading();
+      this.$emit('dataLoaded', null);
     },
-    onExporting(e) {
+    onExporting() {
       var that = this;
       const workbook = new Workbook();
       const worksheet = workbook.addWorksheet('Proteotypicity');
       exportDataGrid({
-        component: e.component,
+        component: this.dataGridInstance,
         worksheet: worksheet,
         customizeCell: function(options) {
           const excelCell = options;
@@ -92,7 +88,6 @@ export default {
           saveAs(new Blob([buffer], { type: 'application/octet-stream' }), that.proteinAccession+'_proteotypicity.csv');
         });
       });
-      e.cancel = true;
     },
     onSelectionChanged: function(row) {
       var peptideId = row.data.PEPTIDE_ID;

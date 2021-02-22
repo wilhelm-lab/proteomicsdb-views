@@ -13,9 +13,10 @@
         >
         <template v-slot:activator>
           <v-btn 
+        :disabled="disabled"
         v-model="fabModel"
         color="blue darken-2"
-        dark
+        class="white--text"
         fab
         :loading="loading"
         >
@@ -28,8 +29,9 @@
           </v-btn>
         </template>
         <v-btn v-if="svg"
+               :disabled="disabled"
+              class="white--text"
                fab
-               dark
                small
                :color="$store.state.selectedOrganismShown.secondaryColor"
                @click="raiseEvent('svg')"
@@ -37,8 +39,9 @@
                SVG
         </v-btn>
           <v-btn  v-if="png"
+                  :disabled="disabled"
                   fab
-                  dark
+                  class="white--text"
                   small
                   :color="$store.state.selectedOrganismShown.secondaryColor"
                   @click="raiseEvent('png')"
@@ -46,8 +49,9 @@
                   PNG
           </v-btn>
             <v-btn v-if="csv"
+                   :disabled="disabled"
                    fab
-                   dark
+                   class="white--text"
                    small
                    :color="$store.state.selectedOrganismShown.secondaryColor"
                    @click="raiseEvent('csv')"
@@ -55,23 +59,25 @@
                    CSV
             </v-btn>
               <v-btn v-if="sif"
+                     :disabled="disabled"
                      fab
-                     dark
+                     class="white--text"
                      small
                      :color="$store.state.selectedOrganismShown.secondaryColor"
                      @click="raiseEvent('sif')"
                      >
                      SIF
               </v-btn>
-              <v-btn v-if="pdf"
-                     fab
-                     dark
-                     small
-                     :color="$store.state.selectedOrganismShown.secondaryColor"
-                     @click="raiseEvent('pdf')"
-                     >
-                     PDF
-              </v-btn>
+                <v-btn v-if="pdf"
+                       :disabled="disabled"
+                       fab
+                       class="white--text"
+                       small
+                       :color="$store.state.selectedOrganismShown.secondaryColor"
+                       @click="raiseEvent('pdf')"
+                       >
+                       PDF
+                </v-btn>
       </v-speed-dial>
       <v-spacer/>
       </v-row>
@@ -133,6 +139,10 @@ export default {
     direction: {
       type: String,
       default: 'bottom'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

@@ -1,13 +1,13 @@
 <template>
   <v-container xs12 sm12 md12 offset4>
     <DxDataGrid
+    ref="projectGrid"
+    @initialized="saveGridInstance"
     :data-source="dataSource"
     :show-borders="true"
     :repaint-changes-only="false"
     :column-auto-width="true"
-    @exporting="onExporting"
     >
-    <DxExport :enabled="true"/>
     <DxColumnChooser :enabled="true" :allow-search="true" mode="select"/>
     <DxFilterRow :visible="true" :apply-filter="currentFilter"/>
     <DxColumn caption="Project Name" data-field='EXPERIMENT.PROJECT' cell-template="projectTemplate"/>
@@ -42,7 +42,7 @@
 <script>
 import axios from 'axios';
 import 'devextreme/data/odata/store';
-import { DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow, DxColumnChooser, DxExport } from 'devextreme-vue/data-grid';
+import { DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow, DxColumnChooser } from 'devextreme-vue/data-grid';
 import { exportDataGrid } from 'devextreme/excel_exporter';
 import { Workbook } from 'exceljs';
 import saveAs from 'file-saver';
@@ -55,7 +55,6 @@ export default {
     DxPager,
     DxFilterRow,
     DxColumnChooser,
-    DxExport
   },
   props: {
     proteinId: {
@@ -68,17 +67,21 @@ export default {
     }
   },
   data: () => ({
+    dataGridInstance: null,
     dataSource: {
     },
     currentFilter: null
   }),
   methods: {
-    onExporting(e) {
+    saveGridInstance: function(e) {
+      this.dataGridInstance = e.component;
+    },
+    onExporting() {
       var that = this;
       const workbook = new Workbook();
       const worksheet = workbook.addWorksheet('Projects');
       exportDataGrid({
-        component: e.component,
+        component: this.dataGridInstance,
         worksheet: worksheet,
         customizeCell: function(options) {
           const excelCell = options;
@@ -91,7 +94,6 @@ export default {
           saveAs(new Blob([buffer], { type: 'application/octet-stream' }), that.proteinAccession+'_projects.csv');
         });
       });
-      e.cancel = true;
     },
     setData: function () {
       var that = this;
