@@ -330,4 +330,13 @@ export default {
   border: 2px solid lightgray;
   background-color: lightgray;
 }
+
+#dx-icon::after, #dx-icon::before{
+  text-decoration: inherit;
+  vertical-align: middle;
+}
+#dx-icon::before, #dx-icon::after{
+  text-decoration: inherit;
+  vertical-align: middle;
+}
 </style>

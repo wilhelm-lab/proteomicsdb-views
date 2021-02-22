@@ -1,20 +1,20 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row no-gutters>
       <v-col>
         <v-row>
           <h1>{{title}}</h1>
         </v-row>
         <v-row class="mt-2">
-          <v-col cols ="6">
-            <v-card class="ma-1">
-              <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark>
+          <v-col cols ="3">
+            <v-card class="mb-1">
+              <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark elevation="2">
                 <v-card-title>Protein Summary</v-card-title>
                 <v-btn
-                         icon
-                         @click="expandPanel('summary')"
-                         >
-                         <v-icon>{{ showSummary ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                    icon
+                    @click="expandPanel('summary')"
+                    >
+                    <v-icon>{{ showSummary ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
                 </v-btn>
               </v-toolbar>
               <v-expand-transition>
@@ -60,14 +60,14 @@
                 </div>
                         </v-expand-transition>
                       </v-card>
-                      <v-card class="ma-1">
-                        <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark>
+                      <v-card class="mb-1">
+                        <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark elevation="2">
                           <v-card-title>Protein Statistics</v-card-title>
                           <v-btn
-                                   icon
-                                   @click="expandPanel('stats')"
-                                   >
-                                   <v-icon>{{ showStats ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                              icon
+                              @click="expandPanel('stats')"
+                              >
+                              <v-icon>{{ showStats ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
                           </v-btn>
                         </v-toolbar>
                         <v-expand-transition>
@@ -86,14 +86,14 @@
                           </div>
                         </v-expand-transition>
                       </v-card>
-                      <v-card class="ma-1">
-                        <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark>
+                      <v-card class="mb-1">
+                        <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark elevation="2">
                           <v-card-title>GO Annotation</v-card-title>
                           <v-btn
-                            icon
-                            @click="expandPanel('go')"
-                            >
-                            <v-icon>{{ showGO ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                              icon
+                              @click="expandPanel('go')"
+                              >
+                              <v-icon>{{ showGO ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
                           </v-btn>
                         </v-toolbar>
                         <v-expand-transition>
@@ -105,12 +105,12 @@
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content>
                                   <v-chip
-                                    v-for="(item, i) in subcellLoc"
-                                    :key="i"
-                                    :color="$store.state.selectedOrganismShown.secondaryColor"
-                                    class="ma-1"
-                                    >
-                                    {{item}}
+                                                v-for="(item, i) in subcellLoc"
+                                                :key="i"
+                                                :color="$store.state.selectedOrganismShown.secondaryColor"
+                                                class="ma-1"
+                                                >
+                                                {{item}}
                                   </v-chip>
                                 </v-expansion-panel-content>
                               </v-expansion-panel>
@@ -120,12 +120,12 @@
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content>
                                   <v-chip
-                                    v-for="(item, i) in molFunc"
-                                    :key="i"
-                                    color="secondary"
-                                    class="ma-1"
-                                    >
-                                    {{item}}
+                                                v-for="(item, i) in molFunc"
+                                                :key="i"
+                                                color="secondary"
+                                                class="ma-1"
+                                                >
+                                                {{item}}
                                   </v-chip>
                                 </v-expansion-panel-content>
                               </v-expansion-panel>
@@ -135,12 +135,12 @@
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content>
                                   <v-chip
-                                    v-for="(item, i) in bioProc"
-                                    :key="i"
-                                    color="accent"
-                                    class="ma-1"
-                                    >
-                                    {{item}}
+                                                v-for="(item, i) in bioProc"
+                                                :key="i"
+                                                color="accent"
+                                                class="ma-1"
+                                                >
+                                                {{item}}
                                   </v-chip>
                                 </v-expansion-panel-content>
                               </v-expansion-panel>
@@ -148,14 +148,14 @@
                           </div>
                         </v-expand-transition>
                       </v-card>
-                      <v-card class="ma-1">
-                        <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark>
+                      <v-card class="mb-1">
+                        <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark elevation="2">
                           <v-card-title>External links</v-card-title>
                           <v-btn
-                                   icon
-                                   @click="expandPanel('links')"
-                                   >
-                                   <v-icon>{{ showLinks ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                              icon
+                              @click="expandPanel('links')"
+                              >
+                              <v-icon>{{ showLinks ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
                           </v-btn>
                         </v-toolbar>
                         <v-expand-transition>
@@ -168,37 +168,66 @@
                         </v-expand-transition>
                       </v-card>
                     </v-col>
+                    <v-col cols="4">
+                      <bodymap  
+                                         ref="bodymap"
+                                         showToolbar
+                                         :color="$store.state.selectedOrganismShown.secondaryColor"
+                                         :proteinId="proteinId"
+                                         omicsType="Proteomics"
+                                         quantification="MS1"
+                                         calculation="iBAQ"
+                                         tissue_category="tissue;cell+line;fluid"
+                                         scope="1"
+                                         group_by_tissue="1"
+                                         :selectedOrganism="{ taxcode: $store.state.selectedOrganismShown.taxcode}"
+                                         drawOnMount
+                                         style="transform: scale(0.9); transform-origin: top left"
+                                         max-height="800px"
+                                         height="800px"
+                                         >
+                      </bodymap >
+                    </v-col>
+                      <v-col cols="4">
+                        <seqcov :proteinId="proteinId"></seqcov>
+                      </v-col>
                   </v-row>
               </v-col>
-              <v-col>
-                <v-btn
-                  color="primary"
-                  style="right:80px;bottom:130px;"
-                  fixed dark bottom right
-                  fab small
-                  >
-                  <v-icon>fas fa-question</v-icon>
-                </v-btn>
-                <v-btn
-                  color="red"
-                  style="right:80px;bottom:80px;"
-                  fixed dark bottom right
-                  fab small
-                  >
-                  <v-icon>fas fa-bug</v-icon>
-                </v-btn>
-              </v-col>
+            </v-row>
+            <v-row>
+              <v-btn
+                                         color="primary"
+                                         style="right:80px;bottom:130px;"
+                                         fixed dark bottom right
+                                         fab small
+                                         >
+                                         <v-icon>fas fa-question</v-icon>
+              </v-btn>
+              <v-btn
+                                         color="red"
+                                         style="right:80px;bottom:80px;"
+                                         fixed dark bottom right
+                                         fab small
+                                         >
+                                         <v-icon>fas fa-bug</v-icon>
+              </v-btn>
             </v-row>
           </v-container>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import seqcov from '@/components/SequenceCoverage'
+import bodymap from '@/vue-d3-component-wrappers/ProteinExpressionBodymapWrapper';
 export default {
   props: {
     proteinName: String,
     proteinId: String,
     title: String
+  },
+  components: {
+    bodymap,
+    seqcov
   },
   data: () => ({
     showSummary: true,
@@ -212,7 +241,7 @@ export default {
     statistics: [],
     green: require('@/assets/commons/green.png'),
     yellow: require('@/assets/commons/yellow.png'),
-    red: require('@/assets/commons/red.png')
+    red: require('@/assets/commons/red.png'),
   }),
   methods: {
     expandPanel: function(panel) {

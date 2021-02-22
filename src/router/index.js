@@ -15,6 +15,9 @@ import PeptideDetails from '@/views/popup/PeptideDetailsPopUp.vue'
 import RefPeptideDetails from '@/views/popup/ReferencePeptideDetailsPopUp.vue'
 import Proteotypicity from '@/views/protein/Proteotypicity.vue'
 import ProteinProjects from '@/views/protein/ProteinProjects.vue'
+import Kinase from '@/views/protein/KinaseInhibitorsView.vue'
+import Meltome from '@/views/protein/MeltomeView.vue'
+import Turnover from '@/views/protein/TurnoverView.vue'
 
 Vue.use(VueRouter)
 
@@ -98,6 +101,21 @@ Vue.use(VueRouter)
           path: 'interactions/:proteinId',
           name: 'InteractionNetwork',
           component: InteractionNetwork
+        },
+        {
+          path: 'inhibitors/:proteinId',
+          name: 'KinaseInhibitors',
+          component: Kinase
+        },
+        {
+          path: 'meltome/:proteinId',
+          name: 'Meltome',
+          component: Meltome
+        },
+        {
+          path: 'turnover/:proteinId',
+          name: 'Turnover',
+          component: Turnover
         }
       ]
     },

@@ -63,6 +63,15 @@
                      >
                      SIF
               </v-btn>
+              <v-btn v-if="pdf"
+                     fab
+                     dark
+                     small
+                     :color="$store.state.selectedOrganismShown.secondaryColor"
+                     @click="raiseEvent('pdf')"
+                     >
+                     PDF
+              </v-btn>
       </v-speed-dial>
       <v-spacer/>
       </v-row>
@@ -106,6 +115,10 @@ export default {
       default: false
     },
     sif: {
+      type: Boolean,
+      default: false
+    },
+    pdf: {
       type: Boolean,
       default: false
     },

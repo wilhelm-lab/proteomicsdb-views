@@ -82,6 +82,30 @@
               <v-list-item-title>Projects</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item @click="showKinases">
+            <v-list-item-action>
+              <v-icon>fas fa-capsules</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Inhibitors</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item @click="showMeltome">
+            <v-list-item-action>
+              <v-icon>mdi-thermometer-lines</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Meltome</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item @click="showTurnover">
+            <v-list-item-action>
+              <v-icon>mdi-backup-restore</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Turnover</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -136,6 +160,15 @@ export default {
     },
     showProjects: function(){
       router.push('/protein/projects/'+this.proteinId).catch(()=>{});
+    },
+    showKinases: function(){
+      router.push('/protein/inhibitors/'+this.proteinId).catch(()=>{});
+    },
+    showMeltome: function(){
+      router.push('/protein/meltome/'+this.proteinId).catch(()=>{});
+    },
+    showTurnover: function(){
+      router.push('/protein/turnover/'+this.proteinId).catch(()=>{});
     },
     getProteinInfo: function(){
       let that = this;
