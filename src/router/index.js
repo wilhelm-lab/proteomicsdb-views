@@ -20,147 +20,176 @@ import Kinase from '@/views/protein/KinaseInhibitorsView.vue'
 import Meltome from '@/views/protein/MeltomeView.vue'
 import Turnover from '@/views/protein/TurnoverView.vue'
 
-Vue.use(VueRouter)
+import axios from 'axios';
 
-  export default new VueRouter({
-    routes: [
+Vue.use(VueRouter);
+
+function getProteinId (to, from, next) {
+  let tempProteinId = to.params.proteinId;
+  if (isNaN(parseInt(tempProteinId))) {
+  axios.get('https://www.proteomicsdb.org/logic/getProteinId.xsjs', {params: { protein_id:tempProteinId }})
+    .then(function(response) {
+      to.params.proteinId = response.data + '';
+      next();
+    });
+  } else {
+    next();
+  }
+}
+
+
+
+export default new VueRouter({
+  routes: [
+  {
+    path: '/',
+    name: 'home',
+    component: Home
+  },
+  {
+    path: '/protein/',
+    name: 'proteinHome',
+    component: ProteinWrapper,
+    children: [
     {
-      path: '/',
-      name: 'home',
-      component: Home
+      path: ':proteinId/summary',
+      name: 'proteinSummary',
+      beforeEnter: getProteinId,
+      component: ProteinSummary
     },
     {
-      path: '/protein/',
-      name: 'proteinHome',
-      component: ProteinWrapper,
+      path: ':proteinId/featureViewer',
+      name: 'featureViewer',
+      beforeEnter: getProteinId,
+      component: FeatureViewer
+    },
+    {
+      path: ':proteinId/peptides',
+      name: 'PeptidesMSMS',
+      beforeEnter: getProteinId,
+      component: PeptidesMSMS,
       children: [
-        {
-          path: ':proteinId/summary',
-          name: 'proteinSummary',
-          component: ProteinSummary
-        },
-        {
-          path: ':proteinId/featureViewer',
-          name: 'featureViewer',
-          component: FeatureViewer
-        },
-        {
-          path: ':proteinId/peptides',
-          name: 'PeptidesMSMS',
-          component: PeptidesMSMS,
-          children: [
-            {
-              path: ':peptideId',
-              name: 'PeptideDetails',
-              component: PeptideDetails,
-              props: (route) => ({ 
-                proteinId: route.params.proteinId,
-                peptideId: route.params.peptideId,
-                openDialog: true
-              })
-            }
-          ]
-        },
-        {
-          path: ':proteinId/referencePeptides',
-          name: 'ReferencePeptides',
-          component: ReferencePeptides,
-          children: [
-            {
-              path: ':peptideId',
-              name: 'RefPeptideDetails',
-              component: RefPeptideDetails,
-              props: (route) => ({ 
-                proteinId: route.params.proteinId,
-                peptideId: route.params.peptideId,
-                openDialog: true
-              })
-            }
-          ]
-        },
-        {
-          path: ':proteinId/proteotypicity',
-          name: 'Proteotypicity',
-          component: Proteotypicity
-        },
-        {
-          path: ':proteinId/projects',
-          name: 'ProteinProjects',
-          component: ProteinProjects
-        },
-        {
-          path: ':proteinId/expression',
-          name: 'Expression',
-          component: Expression
-        },
-        {
-          path: ':proteinId/fdr',
-          name: 'FDR',
-          component: FDR
-        },
-        {
-          path: ':proteinId/interactions',
-          name: 'InteractionNetwork',
-          component: InteractionNetwork
-        },
-        {
-          path: ':proteinId/inhibitors',
-          name: 'KinaseInhibitors',
-          component: Kinase
-        },
-        {
-          path: ':proteinId/meltome',
-          name: 'Meltome',
-          component: Meltome
-        },
-        {
-          path: ':proteinId/turnover',
-          name: 'Turnover',
-          component: Turnover
-        }
+      {
+        path: ':peptideId',
+        name: 'PeptideDetails',
+        component: PeptideDetails,
+        props: (route) => ({ 
+          proteinId: route.params.proteinId,
+          peptideId: route.params.peptideId,
+          openDialog: true
+        })
+      }
       ]
     },
     {
-      path: '/protein/search',
-      name: 'proteinSearch',
-      component: ProteinSearch,
-      props: (route) => ({ 
-        searchString: route.query.q,
-        searchType: route.query.s
-      })
-
+      path: ':proteinId/referencePeptides',
+      name: 'ReferencePeptides',
+      beforeEnter: getProteinId,
+      component: ReferencePeptides,
+      children: [
+      {
+        path: ':peptideId',
+        name: 'RefPeptideDetails',
+        component: RefPeptideDetails,
+        props: (route) => ({ 
+          proteinId: route.params.proteinId,
+          peptideId: route.params.peptideId,
+          openDialog: true
+        })
+      }
+      ]
     },
     {
-      path: '/peptide/',
-      name: 'peptide',
-      component: Home
+      path: ':proteinId/proteotypicity',
+      name: 'Proteotypicity',
+      beforeEnter: getProteinId,
+      component: Proteotypicity
     },
     {
-      path: '/project/',
-      name: 'project',
-      component: ProteinWrapper
+      path: ':proteinId/projects',
+      name: 'ProteinProjects',
+      beforeEnter: getProteinId,
+      component: ProteinProjects
     },
     {
-      path: '/analytics/',
-      name: 'analytics',
-      component: Analytics
+      path: ':proteinId/expression',
+      name: 'Expression',
+      beforeEnter: getProteinId,
+      component: Expression
     },
     {
-      path: '/api/',
-      name: 'api',
-      component: Home
+      path: ':proteinId/fdr',
+      name: 'FDR',
+      beforeEnter: getProteinId,
+      component: FDR
     },
     {
-      path: '/faq/',
-      name: 'faq',
-      component: Home
+      path: ':proteinId/interactions',
+      name: 'InteractionNetwork',
+      beforeEnter: getProteinId,
+      component: InteractionNetwork
     },
     {
-      path: '/about/',
-      name: 'about',
-      component: About
+      path: ':proteinId/inhibitors',
+      name: 'KinaseInhibitors',
+      beforeEnter: getProteinId,
+      component: Kinase
+    },
+    {
+      path: ':proteinId/meltome',
+      name: 'Meltome',
+      beforeEnter: getProteinId,
+      component: Meltome
+    },
+    {
+      path: ':proteinId/turnover',
+      name: 'Turnover',
+      beforeEnter: getProteinId,
+      component: Turnover
     }
-    ],
-    mode: 'history'
-  })
+    ]
+  },
+  {
+    path: '/protein/search',
+    name: 'proteinSearch',
+    component: ProteinSearch,
+    props: (route) => ({ 
+      searchString: route.query.q,
+      searchType: route.query.s
+    })
+
+  },
+  {
+    path: '/peptide/',
+    name: 'peptide',
+    component: Home
+  },
+  {
+    path: '/project/',
+    name: 'project',
+    component: ProteinWrapper
+  },
+  {
+    path: '/analytics/',
+    name: 'analytics',
+    component: Analytics
+  },
+  {
+    path: '/api/',
+    name: 'api',
+    component: Home
+  },
+  {
+    path: '/faq/',
+    name: 'faq',
+    component: Home
+  },
+  {
+    path: '/about/',
+    name: 'about',
+    component: About
+  }
+  ],
+  mode: 'history'
+})
 
