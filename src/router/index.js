@@ -35,17 +35,17 @@ Vue.use(VueRouter)
       component: ProteinWrapper,
       children: [
         {
-          path: 'summary/:proteinId',
+          path: ':proteinId/summary',
           name: 'proteinSummary',
           component: ProteinSummary
         },
         {
-          path: 'featureViewer/:proteinId',
+          path: ':proteinId/featureViewer',
           name: 'featureViewer',
           component: FeatureViewer
         },
         {
-          path: 'peptides/:proteinId',
+          path: ':proteinId/peptides',
           name: 'PeptidesMSMS',
           component: PeptidesMSMS,
           children: [
@@ -62,7 +62,7 @@ Vue.use(VueRouter)
           ]
         },
         {
-          path: 'referencePeptides/:proteinId',
+          path: ':proteinId/referencePeptides',
           name: 'ReferencePeptides',
           component: ReferencePeptides,
           children: [
@@ -79,42 +79,42 @@ Vue.use(VueRouter)
           ]
         },
         {
-          path: 'proteotypicity/:proteinId',
+          path: ':proteinId/proteotypicity',
           name: 'Proteotypicity',
           component: Proteotypicity
         },
         {
-          path: 'projects/:proteinId',
+          path: ':proteinId/projects',
           name: 'ProteinProjects',
           component: ProteinProjects
         },
         {
-          path: 'expression/:proteinId',
+          path: ':proteinId/expression',
           name: 'Expression',
           component: Expression
         },
         {
-          path: 'fdr/:proteinId',
+          path: ':proteinId/fdr',
           name: 'FDR',
           component: FDR
         },
         {
-          path: 'interactions/:proteinId',
+          path: ':proteinId/interactions',
           name: 'InteractionNetwork',
           component: InteractionNetwork
         },
         {
-          path: 'inhibitors/:proteinId',
+          path: ':proteinId/inhibitors',
           name: 'KinaseInhibitors',
           component: Kinase
         },
         {
-          path: 'meltome/:proteinId',
+          path: ':proteinId/meltome',
           name: 'Meltome',
           component: Meltome
         },
         {
-          path: 'turnover/:proteinId',
+          path: ':proteinId/turnover',
           name: 'Turnover',
           component: Turnover
         }

@@ -46,7 +46,7 @@ export default {
     },
     setPeptideId: function(o) {
       this.peptideIdIn = o.peptideId + ''; 
-      router.push(this.proteinId + '/'  +this.peptideIdIn).catch(()=>{});
+      router.push('referencePeptides/'  +this.peptideIdIn).catch(()=>{});
     },
     getCSV: function () {
       this.$refs.searchTable.onExporting();

@@ -68,40 +68,40 @@ export default {
       this[function_name]();
     },
     showSummary: function(){
-      router.push('/protein/summary/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+this.proteinId + '/summary').catch(()=>{});
     },
     showFeatures: function(){
-      router.push('/protein/featureViewer/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/featureViewer').catch(()=>{});
     },
     showPeptidesMSMS: function(){
-      router.push('/protein/peptides/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/peptides').catch(()=>{});
     },
     showReferencePeptides: function(){
-      router.push('/protein/referencePeptides/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/referencePeptides').catch(()=>{});
     },
     showFDR: function(){
-      router.push('/protein/fdr/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/fdr').catch(()=>{});
     },
     showExpression: function(){
-      router.push('/protein/expression/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/expression').catch(()=>{});
     },
     showNetwork: function(){
-      router.push('/protein/interactions/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/interactions').catch(()=>{});
     },
     showProteotypicity: function(){
-      router.push('/protein/proteotypicity/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/proteotypicity').catch(()=>{});
     },
     showProjects: function(){
-      router.push('/protein/projects/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/projects').catch(()=>{});
     },
     showKinases: function(){
-      router.push('/protein/inhibitors/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/inhibitors').catch(()=>{});
     },
     showMeltome: function(){
-      router.push('/protein/meltome/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/meltome').catch(()=>{});
     },
     showTurnover: function(){
-      router.push('/protein/turnover/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/turnover').catch(()=>{});
     },
     getProteinInfo: function(){
       let that = this;

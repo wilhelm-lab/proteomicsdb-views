@@ -84,7 +84,7 @@ export default {
     },
     setPeptideId: function(o) {
       this.peptideIdIn = o.peptideId + ''; 
-      window.open('/protein/peptides/' + this.proteinId + '/' + this.peptideIdIn, '_blank');
+      window.open('/protein/' + this.proteinId + '/peptides/' + this.peptideIdIn, '_blank');
     },
     getQuantificationMethods: function () {
       var that = this;
