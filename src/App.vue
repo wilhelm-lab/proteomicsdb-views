@@ -291,7 +291,9 @@ export default {
       this.searchString="";
     },
     cleanString: function () {
-      this.searchString = this.searchString.replaceAll('/','');
+      if (this.searchString !== null) {
+        this.searchString = this.searchString.replaceAll('/','');
+      }
     }
   },
   computed: {
