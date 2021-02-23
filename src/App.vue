@@ -280,7 +280,7 @@ export default {
     },
     selectOrganism: function(taxcode) {
       this.selectedOrg = taxcode;
-      this.$cookie.set('organism', taxcode);
+      this.$cookie.set('organism', taxcode, { expires: 14, SameSite: 'Lax' });
       this.setStoreOrganism();
       this.selectedOrganismShown = Object.assign(this.organisms.filter((x) => { return(x.taxcode === this.selectedOrg)})[0])
       this.setStoreShownOrganism();
@@ -302,7 +302,7 @@ export default {
     },
     selectedOrg: function (val) {
       this.selectedOrganismShown = Object.assign(this.organisms.filter((x) => { return(x.taxcode === parseInt(val))})[0])
-      this.$cookie.set('organism', val, 14);
+      this.$cookie.set('organism', val, { expires: 14, SameSite: 'Lax' });
       this.setStoreOrganism();
       this.setStoreShownOrganism();
       //TODO always change to Home page?
