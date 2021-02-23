@@ -1,6 +1,6 @@
 <template>
   <v-card max-height="maxHeight" style="overflow-y:auto;">
-    <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark elevation="2">
+    <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark elevation="2" dense>
       <v-card-title>Sequence Coverage</v-card-title>
     </v-toolbar>
     <v-card-text>

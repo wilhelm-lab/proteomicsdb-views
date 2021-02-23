@@ -16,7 +16,9 @@
     <v-row>
       <v-col cols="3">
         <v-card class="mt-2">
-          <v-card-title>Quantification methods</v-card-title>
+          <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" elevation="2" dark dense>
+            <v-card-title>Quantification methods</v-card-title>
+          </v-toolbar>
           <v-card-text>
             <v-combobox
                 chips

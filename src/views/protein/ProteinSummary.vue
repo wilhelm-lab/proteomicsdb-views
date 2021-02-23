@@ -9,8 +9,9 @@
     <v-row class="mt-2">
       <v-col cols ="3">
         <v-card class="mb-1">
-          <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark elevation="2">
+          <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark elevation="2" dense>
             <v-card-title>Protein Summary</v-card-title>
+            <v-spacer/>
             <v-btn
                                                                                      icon
                                                                                      @click="expandPanel('summary')"
@@ -62,8 +63,9 @@
                     </v-expand-transition>
                   </v-card>
                   <v-card class="mb-1">
-                    <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark elevation="2">
+                    <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark elevation="2" dense>
                       <v-card-title>Protein Statistics</v-card-title>
+            <v-spacer/>
                       <v-btn
                                                                                                icon
                                                                                                @click="expandPanel('stats')"
@@ -88,8 +90,9 @@
                     </v-expand-transition>
                   </v-card>
                   <v-card class="mb-1">
-                    <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark elevation="2">
+                    <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark elevation="2" dense>
                       <v-card-title>GO Annotation</v-card-title>
+            <v-spacer/>
                       <v-btn
                                                                                                icon
                                                                                                @click="expandPanel('go')"
@@ -150,8 +153,9 @@
                     </v-expand-transition>
                   </v-card>
                   <v-card class="mb-1">
-                    <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark elevation="2">
+                    <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" dark elevation="2" dense>
                       <v-card-title>External links</v-card-title>
+            <v-spacer/>
                       <v-btn
                                                                                                icon
                                                                                                @click="expandPanel('links')"

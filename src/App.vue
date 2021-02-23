@@ -336,12 +336,7 @@ export default {
   background-color: lightgray;
 }
 
-#dx-icon::after, #dx-icon::before{
-  text-decoration: inherit;
-  vertical-align: middle;
-}
-#dx-icon::before, #dx-icon::after{
-  text-decoration: inherit;
-  vertical-align: middle;
+.dx-selection {
+  background-color: #b0b0b0 !important;
 }
 </style>

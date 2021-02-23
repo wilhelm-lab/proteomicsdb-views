@@ -15,7 +15,7 @@
     <v-row>
       <v-col cols="2">
         <v-card class="mt-6">
-          <v-toolbar :color="$store.state.selectedOrganismShown.primaryColor" class="white--text">
+          <v-toolbar :color="$store.state.selectedOrganismShown.secondaryColor" elevation="2" dark dense>
             <v-card-title>Dataset selection</v-card-title></v-toolbar>
           <v-card-text>
             <v-select v-model="selectedCategory" :items="category" outlined label="Category" @change="getTableData">
