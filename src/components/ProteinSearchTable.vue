@@ -95,7 +95,7 @@ export default {
       e.cancel = true;
     },
     onSelectionChanged: function(row) {
-      window.open("/protein/summary/"+row.data.PROTEIN_ID, "_blank");
+      window.open("/protein/" + row.data.PROTEIN_ID + "/summary", "_blank");
     },
     setData: function () {
       this.dataSource = {
