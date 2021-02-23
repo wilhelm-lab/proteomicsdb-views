@@ -1,11 +1,15 @@
 <template>
   <v-main>
     <v-container fluid ml-5>
-      <v-row justify="center" class="ma-2">
-        <citation></citation>
+      <v-row id="citation" justify="center" class="ma-2">
+        <v-col cols="6">
+          <citation></citation>
+        </v-col>
       </v-row>
-      <v-row justify="center">
-        <team></team>
+      <v-row id="team" justify="center" class="ma-2">
+        <v-col cols="6">
+          <team></team>
+        </v-col>
       </v-row>
     </v-container>
   </v-main>
