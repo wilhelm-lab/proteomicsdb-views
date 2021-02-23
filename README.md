@@ -1,4 +1,9 @@
-# proteomicsdb-vue
+# ProteomicsDB - Frontend in VueJS
+
+# Documentation
+[Check this wiki](https://gitlab.lrz.de/prdb/vue-ui/proteomicsdb-vue/-/wikis/home)
+
+# Cloning for the first time
 
 ## Project setup
 ```
