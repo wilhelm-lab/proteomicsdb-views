@@ -125,7 +125,8 @@ export default {
         'NUMBER_OF_PROJECTS',
         'NUMBER_OF_EXPERIMENTS',
         'REFERENCE_SPECTRA'
-        ]
+        ],
+        sort: [{selector:'SEQUENCE_LENGTH', desc:true}]
       }
     }
   },
