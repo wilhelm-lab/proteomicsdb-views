@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import About from '../views/about/AboutUs.vue'
 import Analytics from '../views/Analytics.vue'
 import ProteinSearch from '../views/search/ProteinSearch.vue'
 import ProteinWrapper from '../views/protein/ProteinWrapper.vue'
@@ -157,7 +158,7 @@ Vue.use(VueRouter)
     {
       path: '/about/',
       name: 'about',
-      component: Home
+      component: About
     }
     ],
     mode: 'history'

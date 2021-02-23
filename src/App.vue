@@ -153,21 +153,21 @@
                       >
                       <span>TUM &copy;{{ new Date().getFullYear() }}</span>
                       <v-spacer></v-spacer>
-                      <v-btn x-small text dark>About us</v-btn>
-                      <v-divider vertical/>
-                        <v-btn x-small text dark>Frequently asked questions</v-btn>
-                        <v-divider vertical/>
-                          <v-btn x-small text dark>Programmatic access - API</v-btn>
-                          <v-divider vertical/>
-                            <v-btn x-small text dark>Contact us</v-btn>
-                            <v-divider vertical/>
-                              <v-btn x-small text dark>Terms of use</v-btn>
-                              <v-divider vertical/>
-                                <v-btn x-small text dark>Impressum</v-btn>
-                                <v-spacer></v-spacer>
-                                <span> v{{version}} </span>
-                              </v-footer>
-                            </v-app>
+                      <v-btn x-small text class="white--text" @click="showAbout">About us</v-btn>
+                      <v-divider vertical></v-divider>
+                      <v-btn x-small text class="white--text" @click="showFaq">Frequently asked questions</v-btn>
+                      <v-divider vertical></v-divider>
+                      <v-btn x-small text class="white--text" @click="showApi">Programmatic access - API</v-btn>
+                      <v-divider vertical></v-divider>
+                      <v-btn x-small text class="white--text" @click="showContact">Contact us</v-btn>
+                      <v-divider vertical></v-divider>
+                      <v-btn x-small text class="white--text">Terms of use</v-btn>
+                      <v-divider vertical></v-divider>
+                      <v-btn x-small text class="white--text">Impressum</v-btn>
+                      <v-spacer></v-spacer>
+                      <span> v{{version}} </span>
+        </v-footer>
+    </v-app>
 </template>
 
 <script>
@@ -229,6 +229,9 @@ export default {
     },
     showAbout: function(){
       router.push('/about/').catch(()=>{});
+    },
+    showContact: function(){
+      router.push('/contact/').catch(()=>{});
     },
     checkForClose: function(){
       if(this.organismsFiltered.length === 1){
