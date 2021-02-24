@@ -27,6 +27,9 @@ module.exports = {
         return args
       })
   },
+  devServer: {
+    https: true
+  }
   "transpileDependencies": [
     "vuetify"
   ],

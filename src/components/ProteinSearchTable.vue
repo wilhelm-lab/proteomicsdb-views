@@ -95,7 +95,7 @@ export default {
       e.cancel = true;
     },
     onSelectionChanged: function(row) {
-      window.open("/protein/summary/"+row.data.PROTEIN_ID, "_blank");
+      window.open("/protein/" + row.data.PROTEIN_ID + "/summary", "_blank");
     },
     setData: function () {
       this.dataSource = {
@@ -125,7 +125,8 @@ export default {
         'NUMBER_OF_PROJECTS',
         'NUMBER_OF_EXPERIMENTS',
         'REFERENCE_SPECTRA'
-        ]
+        ],
+        sort: [{selector:'SEQUENCE_LENGTH', desc:true}]
       }
     }
   },

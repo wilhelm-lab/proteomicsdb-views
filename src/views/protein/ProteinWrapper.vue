@@ -10,84 +10,24 @@
       >
       <v-list shaped>
         <v-list-item-group v-model="selectedTab" :color="$store.state.selectedOrganismShown.secondaryColor" mandatory>
-          <v-list-item @click="showSummary">
-            <v-list-item-action>
-              <v-icon>far fa-file-alt</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Summary</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item @click="showFeatures">
-            <v-list-item-action>
-              <v-icon>fas fa-align-left</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Feature viewer</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item @click="showPeptidesMSMS">
-            <v-list-item-action>
-              <v-icon>far fa-chart-bar</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Peptides MS/MS</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item @click="showReferencePeptides">
-            <v-list-item-action>
-              <v-icon>mdi-chart-bar-stacked</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Reference Peptides</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item @click="showFDR">
-            <v-list-item-action>
-              <v-icon>fas fa-chart-area</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>FDR estimation</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item @click="showExpression">
-            <v-list-item-action>
-              <v-icon>fas fa-street-view</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Expression</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item @click="showNetwork">
-            <v-list-item-action>
-              <v-icon>mdi-apache-kafka</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Interaction network</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item @click="showProteotypicity">
-            <v-list-item-action>
-              <v-icon>fas fa-balance-scale-right</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Proteotypicity</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item @click="showProjects">
-            <v-list-item-action>
-              <v-icon>far fa-folder</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Projects</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+          <v-hover v-for="(item, i) in leftBarItems" :key="i" v-model="item.hover">
+            <v-list-item  @click="handle_function_call(item.func)">
+              <v-list-item-action>
+                <v-badge :color="$store.state.selectedOrganismShown.secondaryColor" :content="item.countData" :dot="!item.hover" left :value="item.countData !== 0" >
+                  <v-icon>{{item.icon}}</v-icon>
+                </v-badge>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>{{item.text}}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-hover>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
     </v-row>
     <div class="ml-10">
-        <router-view :proteinName="proteinName" :proteinId= "proteinId" :title="title" :proteinAccession="proteinAccession"/>
+      <router-view :proteinName="proteinName" :proteinId= "proteinId" :title="title" :proteinAccession="proteinAccession"/>
     </div>
   </v-container>
   </v-main>
@@ -107,35 +47,61 @@ export default {
     proteinId: null,
     proteinName: '',
     proteinAccession: '',
-    title: ''
+    title: '',
+    leftBarItems: [
+    {text: 'Summary', icon: 'far fa-file-alt', func: 'showSummary', hover: false, countData: 0},
+    {text: 'Feature viewer', icon: 'fas fa-align-left', func: 'showFeatures', hover: false, countData: 0},
+    {text: 'Peptides MS/MS', icon: 'far fa-chart-bar', func: 'showPeptidesMSMS', hover: false, countData: 0},
+    {text: 'Reference Peptides', icon: 'mdi-chart-bar-stacked', func: 'showReferencePeptides', hover: false, countData: 0},
+    {text: 'Proteotypicity', icon: 'fas fa-balance-scale-right', func: 'showProteotypicity', hover: false, countData: 0},
+    {text: 'FDR estimation', icon: 'fas fa-chart-area', func: 'showFDR', hover: false, countData: 0},
+    {text: 'Expression', icon: 'fas fa-street-view', func: 'showExpression', hover: false, countData: 0},
+    {text: 'Interaction network', icon: 'mdi-apache-kafka', func: 'showNetwork', hover: false, countData: 0},
+    {text: 'Inhibitors', icon: 'fas fa-capsules', func: 'showKinases', hover: false, countData: 0},
+    {text: 'Meltome', icon: 'mdi-thermometer-lines', func: 'showMeltome', hover: false, countData: 0},
+    {text: 'Turnover', icon: 'mdi-backup-restore', func: 'showTurnover', hover: false, countData: 0},
+    {text: 'Projects', icon: 'far fa-folder', func: 'showProjects', hover: false, countData: 0}
+    ]
   }),
   methods: {
+    handle_function_call: function(function_name) {
+      this[function_name]();
+    },
     showSummary: function(){
-      router.push('/protein/summary/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+this.proteinId + '/summary').catch(()=>{});
     },
     showFeatures: function(){
-      router.push('/protein/featureViewer/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/featureViewer').catch(()=>{});
     },
     showPeptidesMSMS: function(){
-      router.push('/protein/peptides/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/peptides').catch(()=>{});
     },
     showReferencePeptides: function(){
-      router.push('/protein/referencePeptides/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/referencePeptides').catch(()=>{});
     },
     showFDR: function(){
-      router.push('/protein/fdr/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/fdr').catch(()=>{});
     },
     showExpression: function(){
-      router.push('/protein/expression/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/expression').catch(()=>{});
     },
     showNetwork: function(){
-      router.push('/protein/interactions/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/interactions').catch(()=>{});
     },
     showProteotypicity: function(){
-      router.push('/protein/proteotypicity/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/proteotypicity').catch(()=>{});
     },
     showProjects: function(){
-      router.push('/protein/projects/'+this.proteinId).catch(()=>{});
+      router.push('/protein/'+ this.proteinId + '/projects').catch(()=>{});
+    },
+    showKinases: function(){
+      router.push('/protein/'+ this.proteinId + '/inhibitors').catch(()=>{});
+    },
+    showMeltome: function(){
+      router.push('/protein/'+ this.proteinId + '/meltome').catch(()=>{});
+    },
+    showTurnover: function(){
+      router.push('/protein/'+ this.proteinId + '/turnover').catch(()=>{});
     },
     getProteinInfo: function(){
       let that = this;

@@ -153,21 +153,21 @@
                       >
                       <span>TUM &copy;{{ new Date().getFullYear() }}</span>
                       <v-spacer></v-spacer>
-                      <v-btn x-small text dark>About us</v-btn>
-                      <v-divider vertical/>
-                        <v-btn x-small text dark>Frequently asked questions</v-btn>
-                        <v-divider vertical/>
-                          <v-btn x-small text dark>Programmatic access - API</v-btn>
-                          <v-divider vertical/>
-                            <v-btn x-small text dark>Contact us</v-btn>
-                            <v-divider vertical/>
-                              <v-btn x-small text dark>Terms of use</v-btn>
-                              <v-divider vertical/>
-                                <v-btn x-small text dark>Impressum</v-btn>
-                                <v-spacer></v-spacer>
-                                <span> v{{version}} </span>
-                              </v-footer>
-                            </v-app>
+                      <v-btn x-small text class="white--text" @click="showAbout">About us</v-btn>
+                      <v-divider vertical></v-divider>
+                      <v-btn x-small text class="white--text" @click="showFaq">Frequently asked questions</v-btn>
+                      <v-divider vertical></v-divider>
+                      <v-btn x-small text class="white--text" @click="showApi">Programmatic access - API</v-btn>
+                      <v-divider vertical></v-divider>
+                      <v-btn x-small text class="white--text" @click="showContact">Contact us</v-btn>
+                      <v-divider vertical></v-divider>
+                      <v-btn x-small text class="white--text">Terms of use</v-btn>
+                      <v-divider vertical></v-divider>
+                      <v-btn x-small text class="white--text">Impressum</v-btn>
+                      <v-spacer></v-spacer>
+                      <span> v{{version}} </span>
+        </v-footer>
+    </v-app>
 </template>
 
 <script>
@@ -230,6 +230,9 @@ export default {
     showAbout: function(){
       router.push('/about/').catch(()=>{});
     },
+    showContact: function(){
+      router.push('/contact/').catch(()=>{});
+    },
     checkForClose: function(){
       if(this.organismsFiltered.length === 1){
         this.menu = false;
@@ -277,7 +280,7 @@ export default {
     },
     selectOrganism: function(taxcode) {
       this.selectedOrg = taxcode;
-      this.$cookie.set('organism', taxcode);
+      this.$cookie.set('organism', taxcode, { expires: 14, SameSite: 'Lax' });
       this.setStoreOrganism();
       this.selectedOrganismShown = Object.assign(this.organisms.filter((x) => { return(x.taxcode === this.selectedOrg)})[0])
       this.setStoreShownOrganism();
@@ -288,7 +291,9 @@ export default {
       this.searchString="";
     },
     cleanString: function () {
-      this.searchString = this.searchString.replaceAll('/','');
+      if (this.searchString !== null) {
+        this.searchString = this.searchString.replaceAll('/','');
+      }
     }
   },
   computed: {
@@ -299,7 +304,7 @@ export default {
     },
     selectedOrg: function (val) {
       this.selectedOrganismShown = Object.assign(this.organisms.filter((x) => { return(x.taxcode === parseInt(val))})[0])
-      this.$cookie.set('organism', val, 14);
+      this.$cookie.set('organism', val, { expires: 14, SameSite: 'Lax' });
       this.setStoreOrganism();
       this.setStoreShownOrganism();
       //TODO always change to Home page?
@@ -329,5 +334,9 @@ export default {
 .prdbIcon{
   border: 2px solid lightgray;
   background-color: lightgray;
+}
+
+.dx-selection {
+  background-color: #b0b0b0 !important;
 }
 </style>
