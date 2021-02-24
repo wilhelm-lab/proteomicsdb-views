@@ -24,14 +24,14 @@
               <v-list-item two-line>
                 <v-list-item-content>
                   <v-list-item-title>Localization</v-list-item-title>
-                  <v-list-item-subtitle>{{summary.LOCALIZATION}}</v-list-item-subtitle>
+                  <v-list-item-subtitle>{{summaryIn.LOCALIZATION}}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
               <v-divider/>
                 <v-list-item two-line>
                   <v-list-item-content>
                     <v-list-item-title>Gene Name</v-list-item-title>
-                    <v-list-item-subtitle>{{summary.GENE_NAME}} ({{summary.ALTERNATIVE_GENE_NAMES}})</v-list-item-subtitle>
+                    <v-list-item-subtitle>{{summaryIn.GENE_NAME}} ({{summaryIn.ALTERNATIVE_GENE_NAMES}})</v-list-item-subtitle>
                   </v-list-item-content>
                   <v-btn small :color="$store.state.selectedOrganismShown.secondaryColor">Gene Relatives</v-btn>
                 </v-list-item>
@@ -39,7 +39,7 @@
                   <v-list-item two-line>
                     <v-list-item-content>
                       <v-list-item-title>UniProt AC/ID</v-list-item-title>
-                      <v-list-item-subtitle>{{summary.UNIPROT_ID}}/{{summary.UNIPROT_AC}}</v-list-item-subtitle>
+                      <v-list-item-subtitle>{{summaryIn.UNIPROT_ID}}/{{summaryIn.UNIPROT_AC}}</v-list-item-subtitle>
                     </v-list-item-content>
                     <v-btn small :color="$store.state.selectedOrganismShown.secondaryColor">Isoforms</v-btn>
                   </v-list-item>
@@ -47,15 +47,15 @@
                     <v-list-item two-line>
                       <v-list-item-content>
                         <v-list-item-title>Organism</v-list-item-title>
-                        <v-list-item-subtitle>{{summary.ORGANISM}}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{summaryIn.ORGANISM}}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider/>
                       <v-list-item two-line>
                         <v-list-item-content>
                           <v-list-item-title>Evidence</v-list-item-title>
-                          <v-list-item-subtitle>{{summary.PROTEIN_EVIDENCE}}
-                            <img :src="summary.PROTEIN_EVIDENCE === 'protein' ? green : (summary.PROTEIN_EVIDENCE === 'isoform' ? yellow : red)">
+                          <v-list-item-subtitle>{{summaryIn.PROTEIN_EVIDENCE}}
+                            <img :src="summaryIn.PROTEIN_EVIDENCE === 'protein' ? green : (summaryIn.PROTEIN_EVIDENCE === 'isoform' ? yellow : red)">
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
@@ -165,7 +165,7 @@
                     </v-toolbar>
                     <v-expand-transition>
                       <div v-show="showLinks">
-                        <v-card-text v-for="(item, i) in summary.LINKS"
+                        <v-card-text v-for="(item, i) in summaryIn.LINKS"
                                      :key="i">
                           <a :href="item.LINK">{{item.LINK}}</a>
                         </v-card-text>
@@ -225,7 +225,8 @@ export default {
   props: {
     proteinName: String,
     proteinId: String,
-    title: String
+    title: String,
+    summary: Object
   },
   components: {
     bodymap,
@@ -236,7 +237,7 @@ export default {
     showStats: false,
     showGO: false,
     showLinks: false,
-    summary: {},
+    summaryIn: {},
     subcellLoc: [],
     molFunc: [],
     bioProc: [],
@@ -258,7 +259,7 @@ export default {
 
       if(this.proteinId != null) {
         axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/getProteinSummary.xsjs', {params: {protein_id: that.proteinId }}).then(function (response) {
-          that.summary = response.data
+          that.summaryIn = response.data
 
           that.subcellLoc = response.data.SUBC_LOC.split("\n ").map((x) => {return(x.replace("\n", ""))}).filter((y) => {return y !== ''})
           that.molFunc = response.data.MOL_FUNC.split("\n ").map((x) => {return(x.replace("\n", ""))}).filter((y) => {return y !== ''})
@@ -276,12 +277,20 @@ export default {
   computed: {
   },
   watch: {
+    summary: function(newData) {
+      if (newData !== null) {
+        this.summaryIn = newData;
+      }
+    }
   },
   mounted() {
-    this.getSummary()
+    if(this.summary === null) {
+      this.getSummary()
+    } else {
+      this.summaryIn = this.summary;
+    }
   },
   created() {
-    this.getSummary()
   }
 }
 </script>

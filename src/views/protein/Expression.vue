@@ -119,6 +119,9 @@ import proteinExpression from '@/vue-d3-component-wrappers/ProteinExpressionBody
 import tissueBars from '@/vue-d3-component-wrappers/TissueExpressionBars'
 import sampleBars from '@/vue-d3-component-wrappers/SampleExpressionBars'
 import downloader from '@/components/DownloadSpeedDial'
+
+import {mapGetters} from 'vuex';
+
 export default {
   props: {
     proteinName: String,
@@ -141,7 +144,6 @@ export default {
     bioSourceSelected: [],
     filtersLoaded: false,
     dataLoaded: false,
-    selectedOrganism: { taxcode: 9606 },
     expressionData: [],
     aTissueSelected: [],
     aTissueIdSelected: [],
@@ -151,9 +153,6 @@ export default {
     svgCss: [require('@/vue-d3-components/Bodymap.css.prdb'), require('@/vue-d3-components/ExpressionBars.css.prdb')]
   }),
   watch: {
-    '$store.state.cookie': function(str){
-      this.selectedOrganism.taxcode = parseInt(str);
-    },
   },
   methods: {
     getCSV: function () {
@@ -306,6 +305,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['selectedOrganism']),
     sTissueSelected: function() {
       return this.aTissueIdSelected.join(';');
     },

@@ -27,7 +27,7 @@
     </v-navigation-drawer>
     </v-row>
     <div class="ml-10">
-      <router-view :proteinName="proteinName" :proteinId= "proteinId" :title="title" :proteinAccession="proteinAccession"/>
+      <router-view :proteinName="proteinName" :proteinId= "proteinId" :title="title" :proteinAccession="proteinAccession" :summary="proteinSummary"/>
     </div>
   </v-container>
   </v-main>
@@ -36,7 +36,7 @@
 <script>
 import router from '@/router';
 import axios from 'axios';
-
+import store from '@/store/store.js';
 export default {
   props: {
     source: String,
@@ -47,6 +47,7 @@ export default {
     proteinId: null,
     proteinName: '',
     proteinAccession: '',
+    proteinSummary: null,
     title: '',
     leftBarItems: [
     {text: 'Summary', icon: 'far fa-file-alt', func: 'showSummary', hover: false, countData: 0},
@@ -106,10 +107,23 @@ export default {
     getProteinInfo: function(){
       let that = this;
       axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/getProteinSummary.xsjs', {params: {protein_id: that.proteinId }}).then(function (response) {
+        that.proteinSummary = response.data;
         that.proteinName = response.data.GENE_NAME;
         that.title = response.data.PROTEIN + " (" + response.data.UNIPROT_ID + ")";
         that.proteinAccession = response.data.UNIPROT_ID;
       })
+    },
+    getTabHeaderInformation: function () {
+      let tempProteinId = this.proteinId;
+      var that = this;
+      axios.get('https://www.proteomicsdb.org/logic/getTabHeaderInformation.xsjs', {params: { protein_id: tempProteinId }})
+      .then(function(response2) {
+        store.dispatch({
+          type: 'setOrganism',
+          value: response2.data.taxcode
+        });
+        that.$cookie.set('organism', response2.data.taxcode, { expires: 14, SameSite: 'Lax' });
+      });
     }
   },
   computed: {
@@ -118,6 +132,7 @@ export default {
   },
   created() {
     this.proteinId = this.$route.params.proteinId
+    this.getTabHeaderInformation();
   },
   mounted() {
     this.proteinId = this.$route.params.proteinId

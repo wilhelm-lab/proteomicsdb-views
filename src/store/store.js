@@ -4,13 +4,28 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    cookie: null,
+    taxcode: null,
     search: "",
-    selectedOrganismShown: {}
+    selectedOrganismShown: {},
+    organisms: [
+    {id: 0, text: 'Homo sapiens', icon: 'fas fa-user', taxcode: 9606, primaryColor: '#0065BD', secondaryColor: '#6cbbff'},
+    {id: 1, text: 'Arabidopsis thaliana', icon: 'fas fa-seedling', taxcode: 3702, primaryColor: '#007C30', secondaryColor: '#6fce94'},
+    {id: 2, text: 'Mus musculus', icon: 'fas fa-paw', taxcode: 10090, primaryColor: '#C4071B', secondaryColor: '#db606d'}
+    ],
+  },
+  getters: {
+    organisms: state => {
+      return state.organisms;
+    },
+    selectedOrganism: state => {
+      return { taxcode: state.taxcode }
+    }
   },
   mutations: {
     setOrganism (state, payload) {
-      return state.cookie = payload.value
+      let t = Object.assign(state.organisms.filter((x) => { return(x.taxcode === parseInt(payload.value))})[0]);
+      state.selectedOrganismShown = t;
+      return state.taxcode = payload.value
     },
     setShownOrganism (state, payload) {
       return state.selectedOrganismShown = payload.value

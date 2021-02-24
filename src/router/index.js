@@ -27,16 +27,15 @@ Vue.use(VueRouter);
 function getProteinId (to, from, next) {
   let tempProteinId = to.params.proteinId;
   if (isNaN(parseInt(tempProteinId))) {
-  axios.get('https://www.proteomicsdb.org/logic/getProteinId.xsjs', {params: { protein_id:tempProteinId }})
-    .then(function(response) {
-      to.params.proteinId = response.data + '';
-      next();
-    });
+    axios.get('https://www.proteomicsdb.org/logic/getProteinId.xsjs', {params: { protein_id:tempProteinId }})
+      .then(function(response) {
+        to.params.proteinId = response.data + '';
+        next();
+      });
   } else {
     next();
   }
 }
-
 
 
 export default new VueRouter({

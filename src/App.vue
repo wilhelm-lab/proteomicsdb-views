@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar app clipped-right clipped-left :color="selectedOrganismShown.primaryColor" dark>
+    <v-app-bar app clipped-right clipped-left :color="$store.state.selectedOrganismShown.primaryColor" dark>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn x-large text dark @click="showHome">
           <v-avatar size=40>
@@ -10,7 +10,7 @@
       <v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x absolute>
         <template v-slot:activator="{ on, attrs }">
           <v-chip label flat  v-bind="attrs" v-on="on"  outlined>
-            <v-avatar left><v-icon dark v-text="selectedOrganismShown.icon"></v-icon></v-avatar>   {{selectedOrganismShown.text}}
+            <v-avatar left><v-icon dark v-text="$store.state.selectedOrganismShown.icon"></v-icon></v-avatar>   {{$store.state.selectedOrganismShown.text}}
             <v-avatar right><v-icon dark>fas fa-chevron-circle-down</v-icon></v-avatar>
           </v-chip>
         </template>
@@ -71,7 +71,7 @@
             <v-select
                  v-model="selectSearchType"
                  :items="searchTypes"
-                 :background-color="selectedOrganismShown.color"
+                 :background-color="$store.state.selectedOrganismShown.color"
                  dark
                  dense
                  flat outlined 
@@ -92,7 +92,7 @@
                  bottom
                  >
                  <v-list>
-                   <v-list-item-group v-model="selectedPage" :color="selectedOrganismShown.secondaryColor" mandatory>
+                   <v-list-item-group v-model="selectedPage" :color="$store.state.selectedOrganismShown.secondaryColor" mandatory>
                      <v-list-item @click="showHome">
                        <v-list-item-action>
                          <v-icon>fas fa-home</v-icon>
@@ -148,7 +148,7 @@
       <router-view/> 
         <selectOrganismPopup :openDialog="noOrganismSelected" :organisms="organisms" @selectedOrganism="selectOrganism"/>
 
-        <v-footer app :color="selectedOrganismShown.primaryColor"
+        <v-footer app :color="$store.state.selectedOrganismShown.primaryColor"
                       class="white--text"
                       >
                       <span>TUM &copy;{{ new Date().getFullYear() }}</span>
@@ -174,6 +174,10 @@
 import store from '@/store/store.js'
 import router from '@/router';
 import selectOrganismPopup from '@/views/popup/OrganismSelection'
+
+import {
+  mapGetters,
+} from 'vuex'
 export default {
   components: {
     selectOrganismPopup
@@ -187,15 +191,9 @@ export default {
     selectedPage: 0,
     selectedOrg: null,
     noOrganismSelected: false,
-    organisms: [
-    {id: 0, text: 'Homo sapiens', icon: 'fas fa-user', taxcode: 9606, primaryColor: '#0065BD', secondaryColor: '#6cbbff'},
-    {id: 1, text: 'Arabidopsis thaliana', icon: 'fas fa-seedling', taxcode: 3702, primaryColor: '#007C30', secondaryColor: '#6fce94'},
-    {id: 2, text: 'Mus musculus', icon: 'fas fa-paw', taxcode: 10090, primaryColor: '#C4071B', secondaryColor: '#db606d'}
-    ],
     organismsFiltered: [],
     searchOrganismInput: "",
     searchString: "",
-    selectedOrganismShown: {},
     drawerRight: false,
     right: false,
     left: false,
@@ -241,10 +239,10 @@ export default {
     resetOrganism: function() {
       this.organismsFiltered = Object.assign(this.organisms);
     },
-    setStoreShownOrganism: function() {
+    setStoreShownOrganism: function( obj) {
       store.dispatch({
         type: 'setShownOrganism',
-        value: this.selectedOrganismShown
+        value: obj
       });
     },
     setStoreOrganism: function() {
@@ -282,8 +280,8 @@ export default {
       this.selectedOrg = taxcode;
       this.$cookie.set('organism', taxcode, { expires: 14, SameSite: 'Lax' });
       this.setStoreOrganism();
-      this.selectedOrganismShown = Object.assign(this.organisms.filter((x) => { return(x.taxcode === this.selectedOrg)})[0])
-      this.setStoreShownOrganism();
+      let selectedOrganismShown = Object.assign(this.organisms.filter((x) => { return(x.taxcode === this.selectedOrg)})[0])
+      this.setStoreShownOrganism(selectedOrganismShown);
 
     },
     focusInput: function () {
@@ -297,16 +295,17 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['organisms']),
   },
   watch: {
     '$store.state.search': function(str){
       this.searchString = str;
     },
     selectedOrg: function (val) {
-      this.selectedOrganismShown = Object.assign(this.organisms.filter((x) => { return(x.taxcode === parseInt(val))})[0])
+      let selectedOrganismShown = Object.assign(this.organisms.filter((x) => { return(x.taxcode === parseInt(val))})[0])
       this.$cookie.set('organism', val, { expires: 14, SameSite: 'Lax' });
       this.setStoreOrganism();
-      this.setStoreShownOrganism();
+      this.setStoreShownOrganism(selectedOrganismShown);
       //TODO always change to Home page?
     }
   },
