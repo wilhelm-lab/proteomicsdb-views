@@ -24,18 +24,18 @@
                           hide-details
                           @input="searchOrganism"
                           @change="searchOrganism"
-                          @keyup.enter="checkForClose"
                           clearable
                           @click:clear="resetOrganism"
                           ></v-text-field>
           </v-list-item>
           <v-list >
-            <v-list-item-group v-model="selectedOrg" color="accent" mandatory>
+            <v-list-item-group color="accent" mandatory v-model="selectedOrgInList">
               <v-list-item v-for="item in organismsFiltered"
                            :key="item.id"
                            :value="item.taxcode"
-                           @click="menu = !menu"
-                           @keyup.enter="checkForClose"
+                           return-object
+                           @click="checkForClose(item.taxcode)"
+                           @keyup.enter="checkForClose(item.taxcode)"
                            >
                            <v-list-item-action>
                              <v-icon v-text="item.icon"></v-icon>
@@ -83,89 +83,101 @@
         <v-spacer></v-spacer>
         <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight"></v-app-bar-nav-icon>
       </v-app-bar>
+      <v-dialog v-model='redirectWarning' persistent max-width=500>
+        <v-card>
+          <v-card-title class="headline">Warning - Redirecting to home page</v-card-title>
+          <v-card-text>This action will cause the website to redirect to the home page. If you wish to continue please select OK, otherwise select cancel.</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" text @click="OKAndClose">OK</v-btn>
+            <v-btn color="red darken-1" text @click="CancelAndClose">CANCEL</v-btn>
+          </v-card-actions>
+        </v-card>
+
+      </v-dialog>
       <v-navigation-drawer
-                 v-model="drawerRight"
-                 :expand-on-hover="!isMobile()"
-                 app
-                 clipped
-                 right
-                 bottom
-                 >
-                 <v-list>
-                   <v-list-item-group v-model="selectedPage" :color="$store.state.selectedOrganismShown.secondaryColor" mandatory>
-                     <v-list-item @click="showHome">
-                       <v-list-item-action>
-                         <v-icon>fas fa-home</v-icon>
-                       </v-list-item-action>
-                       <v-list-item-content>
-                         <v-list-item-title>Home</v-list-item-title>
-                       </v-list-item-content>
-                     </v-list-item>
-                     <v-list-item @click="showProjects">
-                       <v-list-item-action>
-                         <v-icon>fas fa-folder</v-icon>
-                       </v-list-item-action>
-                       <v-list-item-content>
-                         <v-list-item-title>Project</v-list-item-title>
-                       </v-list-item-content>
-                     </v-list-item>
-                     <v-list-item @click="showAnalytics">
-                       <v-list-item-action>
-                         <v-icon>fas fa-chart-pie</v-icon>
-                       </v-list-item-action>
-                       <v-list-item-content>
-                         <v-list-item-title>Analytics</v-list-item-title>
-                       </v-list-item-content>
-                     </v-list-item>
-                     <v-list-item @click="showApi">
-                       <v-list-item-action>
-                         <v-icon>fas fa-terminal</v-icon>
-                       </v-list-item-action>
-                       <v-list-item-content>
-                         <v-list-item-title>API</v-list-item-title>
-                       </v-list-item-content>
-                     </v-list-item>
-                     <v-list-item @click="showFaq">
-                       <v-list-item-action>
-                         <v-icon>fas fa-question-circle</v-icon>
-                       </v-list-item-action>
-                       <v-list-item-content>
-                         <v-list-item-title>FAQ</v-list-item-title>
-                       </v-list-item-content>
-                     </v-list-item>
-                     <v-list-item @click="showAbout">
-                       <v-list-item-action>
-                         <v-icon>fas fa-info-circle</v-icon>
-                       </v-list-item-action>
-                       <v-list-item-content>
-                         <v-list-item-title>About Us</v-list-item-title>
-                       </v-list-item-content>
-                     </v-list-item>
-                   </v-list-item-group>
-                 </v-list>
+                   v-model="drawerRight"
+                   :expand-on-hover="!isMobile()"
+                   app
+                   clipped
+                   right
+                   bottom
+                   >
+                   <v-list>
+                     <v-list-item-group v-model="selectedPage" :color="$store.state.selectedOrganismShown.secondaryColor" mandatory>
+                       <v-list-item @click="showHome">
+                         <v-list-item-action>
+                           <v-icon>fas fa-home</v-icon>
+                         </v-list-item-action>
+                         <v-list-item-content>
+                           <v-list-item-title>Home</v-list-item-title>
+                         </v-list-item-content>
+                       </v-list-item>
+                       <v-list-item @click="showProjects">
+                         <v-list-item-action>
+                           <v-icon>fas fa-folder</v-icon>
+                         </v-list-item-action>
+                         <v-list-item-content>
+                           <v-list-item-title>Project</v-list-item-title>
+                         </v-list-item-content>
+                       </v-list-item>
+                       <v-list-item @click="showAnalytics">
+                         <v-list-item-action>
+                           <v-icon>fas fa-chart-pie</v-icon>
+                         </v-list-item-action>
+                         <v-list-item-content>
+                           <v-list-item-title>Analytics</v-list-item-title>
+                         </v-list-item-content>
+                       </v-list-item>
+                       <v-list-item @click="showApi">
+                         <v-list-item-action>
+                           <v-icon>fas fa-terminal</v-icon>
+                         </v-list-item-action>
+                         <v-list-item-content>
+                           <v-list-item-title>API</v-list-item-title>
+                         </v-list-item-content>
+                       </v-list-item>
+                       <v-list-item @click="showFaq">
+                         <v-list-item-action>
+                           <v-icon>fas fa-question-circle</v-icon>
+                         </v-list-item-action>
+                         <v-list-item-content>
+                           <v-list-item-title>FAQ</v-list-item-title>
+                         </v-list-item-content>
+                       </v-list-item>
+                       <v-list-item @click="showAbout">
+                         <v-list-item-action>
+                           <v-icon>fas fa-info-circle</v-icon>
+                         </v-list-item-action>
+                         <v-list-item-content>
+                           <v-list-item-title>About Us</v-list-item-title>
+                         </v-list-item-content>
+                       </v-list-item>
+                     </v-list-item-group>
+                   </v-list>
       </v-navigation-drawer>
 
       <router-view/> 
         <selectOrganismPopup :openDialog="noOrganismSelected" :organisms="organisms" @selectedOrganism="selectOrganism"/>
 
         <v-footer app :color="$store.state.selectedOrganismShown.primaryColor"
-                      class="white--text"
-                      >
-                      <span>TUM &copy;{{ new Date().getFullYear() }}</span>
-                      <v-spacer></v-spacer>
-                      <v-btn x-small text class="white--text" @click="showAbout">About us</v-btn>
-                      <v-divider vertical></v-divider>
-                      <v-btn x-small text class="white--text" @click="showFaq">Frequently asked questions</v-btn>
-                      <v-divider vertical></v-divider>
-                      <v-btn x-small text class="white--text" @click="showApi">Programmatic access - API</v-btn>
-                      <v-divider vertical></v-divider>
-                      <v-btn x-small text class="white--text" @click="showContact">Contact us</v-btn>
-                      <v-divider vertical></v-divider>
-                      <v-btn x-small text class="white--text">Terms of use</v-btn>
-                      <v-divider vertical></v-divider>
-                      <v-btn x-small text class="white--text">Impressum</v-btn>
-                      <v-spacer></v-spacer>
-                      <span> v{{version}} </span>
+                                        class="white--text"
+                                        >
+                                        <span>TUM &copy;{{ new Date().getFullYear() }}</span>
+                                        <v-spacer></v-spacer>
+                                        <v-btn x-small text class="white--text" @click="showAbout">About us</v-btn>
+                                        <v-divider vertical></v-divider>
+                                        <v-btn x-small text class="white--text" @click="showFaq">Frequently asked questions</v-btn>
+                                        <v-divider vertical></v-divider>
+                                        <v-btn x-small text class="white--text" @click="showApi">Programmatic access - API</v-btn>
+                                        <v-divider vertical></v-divider>
+                                        <v-btn x-small text class="white--text" @click="showContact">Contact us</v-btn>
+                                        <v-divider vertical></v-divider>
+                                        <v-btn x-small text class="white--text">Terms of use</v-btn>
+                                        <v-divider vertical></v-divider>
+                                        <v-btn x-small text class="white--text">Impressum</v-btn>
+                                        <v-spacer></v-spacer>
+                                        <span> v{{version}} </span>
         </v-footer>
     </v-app>
 </template>
@@ -185,6 +197,9 @@ export default {
   props: {
   },
   data: () => ({
+    redirectWarning: false,
+    newOrg: null,
+    selectedOrgInList: null,
     menu: false,
     imagesrc: require("@/assets/prdbIcon.png"),
     expandedMenu: true,
@@ -202,6 +217,16 @@ export default {
     searchTypes: ['Protein', 'Peptide', 'Project', 'Drug', 'Cell line']
   }),
   methods: {
+    CancelAndClose: function () {
+      this.selectedOrgInList = this.$store.state.selectedOrg;
+      this.redirectWarning = false;
+    },
+    OKAndClose: function () {
+      this.selectedOrg = this.newOrg;
+      this.newOrg = null;
+      this.redirectWarning = false;
+      router.push('/').catch(()=>{});
+    },
     showHome: function(){
       this.searchString = "";
       router.push('/').catch(()=>{});
@@ -231,9 +256,18 @@ export default {
     showContact: function(){
       router.push('/contact/').catch(()=>{});
     },
-    checkForClose: function(){
-      if(this.organismsFiltered.length === 1){
-        this.menu = false;
+    checkForClose: function(data){
+      if(this.selectedOrg !== data) {
+        this.newOrg = data;
+        if(this.$route.name !== 'home') {
+          this.redirectWarning = true;
+        } else {
+          this.OKAndClose();
+          this.menu = false;
+        }
+        if(this.organismsFiltered.length === 1){
+          this.menu = false;
+        }
       }
     },
     resetOrganism: function() {
@@ -265,15 +299,17 @@ export default {
       }
     },
     searchOrganism: function() {
-      this.searchOrganismInput = this.searchOrganismInput.replaceAll('/','');
-      if (this.searchOrganismInput !== '') {
-        this.organismsFiltered = Object.assign(this.organisms.filter((x) => { return(x.text.toLowerCase().includes(this.searchOrganismInput.toLowerCase()))}));
-      } else {
-        this.resetOrganism();
-      }
+      if (this.searchOrganismInput !== null) {
+        this.searchOrganismInput = this.searchOrganismInput.replaceAll('/','');
+        if (this.searchOrganismInput !== '') {
+          this.organismsFiltered = Object.assign(this.organisms.filter((x) => { return(x.text.toLowerCase().includes(this.searchOrganismInput.toLowerCase()))}));
+        } else {
+          this.resetOrganism();
+        }
 
-      if (this.organismsFiltered.length === 0) {
-        this.resetOrganism();
+        if (this.organismsFiltered.length === 0) {
+          this.resetOrganism();
+        }
       }
     },
     selectOrganism: function(taxcode) {
@@ -306,7 +342,6 @@ export default {
       this.$cookie.set('organism', val, { expires: 14, SameSite: 'Lax' });
       this.setStoreOrganism();
       this.setStoreShownOrganism(selectedOrganismShown);
-      //TODO always change to Home page?
     }
   },
   created() {
