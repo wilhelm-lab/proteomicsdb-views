@@ -71,6 +71,7 @@
                            :selectedOrganism="selectedOrganism"
                            @dataLoaded="retrieveData"
                            @organSelected="organSelected"
+                           @resetSelections="resetBindings"
                            ></proteinExpression>
       </v-col>
       <v-col cols = "4" v-if="dataLoaded">
@@ -185,6 +186,9 @@ export default {
     resetBindings: function() {
       this.aTissueSelected = [];
       this.aTissueIdSelected = [];
+      if (this.expressionData.length > 0) {
+        this.$refs.tissuebarsref.resetBarSelection();
+      }
     },
     organSelected: function (SAP_SYNONYM) {
       // selected TISSUES in Bodymap
