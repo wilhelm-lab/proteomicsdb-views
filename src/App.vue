@@ -157,7 +157,7 @@
                    </v-list>
       </v-navigation-drawer>
 
-      <router-view :key="$route.fullPath"/> 
+      <router-view/> 
         <selectOrganismPopup :openDialog="noOrganismSelected" :organisms="organisms" @selectedOrganism="selectOrganism"/>
 
         <v-footer app :color="$store.state.selectedOrganismShown.primaryColor"

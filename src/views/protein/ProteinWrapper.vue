@@ -11,9 +11,9 @@
       <v-list shaped>
         <v-list-item-group v-model="selectedTab" :color="$store.state.selectedOrganismShown.secondaryColor" mandatory>
           <v-hover v-for="(item, i) in leftBarItems" :key="i" v-model="item.hover">
-            <v-list-item  @click="handle_function_call(item.func)">
+            <v-list-item  @click="showPage(item.value)" :value="item.value">
               <v-list-item-action>
-                <v-badge :color="$store.state.selectedOrganismShown.secondaryColor" :content="item.countData" :dot="!item.hover" left :value="item.countData !== 0" >
+                <v-badge :color="$store.state.selectedOrganismShown.secondaryColor" :content="item.countData" :dot="!item.hover" right :value="item.countData !== 0" >
                   <v-icon>{{item.icon}}</v-icon>
                 </v-badge>
               </v-list-item-action>
@@ -43,66 +43,30 @@ export default {
   },
   data: () => ({
     leftMenu: true,
-    selectedTab: 0,
+    selectedTab: 'peptides',
     proteinId: null,
     proteinName: '',
     proteinAccession: '',
     proteinSummary: null,
     title: '',
     leftBarItems: [
-    {text: 'Summary', icon: 'far fa-file-alt', func: 'showSummary', hover: false, countData: 0},
-    {text: 'Feature viewer', icon: 'fas fa-align-left', func: 'showFeatures', hover: false, countData: 0},
-    {text: 'Peptides MS/MS', icon: 'far fa-chart-bar', func: 'showPeptidesMSMS', hover: false, countData: 0},
-    {text: 'Reference Peptides', icon: 'mdi-chart-bar-stacked', func: 'showReferencePeptides', hover: false, countData: 0},
-    {text: 'Proteotypicity', icon: 'fas fa-balance-scale-right', func: 'showProteotypicity', hover: false, countData: 0},
-    {text: 'FDR estimation', icon: 'fas fa-chart-area', func: 'showFDR', hover: false, countData: 0},
-    {text: 'Expression', icon: 'fas fa-street-view', func: 'showExpression', hover: false, countData: 0},
-    {text: 'Interaction network', icon: 'mdi-apache-kafka', func: 'showNetwork', hover: false, countData: 0},
-    {text: 'Inhibitors', icon: 'fas fa-capsules', func: 'showKinases', hover: false, countData: 0},
-    {text: 'Meltome', icon: 'mdi-thermometer-lines', func: 'showMeltome', hover: false, countData: 0},
-    {text: 'Turnover', icon: 'mdi-backup-restore', func: 'showTurnover', hover: false, countData: 0},
-    {text: 'Projects', icon: 'far fa-folder', func: 'showProjects', hover: false, countData: 0}
+    {text: 'Summary', icon: 'far fa-file-alt', func: 'showSummary', hover: false, countData: 0, value: 'summary'},
+    {text: 'Feature viewer', icon: 'fas fa-align-left', func: 'showFeatures', hover: false, countData: 0, value: 'featureViewer'},
+    {text: 'Peptides MS/MS', icon: 'far fa-chart-bar', func: 'showPeptidesMSMS', hover: false, countData: 100, value: 'peptides'},
+    {text: 'Reference Peptides', icon: 'mdi-chart-bar-stacked', func: 'showReferencePeptides', hover: false, countData: 0, value:'referencePeptides'},
+    {text: 'Proteotypicity', icon: 'fas fa-balance-scale-right', func: 'showProteotypicity', hover: false, countData: 0, value: 'proteotypicity'},
+    {text: 'FDR estimation', icon: 'fas fa-chart-area', func: 'showFDR', hover: false, countData: 0, value:'fdr'},
+    {text: 'Expression', icon: 'fas fa-street-view', func: 'showExpression', hover: false, countData: 0, value: 'expression'},
+    {text: 'Interaction network', icon: 'mdi-apache-kafka', func: 'showNetwork', hover: false, countData: 0, value: 'Interactions'},
+    {text: 'Inhibitors', icon: 'fas fa-capsules', func: 'showKinases', hover: false, countData: 0, value:'inhibitors'},
+    {text: 'Meltome', icon: 'mdi-thermometer-lines', func: 'showMeltome', hover: false, countData: 0, value: 'meltome'},
+    {text: 'Turnover', icon: 'mdi-backup-restore', func: 'showTurnover', hover: false, countData: 0, value: 'turnover'},
+    {text: 'Projects', icon: 'far fa-folder', func: 'showProjects', hover: false, countData: 0, value: 'projects'}
     ]
   }),
   methods: {
-    handle_function_call: function(function_name) {
-      this[function_name]();
-    },
-    showSummary: function(){
-      router.push('/protein/'+this.proteinId + '/summary').catch(()=>{});
-    },
-    showFeatures: function(){
-      router.push('/protein/'+ this.proteinId + '/featureViewer').catch(()=>{});
-    },
-    showPeptidesMSMS: function(){
-      router.push('/protein/'+ this.proteinId + '/peptides').catch(()=>{});
-    },
-    showReferencePeptides: function(){
-      router.push('/protein/'+ this.proteinId + '/referencePeptides').catch(()=>{});
-    },
-    showFDR: function(){
-      router.push('/protein/'+ this.proteinId + '/fdr').catch(()=>{});
-    },
-    showExpression: function(){
-      router.push('/protein/'+ this.proteinId + '/expression').catch(()=>{});
-    },
-    showNetwork: function(){
-      router.push('/protein/'+ this.proteinId + '/interactions').catch(()=>{});
-    },
-    showProteotypicity: function(){
-      router.push('/protein/'+ this.proteinId + '/proteotypicity').catch(()=>{});
-    },
-    showProjects: function(){
-      router.push('/protein/'+ this.proteinId + '/projects').catch(()=>{});
-    },
-    showKinases: function(){
-      router.push('/protein/'+ this.proteinId + '/inhibitors').catch(()=>{});
-    },
-    showMeltome: function(){
-      router.push('/protein/'+ this.proteinId + '/meltome').catch(()=>{});
-    },
-    showTurnover: function(){
-      router.push('/protein/'+ this.proteinId + '/turnover').catch(()=>{});
+    showPage: function(page){
+      router.push('/protein/'+this.proteinId + '/' + page).catch(()=>{});
     },
     getProteinInfo: function(){
       let that = this;
@@ -137,6 +101,8 @@ export default {
   mounted() {
     this.proteinId = this.$route.params.proteinId
     this.getProteinInfo()
+    let path = this.$route.path;
+    this.selectedTab = this.leftBarItems.filter((x) => {return path.indexOf(x.value) !== -1})[0].value;
   }
 }
 </script>
