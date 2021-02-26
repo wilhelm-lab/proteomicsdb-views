@@ -51,6 +51,12 @@ export default new VueRouter({
     component: ProteinWrapper,
     children: [
     {
+      path: ':proteinId/',
+      name: 'protein',
+      beforeEnter: getProteinId,
+      component: ProteinSummary
+    },
+    {
       path: ':proteinId/summary',
       name: 'proteinSummary',
       beforeEnter: getProteinId,

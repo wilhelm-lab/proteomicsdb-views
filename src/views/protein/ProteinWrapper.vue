@@ -43,7 +43,7 @@ export default {
   },
   data: () => ({
     leftMenu: true,
-    selectedTab: 'peptides',
+    selectedTab: 'summary',
     proteinId: null,
     proteinName: '',
     proteinAccession: '',
@@ -102,7 +102,13 @@ export default {
     this.proteinId = this.$route.params.proteinId
     this.getProteinInfo()
     let path = this.$route.path;
-    this.selectedTab = this.leftBarItems.filter((x) => {return path.indexOf(x.value) !== -1})[0].value;
+    let items = this.leftBarItems.filter((x) => {return path.indexOf(x.value) !== -1});
+    if (items.length > 0) {
+      this.selectedTab = items[0].value;
+    } else {
+      this.selectedTab = 'summary';
+      router.push('/protein/'+this.proteinId + '/summary').catch(()=>{});
+    }
   }
 }
 </script>
