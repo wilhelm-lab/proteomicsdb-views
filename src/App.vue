@@ -233,7 +233,7 @@ export default {
     },
     triggerSearch: function(){
       this.setSearchString();
-      router.push('/protein/search?q='+this.searchString+'&s='+this.selectSearchType).catch(()=>{});
+      router.push('/search?q='+this.searchString+'&s='+this.selectSearchType).catch(()=>{});
     },
     showPeptides: function(){
       router.push('/peptide/').catch(()=>{});

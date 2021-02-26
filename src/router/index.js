@@ -155,7 +155,7 @@ export default new VueRouter({
     ]
   },
   {
-    path: '/protein/search',
+    path: '/search',
     name: 'proteinSearch',
     component: ProteinSearch,
     props: (route) => ({ 
