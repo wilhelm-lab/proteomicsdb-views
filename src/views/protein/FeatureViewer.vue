@@ -45,21 +45,16 @@ export default {
   components: {
     ProtvistaProteomicsdbContainer: ProtvistaProteomicsdbContainer
   },
-  watch: {
-    proteinAccession: function(newData) {
-      if (newData !== '') {
-        this.loaded = true;
-      }
-    }
-  },
+  watch: {},
   data: function() {
-    return {
-      loaded: false
-    }
+    return {}
   },
   methods: {
   },
   computed: {
+    loaded: function() {
+      return Boolean(this.proteinAccession)
+    }
   },
   mounted() {
   },
