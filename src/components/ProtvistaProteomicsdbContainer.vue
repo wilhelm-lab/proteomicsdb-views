@@ -32,4 +32,21 @@ export default {
   }
 };
 </script>
+<style lang="scss">
 
+protvista-uniprot-structure > div {
+  display: flex;
+  flex-direction: row;
+}
+
+protvista-uniprot-structure  protvista-datatable {
+  flex: 5;
+  order: 1;
+}
+
+protvista-uniprot-structure  protvista-structure {
+  flex: 7;
+  order: 2;
+}
+
+</style>
