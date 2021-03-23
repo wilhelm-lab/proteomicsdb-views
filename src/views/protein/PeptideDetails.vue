@@ -153,7 +153,7 @@ export default {
         store: {
           type: 'odata',
           key: 'IDENTIFICATION_ID',
-          url: 'https://www.proteomicsdb.org/proteomicsdb/logic/peptideDetails.xsodata/InputParams(PROTEINFILTER=' + this.proteinId + ',PEPTIDEFILTER=' + this.peptideId + ')/Results',
+          url: this.$store.state.host+'/proteomicsdb/logic/peptideDetails.xsodata/InputParams(PROTEINFILTER=' + this.proteinId + ',PEPTIDEFILTER=' + this.peptideId + ')/Results',
           onLoaded: function(oData) {
             if(oData.length > 0 && that.peptideSequence === '') {
               that.peptideSequence = oData[0].PEPTIDE_SEQUENCE;

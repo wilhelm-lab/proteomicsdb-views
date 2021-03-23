@@ -120,7 +120,7 @@ export default {
         store: {
           type: 'odata',
           key: 'REFERENCE_IDENTIFICATION_ID',
-          url: 'https://www.proteomicsdb.org/proteomicsdb/logic/referencePeptideDetails.xsodata/REFERENCE_PEPTIDES_VIEW/',
+          url: this.$store.state.host+'/proteomicsdb/logic/referencePeptideDetails.xsodata/REFERENCE_PEPTIDES_VIEW/',
           onLoaded: function(oData) {
             if(oData.length > 0 && that.peptideSequence === '') {
               that.peptideSequence = oData[0].SEQUENCE;

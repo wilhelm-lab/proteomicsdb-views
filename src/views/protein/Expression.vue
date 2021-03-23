@@ -267,7 +267,7 @@ export default {
     getOmicsTypes: function(){
       var that = this;
       this.dataLoaded = false;
-      axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/getOmicTypesForProteinId.xsjs', {params: {protein_id: that.proteinId}}).then(function (response) {
+      axios.get(this.$store.state.host+'/proteomicsdb/logic/getOmicTypesForProteinId.xsjs', {params: {protein_id: that.proteinId}}).then(function (response) {
         that.omicstypesModel = response.data;
         if(response.data.length > 0) {
           that.omicsSelected = response.data[0];
@@ -278,7 +278,7 @@ export default {
     getQuantCalc: function(){
       var that = this;
       this.dataLoaded = false;
-      axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/getOmicTypesForProteinId.xsjs', {params: {protein_id: that.proteinId, omic: that.omicsSelected.omicTypes}}).then(function (response) {
+      axios.get(this.$store.state.host+'/proteomicsdb/logic/getOmicTypesForProteinId.xsjs', {params: {protein_id: that.proteinId, omic: that.omicsSelected.omicTypes}}).then(function (response) {
         that.quantModel = response.data;
         if(response.data.length > 0) {
           that.quantSelected = response.data[0]; 
@@ -289,7 +289,7 @@ export default {
     getAvailableBioSources: function () {
       var that = this;
       this.bioSourceSelected = [];
-      axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/checkDataAvailability.xsjs', {params: {
+      axios.get(this.$store.state.host+'/proteomicsdb/logic/checkDataAvailability.xsjs', {params: {
           protein_id: that.proteinId,
           omic: that.omicsSelected.omicTypes,
           quant: that.quantSelected.method,

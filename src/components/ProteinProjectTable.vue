@@ -97,7 +97,7 @@ export default {
     },
     setData: function () {
       var that = this;
-      axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/getProjectsByProtein.xsjs', {params: {protein_id: that.proteinId}}).then(function(response) {
+      axios.get(this.$store.state.host+'/proteomicsdb/logic/getProjectsByProtein.xsjs', {params: {protein_id: that.proteinId}}).then(function(response) {
         that.dataSource = response.data.EXPERIMENT_TABLE;
       })
     }

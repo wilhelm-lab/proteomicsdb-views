@@ -180,7 +180,7 @@ export default {
   },
   methods: {
     getData: function() {
-      axios.get('https://www.proteomicsdb.org/logic/getSampleInfo.xsjs', { params: {
+      axios.get(this.$store.state.host+'/logic/getSampleInfo.xsjs', { params: {
           sampleId: this.sampleId,
           omics: this.omics
       }}).then((response) => {

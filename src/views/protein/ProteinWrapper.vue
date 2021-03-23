@@ -70,7 +70,7 @@ export default {
     },
     getProteinInfo: function(){
       let that = this;
-      axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/getProteinSummary.xsjs', {params: {protein_id: that.proteinId }}).then(function (response) {
+      axios.get(this.$store.state.host+'/proteomicsdb/logic/getProteinSummary.xsjs', {params: {protein_id: that.proteinId }}).then(function (response) {
         that.proteinSummary = response.data;
         that.proteinName = response.data.GENE_NAME;
         that.title = response.data.PROTEIN + " (" + response.data.UNIPROT_ID + ")";
@@ -80,7 +80,7 @@ export default {
     getTabHeaderInformation: function () {
       let tempProteinId = this.proteinId;
       var that = this;
-      axios.get('https://www.proteomicsdb.org/logic/getTabHeaderInformation.xsjs', {params: { protein_id: tempProteinId }})
+      axios.get(this.$store.state.host+'/logic/getTabHeaderInformation.xsjs', {params: { protein_id: tempProteinId }})
       .then(function(response2) {
         store.dispatch({
           type: 'setOrganism',

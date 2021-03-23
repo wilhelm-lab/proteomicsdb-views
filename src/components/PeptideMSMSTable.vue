@@ -103,7 +103,7 @@ export default {
     setData: function () {
       this.dataGridInstance.beginCustomLoading();
       var that = this;
-      axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/getPeptidesByProtein.xsjs', {params: {protein_id: that.proteinId}}).then(function(response) {
+      axios.get(this.$store.state.host+'/proteomicsdb/logic/getPeptidesByProtein.xsjs', {params: {protein_id: that.proteinId}}).then(function(response) {
         that.dataSource = response.data.PEPTIDES;
         that.stopLoading();
       })

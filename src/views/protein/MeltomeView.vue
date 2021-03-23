@@ -179,7 +179,7 @@ export default {
     },
     getTableData: function () {
       var that = this;
-      axios.get('https://www.proteomicsdb.org/logic/getCurveInformationByProteinID.xsjs', {params: {
+      axios.get(this.$store.state.host+'/logic/getCurveInformationByProteinID.xsjs', {params: {
           protein_id: that.proteinId,
           drug_id: that.selectedCategory,
           assay_type: 'PDB:101015',
