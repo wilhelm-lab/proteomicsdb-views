@@ -7,7 +7,9 @@
         <v-row>
           <v-col cols = "11">
             <v-card >
-            <ProtvistaProteomicsdbContainer v-if="loaded" :accession = "proteinAccession"/>
+            <ProtvistaProteomicsdbContainer v-if="loaded"
+                                            :accession="proteinAccession"
+                                            :config-url="configUrl"/>
             </v-card>
           </v-col>
         </v-row>
@@ -54,6 +56,10 @@ export default {
   computed: {
     loaded: function() {
       return Boolean(this.proteinAccession)
+    },
+    configUrl: function() {
+      return "https://d23.proteomicsdb.in.tum.de/proteomicsdb/" +
+          `logic/featureViewer/getConfig.xsjs?accession=${this.proteinAccession}`;
     }
   },
   mounted() {

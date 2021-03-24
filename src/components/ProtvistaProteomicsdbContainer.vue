@@ -1,5 +1,9 @@
 <template>
-  <protvista-proteomicsdb :accession="accession" :nostructure="nostructure"></protvista-proteomicsdb>
+  <protvista-proteomicsdb :accession="accession"
+                          :nostructure="nostructure"
+                          :url="configUrl"
+                          :expanded="expanded"
+  ></protvista-proteomicsdb>
 </template>
 
 <script>
@@ -16,14 +20,21 @@ export default {
       type: String,
       default: "P12004"
     },
+    configUrl: {
+      type: String,
+      default: "https://d23.proteomicsdb.in.tum.de/proteomicsdb/logic/featureViewer/getConfig.xsjs?accession=P12004"
+    },
     nostructure: {
       type: Boolean,
       default: false
     },
+    expanded: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
-    return {
-    };
+    return {};
   },
   mounted() {
     if (!this.nostructure) {
@@ -39,12 +50,12 @@ protvista-uniprot-structure > div {
   flex-direction: row;
 }
 
-protvista-uniprot-structure  protvista-datatable {
+protvista-uniprot-structure protvista-datatable {
   flex: 5;
   order: 1;
 }
 
-protvista-uniprot-structure  protvista-structure {
+protvista-uniprot-structure protvista-structure {
   flex: 7;
   order: 2;
 }
