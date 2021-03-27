@@ -19,7 +19,7 @@ import ProteinProjects from '@/views/protein/ProteinProjects.vue'
 import Kinase from '@/views/protein/KinaseInhibitorsView.vue'
 import Meltome from '@/views/protein/MeltomeView.vue'
 import Turnover from '@/views/protein/TurnoverView.vue'
-
+import ED from '@/views/project/ExperimentDesign.vue'
 import axios from 'axios';
 
 Vue.use(VueRouter);
@@ -172,7 +172,7 @@ export default new VueRouter({
   {
     path: '/project/',
     name: 'project',
-    component: ProteinWrapper
+    component: ED,
   },
   {
     path: '/analytics/',
