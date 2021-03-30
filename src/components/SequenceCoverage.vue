@@ -68,7 +68,7 @@ export default {
   methods: {
     getData: function() {
       var that= this;
-      axios.get('https://www.proteomicsdb.org/logic/getProteinSequenceCoverageByProtein.xsjs', { params: {
+      axios.get(this.$store.state.host+'/logic/getProteinSequenceCoverageByProtein.xsjs', { params: {
           protein_id: this.proteinId
       }}).then((response) => {
         that.data = response.data;

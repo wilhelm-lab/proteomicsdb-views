@@ -98,10 +98,11 @@ export default {
       window.open("/protein/" + row.data.PROTEIN_ID + "/summary", "_blank");
     },
     setData: function () {
+      var that = this;
       this.dataSource = {
         store: {
           type: 'odata',
-          url: 'https://www.proteomicsdb.org/proteomicsdb/logic/proteinSearchEndpoint.xsodata/InputParams(PROTEIN_NAME=\'' + this.searchString + '\'' + ',TAXCODE_IN=' + this.taxcode + ')/Results',
+          url: that.$store.state.host + '/proteomicsdb/logic/proteinSearchEndpoint.xsodata/InputParams(PROTEIN_NAME=\'' + this.searchString + '\'' + ',TAXCODE_IN=' + this.taxcode + ')/Results',
         },
         reshapeOnPush: true,
         select: [

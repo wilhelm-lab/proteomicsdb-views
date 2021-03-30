@@ -90,7 +90,7 @@ export default {
     },
     getQuantificationMethods: function () {
       var that = this;
-      axios.get('https://www.proteomicsdb.org/logic/getQuantificationTypes.xsjs', {params: {protein_id: this.proteinId}})
+      axios.get(this.$store.state.host+'/logic/getQuantificationTypes.xsjs', {params: {protein_id: this.proteinId}})
       .then(function(response) {
         that.aQuantificationMethods = response.data.map((x) => {return {text: x, value: false}});
       });

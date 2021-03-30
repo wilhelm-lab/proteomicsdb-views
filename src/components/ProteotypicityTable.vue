@@ -99,7 +99,7 @@ export default {
       this.dataSource = {
         store: {
           type: 'odata',
-          url: 'https://www.proteomicsdb.org/proteomicsdb/logic/proteotypicity.xsodata/InputParams(LABEL_TYPES_IN=\''+this.labelTypes+'\',METHOD_IN=2,PROTEIN_ID_IN='+ this.proteinId +')/Results',
+          url: this.$store.state.host+'/proteomicsdb/logic/proteotypicity.xsodata/InputParams(LABEL_TYPES_IN=\''+this.labelTypes+'\',METHOD_IN=2,PROTEIN_ID_IN='+ this.proteinId +')/Results',
           onLoaded: function(){
             that.stopLoading();
           },

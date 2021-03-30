@@ -133,7 +133,7 @@ export default {
     getNews: function() {
       let that = this
 
-      axios.get('https://www.proteomicsdb.org/logic/getNews.xsjs', {params: {top: 3}}).then(function (response) {
+      axios.get(this.$store.state.host+'/logic/getNews.xsjs', {params: {top: 3}}).then(function (response) {
         that.news = response.data.allNews
       })
     }

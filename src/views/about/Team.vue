@@ -79,6 +79,28 @@ export default {
     ],
     coreTeamMembers: [
     { 
+      name: "Ludwig Lautenbacher", role: "Full stack developer, Bioinformatician", avatar: "", text: "",
+      social: [
+      {
+        social: "website",
+        link: "https://www.proteomics.wzw.tum.de/people/ludwig-lautenbacher/",
+        icon: "fas fa-external-link-alt"
+      },
+      {
+        social: "GitHub",
+        link: "https://github.com/LLautenbacher",
+        icon: "fab fa-github-square"
+      },
+      {
+        social: "LinkedIn",
+        link: "https://www.linkedin.com/in/ludwig-lautenbacher-b3414019b/",
+        icon: "fab fa-linkedin"
+      }
+      ], focus: "Feature development, data integration" 
+    }
+    ],
+    coreTeamEmeriti: [
+    { 
       name: "Patroklos Samaras", role: "Full stack developer, Bioinformatician", avatar: "psamaras.jpg", text: "",
       social: [
       {
@@ -97,9 +119,7 @@ export default {
         icon: "fab fa-linkedin"
       }
       ], focus: "Feature development, data integration" 
-    }
-    ],
-    coreTeamEmeriti: [
+    },
     { 
       name: "Tobias Schmidt", role: "Frontend and backend developer, Bioinformatician", avatar: "tkschmidt.jpg", text: "",
       social: [
