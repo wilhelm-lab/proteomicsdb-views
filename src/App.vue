@@ -225,36 +225,36 @@ export default {
       this.selectedOrg = this.newOrg;
       this.newOrg = null;
       this.redirectWarning = false;
-      router.push('/').catch(()=>{});
+      router.push('/vue/').catch(()=>{});
     },
     showHome: function(){
       this.searchString = "";
-      router.push('/').catch(()=>{});
+      router.push('/vue/').catch(()=>{});
     },
     triggerSearch: function(){
       this.setSearchString();
-      router.push('/search?q='+this.searchString+'&s='+this.selectSearchType).catch(()=>{});
+      router.push('/vue/search?q='+this.searchString+'&s='+this.selectSearchType).catch(()=>{});
     },
     showPeptides: function(){
-      router.push('/peptide/').catch(()=>{});
+      router.push('/vue/peptide/').catch(()=>{});
     },
     showProjects: function(){
-      router.push('/project/').catch(()=>{});
+      router.push('/vue/project/').catch(()=>{});
     },
     showAnalytics: function(){
-      router.push('/analytics/').catch(()=>{});
+      router.push('/vue/analytics/').catch(()=>{});
     },
     showApi: function(){
-      router.push('/api/').catch(()=>{});
+      router.push('/vue/api/').catch(()=>{});
     },
     showFaq: function(){
-      router.push('/faq/').catch(()=>{});
+      router.push('/vue/faq/').catch(()=>{});
     },
     showAbout: function(){
-      router.push('/about/').catch(()=>{});
+      router.push('/vue/about/').catch(()=>{});
     },
     showContact: function(){
-      router.push('/contact/').catch(()=>{});
+      router.push('/vue/contact/').catch(()=>{});
     },
     checkForClose: function(data){
       if(this.selectedOrg !== data) {

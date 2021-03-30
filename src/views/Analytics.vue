@@ -74,10 +74,10 @@ export default {
   }),
   methods: {
     showHome: function(){
-      router.push('/home/').catch(()=>{});
+      router.push('/vue/home/').catch(()=>{});
     },
     showProteins: function(){
-      router.push('/protein/').catch(()=>{});
+      router.push('/vue/protein/').catch(()=>{});
     }
   },
   computed: {

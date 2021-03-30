@@ -15,9 +15,9 @@ npm install
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Compiles and minifies for production - adjust heap space when needed
 ```
-npm run build
+NODE_OPTIONS=--max_old_space_size=8192 npm run build
 ```
 
 ### Lints and fixes files

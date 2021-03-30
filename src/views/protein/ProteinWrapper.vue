@@ -66,7 +66,7 @@ export default {
   }),
   methods: {
     showPage: function(page){
-      router.push('/protein/'+this.proteinId + '/' + page).catch(()=>{});
+      router.push('/vue/protein/'+this.proteinId + '/' + page).catch(()=>{});
     },
     getProteinInfo: function(){
       let that = this;
@@ -80,7 +80,7 @@ export default {
     getTabHeaderInformation: function () {
       let tempProteinId = this.proteinId;
       var that = this;
-      axios.get(this.$store.state.host+'/logic/getTabHeaderInformation.xsjs', {params: { protein_id: tempProteinId }})
+      axios.get(this.$store.state.host+'/proteomicsdb/logic/getTabHeaderInformation.xsjs', {params: { protein_id: tempProteinId }})
       .then(function(response2) {
         store.dispatch({
           type: 'setOrganism',
@@ -107,7 +107,7 @@ export default {
       this.selectedTab = items[0].value;
     } else {
       this.selectedTab = 'summary';
-      router.push('/protein/'+this.proteinId + '/summary').catch(()=>{});
+      router.push('/vue/protein/'+this.proteinId + '/summary').catch(()=>{});
     }
   }
 }

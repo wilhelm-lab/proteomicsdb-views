@@ -95,7 +95,7 @@ export default {
       e.cancel = true;
     },
     onSelectionChanged: function(row) {
-      window.open("/protein/" + row.data.PROTEIN_ID + "/summary", "_blank");
+      window.open("/vue/protein/" + row.data.PROTEIN_ID + "/summary", "_blank");
     },
     setData: function () {
       var that = this;
