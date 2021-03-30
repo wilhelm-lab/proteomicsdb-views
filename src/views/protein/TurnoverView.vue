@@ -158,7 +158,7 @@ export default {
     },
     getTableData: function () {
       var that = this;
-      axios.get(this.$store.state.host+'/logic/getCurveInformationByProteinID.xsjs', {params: {
+      axios.get(this.$store.state.host+'/proteomicsdb/logic/getCurveInformationByProteinID.xsjs', {params: {
           protein_id: that.proteinId,
           drug_id: -1,
           assay_type: 'PDB:101019',

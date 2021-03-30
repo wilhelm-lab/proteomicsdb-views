@@ -19,7 +19,7 @@ import ProteinProjects from '@/views/protein/ProteinProjects.vue'
 import Kinase from '@/views/protein/KinaseInhibitorsView.vue'
 import Meltome from '@/views/protein/MeltomeView.vue'
 import Turnover from '@/views/protein/TurnoverView.vue'
-
+import ED from '@/views/project/ExperimentDesign.vue'
 import axios from 'axios';
 
 Vue.use(VueRouter);
@@ -46,7 +46,12 @@ export default new VueRouter({
     component: Home
   },
   {
-    path: '/protein/',
+    path: '/vue/',
+    name: 'home',
+    component: Home
+  },
+  {
+    path: '/vue/protein/',
     name: 'proteinHome',
     component: ProteinWrapper,
     children: [
@@ -155,7 +160,7 @@ export default new VueRouter({
     ]
   },
   {
-    path: '/search',
+    path: '/vue/search',
     name: 'proteinSearch',
     component: ProteinSearch,
     props: (route) => ({ 
@@ -165,32 +170,32 @@ export default new VueRouter({
 
   },
   {
-    path: '/peptide/',
+    path: '/vue/peptide/',
     name: 'peptide',
     component: Home
   },
   {
-    path: '/project/',
+    path: '/vue/project/',
     name: 'project',
-    component: ProteinWrapper
+    component: ED,
   },
   {
-    path: '/analytics/',
+    path: '/vue/analytics/',
     name: 'analytics',
     component: Analytics
   },
   {
-    path: '/api/',
+    path: '/vue/api/',
     name: 'api',
     component: Home
   },
   {
-    path: '/faq/',
+    path: '/vue/faq/',
     name: 'faq',
     component: Home
   },
   {
-    path: '/about/',
+    path: '/vue/about/',
     name: 'about',
     component: About
   }

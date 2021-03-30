@@ -13,7 +13,7 @@ const store = new Vuex.Store({
     {id: 2, text: 'Mus musculus', icon: 'fas fa-paw', taxcode: 10090, primaryColor: '#C4071B', secondaryColor: '#db606d'},
     {id: 3, text: 'Oryza sativa subs. japonica', icon: 'fas fa-apple-alt', taxcode: 39947, primaryColor: '#007C30', secondaryColor: '#6fce94'}
     ],
-    host: 'https://www.proteomicsdb.org'
+    host: ''
   },
   getters: {
     organisms: state => {

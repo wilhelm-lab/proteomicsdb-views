@@ -86,11 +86,11 @@ export default {
     },
     setPeptideId: function(o) {
       this.peptideIdIn = o.peptideId + ''; 
-      window.open('/protein/' + this.proteinId + '/peptides/' + this.peptideIdIn, '_blank');
+      window.open('/vue/protein/' + this.proteinId + '/peptides/' + this.peptideIdIn, '_blank');
     },
     getQuantificationMethods: function () {
       var that = this;
-      axios.get(this.$store.state.host+'/logic/getQuantificationTypes.xsjs', {params: {protein_id: this.proteinId}})
+      axios.get(this.$store.state.host+'/proteomicsdb/logic/getQuantificationTypes.xsjs', {params: {protein_id: this.proteinId}})
       .then(function(response) {
         that.aQuantificationMethods = response.data.map((x) => {return {text: x, value: false}});
       });
