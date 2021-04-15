@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import About from '../views/about/AboutUs.vue'
-import Analytics from '../views/Analytics.vue'
+import Analytics from '../views/analytics/AnalyticsWrapper.vue'
 import ProteinSearch from '../views/search/ProteinSearch.vue'
 import ProteinWrapper from '../views/protein/ProteinWrapper.vue'
 import ProteinSummary from '@/views/protein/ProteinSummary.vue'
@@ -21,6 +21,8 @@ import Meltome from '@/views/protein/MeltomeView.vue'
 import Turnover from '@/views/protein/TurnoverView.vue'
 import ED from '@/views/project/ExperimentDesign.vue'
 import axios from 'axios';
+import SelectivityView from "../views/analytics/SelectivityView";
+import AnalyticsHome from "../views/analytics/AnalyticsHome";
 
 Vue.use(VueRouter);
 
@@ -83,7 +85,7 @@ export default new VueRouter({
         path: ':peptideId',
         name: 'PeptideDetails',
         component: PeptideDetails,
-        props: (route) => ({ 
+        props: (route) => ({
           proteinId: route.params.proteinId,
           peptideId: route.params.peptideId,
           openDialog: true
@@ -101,7 +103,7 @@ export default new VueRouter({
         path: ':peptideId',
         name: 'RefPeptideDetails',
         component: RefPeptideDetails,
-        props: (route) => ({ 
+        props: (route) => ({
           proteinId: route.params.proteinId,
           peptideId: route.params.peptideId,
           openDialog: true
@@ -163,7 +165,7 @@ export default new VueRouter({
     path: '/vue/search',
     name: 'proteinSearch',
     component: ProteinSearch,
-    props: (route) => ({ 
+    props: (route) => ({
       searchString: route.query.q,
       searchType: route.query.s
     })
@@ -182,7 +184,20 @@ export default new VueRouter({
   {
     path: '/vue/analytics/',
     name: 'analytics',
-    component: Analytics
+    component: Analytics,
+    redirect: 'analytics.home',
+    children: [
+      {
+        path: '',
+        name: 'analytics.home',
+        component: AnalyticsHome
+      },
+      {
+        path: 'selectivity',
+        name: 'selectivity',
+        component: SelectivityView
+      }
+    ]
   },
   {
     path: '/vue/api/',
