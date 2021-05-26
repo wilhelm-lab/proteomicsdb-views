@@ -1,7 +1,5 @@
 <template>
-  <!--
   <v-container style="position: relative;display: inline-block;">
-  -->
     <IC50Plot
         v-if="b50PlotData"
         ref="plot"
@@ -15,7 +13,6 @@
         :title="title"
     >
     </IC50Plot>
-  <!--
     <v-overlay
         :absolute="true"
         :value="loading"
@@ -27,7 +24,6 @@
       ></v-progress-circular>
     </v-overlay>
   </v-container>
-  -->
 </template>
 
 <script>
@@ -98,12 +94,12 @@ export default {
             this.loading = false;
           })
     },
-    getSVG: function() {
+    getSVG: function () {
       return this.$refs.plot.getSVG();
     }
   },
   computed: {
-    title: function() {
+    title: function () {
       return `Dose response curve for ${this.selectedProtein.GENE_NAME} using ${this.drug.TREATMENT}`
     }
   }

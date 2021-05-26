@@ -75,38 +75,47 @@
       </v-card>
       <v-row>
         <v-col>
-          <SelectivityViolinPlot
+          <v-card
               v-if="selectedProtein"
-              ref="violinPlot"
-              :ed50-min="rangeEC50[0]"
-              :ed50-max="rangeEC50[1]"
-              :r2-min="selectedR2Min"
-              :selected-target-protein="selectedProtein"
-              :drug-id-selection="drugIdSelection"
-              v-on:select-drug="onSelectDrug"
-          ></SelectivityViolinPlot>
-          <hr v-if="selectedDrug">
-          <div v-if="selectedDrug" class="d-flex flex-row flex-wrap">
-            <SelectivityIC50BarsWrapper
-                ref="IC50Bars"
-                :selected-drug="selectedDrug"
-                :selected-protein="selectedProteinDrugDetails"
-                :active-protein="activeProtein"
-                v-on:select-protein="onSelectActiveProtein"
-                :min-height="400"
-            >
-            </SelectivityIC50BarsWrapper>
-            <SelectivityIC50PlotWrapper
-                v-if="activeProtein && selectedDrug"
-                ref="IC50Plot"
-                :drug="selectedDrug"
-                :selected-protein="activeProtein"
-                :min-height="360"
-                :min-width="500"
-                :plot-height="360"
-                :plot-width="500"
-            >
-            </SelectivityIC50PlotWrapper>
+              ref="card0"
+              class="my-3 py-3"
+              style="overflow: scroll">
+            <SelectivityViolinPlot
+                ref="violinPlot"
+                :ed50-min="rangeEC50[0]"
+                :ed50-max="rangeEC50[1]"
+                :r2-min="selectedR2Min"
+                :selected-target-protein="selectedProtein"
+                :drug-id-selection="drugIdSelection"
+                v-on:select-drug="onSelectDrug"
+            ></SelectivityViolinPlot>
+          </v-card>
+          <div v-if="selectedDrug" class="d-flex flex-row flex-wrap b50-container">
+            <v-card class="pa-3 d-flex align-center">
+              <SelectivityIC50BarsWrapper
+                  ref="IC50Bars"
+                  :selected-drug="selectedDrug"
+                  :selected-protein="selectedProteinDrugDetails"
+                  :active-protein="activeProtein"
+                  v-on:select-protein="onSelectActiveProtein"
+                  :min-height="400"
+              >
+              </SelectivityIC50BarsWrapper>
+            </v-card>
+
+            <v-card class="mt-1 pa-3 d-flex align-center" :loading="$refs.IC50Plot && $refs.IC50Plot.loading">
+              <SelectivityIC50PlotWrapper
+                  v-if="activeProtein && selectedDrug"
+                  ref="IC50Plot"
+                  :drug="selectedDrug"
+                  :selected-protein="activeProtein"
+                  :min-height="360"
+                  :min-width="500"
+                  :plot-height="360"
+                  :plot-width="500"
+              >
+              </SelectivityIC50PlotWrapper>
+            </v-card>
           </div>
         </v-col>
       </v-row>
@@ -292,5 +301,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+.b50-container {
+  gap: 10px;
+}
 </style>
