@@ -265,6 +265,7 @@ export default {
           .attr('transform', 'rotate(-90)')
           .attr('x', -plotHeight / 2)
           .attr('y', -35)
+          .attr('fill', '#000')
           .style('text-anchor', 'middle')
           .style('font-family', this.fontFamily)
           .style('font-size', this.fontSize)
@@ -355,7 +356,7 @@ export default {
       var imposeMax = oProperties.imposeMax;
       var violinColor = oProperties.violinColor;
       var resolution = oProperties.resolution;
-      var interpolation = oProperties.interpolation;
+      //var interpolation = oProperties.interpolation;
       var path = oProperties.path;
       var index = oProperties.index;
 
@@ -424,7 +425,6 @@ export default {
           .y(function lineReturnXValue(d) {
             return y(d.y);
           });
-      console.log(interpolation)
       var gPlus = svg.append('g');
       var gMinus = svg.append('g');
 
@@ -484,7 +484,7 @@ export default {
           .style('stroke-width', 2)
           .attr('display', 'none');
       if (this.clippedSelectionLine) {
-        selectionLine.attr('clip-path', 'url(#' + clipPathId + ')');
+        selectionLine.attr('clip-path', 'url(#' + clipPathId + ')'); // TODO
       }
 
       var selectionLabelTop = svg.append('text')
