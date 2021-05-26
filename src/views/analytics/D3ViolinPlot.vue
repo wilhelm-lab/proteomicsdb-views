@@ -684,9 +684,6 @@ export default {
         styles[index] = {
           "left": `${index * (plotWidth + plotSpacing) + margin.left + plotWidth / 2}px`,
           "top": `${plotHeight - margin.bottom + 5}px`,
-          "transform": 'translate(-50%, 0)',
-          "position": 'absolute',
-          "display": 'block'
         }
       }
       return styles;
@@ -762,6 +759,14 @@ export default {
 
 .selectedTreatment {
   text-decoration: underline;
+}
+
+.drug-selection {
+  display: flex;
+  flex-wrap: nowrap;
+  transform: translate(-50%, 0);
+  position: absolute;
+
 }
 
 .drug-selection label, input {

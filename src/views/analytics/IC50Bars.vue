@@ -10,8 +10,10 @@
 
 <script>
 import utils from "../../vue-d3-component-wrappers/common-lib/Utils";
+import d3tip from 'd3-tip';
 
 const d3 = require('d3');
+d3.tip = d3tip;
 
 export default {
   name: "IC50Bars",
@@ -59,7 +61,7 @@ export default {
     return {
       bars: null,
       chartObjects: {},
-      svg: null
+      svg: null,
     }
   },
   computed: {
@@ -172,6 +174,12 @@ export default {
             return 'translate(' + (i * barWidth + 1) + ', 0)';
           });
 
+      var barTooltip = d3.tip().attr('class', 'd3-tip').html(function (d) {
+        return d.GENE_NAME + '<br>pEC50: ' + that.convertEC50topEC50(d.VALUE).toFixed(2)
+      })
+          .direction('n')
+      svg.call(barTooltip);
+
       // store bars in chartObjects
       this.chartObjects.bars = bar.append('rect')
           .attr('class', function (d) {
@@ -186,7 +194,10 @@ export default {
           })
           .attr('PROTEIN_ID', function (d) {
             return d.PROTEIN_ID;
-          });
+          })
+          .on('mouseover', barTooltip.show)
+          .on('mouseout', barTooltip.hide)
+      ;
 
       bar.append('a')
           .attr('href', function (d) {
@@ -223,9 +234,16 @@ export default {
       utils.expandChartSizeToTitle(svg, title, width, margin);
 
       // Legend
+      var legendTooltip = d3.tip()
+          .attr('class', 'd3-tip')
+          .html("Drug targets with an pEC50 ratio of < 1 (green)," +
+              "<br>1-10 (blue) and > 10 (grey)<br>compared to the reference (red).");
       legend
           .attr('transform', 'translate(' + (width + margin.left) + ',' + ((height - that.getLegendHeight()) / 2 + margin.top) + ')')
-          .attr('class', 'IC50Legend');
+          .attr('class', 'IC50Legend')
+          .call(legendTooltip)
+          .on('mouseover', legendTooltip.show)
+          .on('mouseout', legendTooltip.hide)
 
       legend.append('text')
           .attr('x', 15)
@@ -255,15 +273,6 @@ export default {
             .attr('text-anchor', 'start')
             .text(sText);
       }
-
-      // Tooltip for legend
-      //$('.IC50Legend').tipsy({
-      //  gravity: 's',
-      //  html: true,
-      //  title: function () {
-      //    return 'Drug targets with an pEC50 ratio of < 1 (green),<br>1-10 (blue) and > 10 (grey)<br>compared to the reference (red).';
-      //  }
-      //});
 
       this.addOnClickEvents();
     },
@@ -408,4 +417,10 @@ export default {
   font-size: 18px;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.d3-tip {
+  font-size: 11px;
+  text-align: center;
+}
+
 </style>

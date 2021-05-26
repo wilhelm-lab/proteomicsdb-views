@@ -105,7 +105,7 @@ export default {
     onSelectDrug: function (e) {
       this.$emit("select-drug", e)
     },
-    getSVG: function() {
+    getSVG: function () {
       return this.$refs.violinPlot.getSVG();
     },
     getCSV: function () {
@@ -172,7 +172,7 @@ export default {
       return `pEC50 distribution of drugs targeting
       ${this.selectedTargetProtein.protein_name} (${this.selectedTargetProtein.unique_identifier})`;
     },
-    selectedTargetProteinIdString: function() {
+    selectedTargetProteinIdString: function () {
       return this.selectedTargetProtein.protein_id.toString()
     }
   }
