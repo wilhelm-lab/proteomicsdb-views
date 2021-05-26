@@ -419,7 +419,7 @@ export default {
   stroke-linecap: round;
 }
 
-.sapProteomicsdbIC50Plot .IC50Plot .IC50Title {
+.sapProteomicsdbIC50Plot .IC50Title {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 18px;
 }
