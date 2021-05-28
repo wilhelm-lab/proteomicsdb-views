@@ -1,19 +1,14 @@
 <template>
-  <div class="container">
+  <div class="violin-plot-container">
     <div class="sapProteomicsdbViolinPlot">
       <div class="violinbuttonarea">
         <template v-for="(plot, index) in chartData">
-          <span :key="plot[keyValue]"
-                v-if="!simpleLabel && _dataObjectHasChilds()"
-                class="drug-selection"
-                :style="buttonStyles[index]"
-                @click="selectDrug(plot)"
-          >
-            <input type="radio"
-                   :value="plot[keyValue]"
-                   v-model="selected">
-            <label>{{ plot[plotLabelValue] }}</label>
-          </span>
+          <label
+              :key="plot[keyValue]"
+              v-if="!simpleLabel && _dataObjectHasChilds()"
+              class="drug-label"
+              :style="buttonStyles[index]"
+          >{{ plot[plotLabelValue] }}</label>
         </template>
       </div>
     </div>
@@ -228,6 +223,7 @@ export default {
       this.oChartObjects.oSortedData = oSortedData;
       this.oChartObjects.d3YScale = y;
 
+
       for (const [i, oSortedElement] of Object.entries(this.oChartObjects.oSortedData)) {
         var g = svg.append('g').attr('transform', 'translate(' + (j * (plotWidth + plotSpacing) + margin.left) + ',0)');
         var oViolinProperties = {
@@ -245,6 +241,9 @@ export default {
         };
         this.oChartObjects.oSelections[i] = oControl.addViolin(oViolinProperties);
         oControl.addBoxPlot(g, oSortedElement, plotHeight, plotWidth, margin, domain, y, 0.15, 'black', 'white', path);
+        oControl.addSelectionBoundingBox(g, plotWidth, plotHeight, i);
+
+
         //// reference to results, to get Label
         if (oControl.simpleLabel && oControl.plotLabelValue) {
           oControl.addLabel(g, results[i][oControl.plotLabelValue], plotHeight, plotWidth, margin, 15);
@@ -282,10 +281,31 @@ export default {
           .attr('y', 20)
           .attr('text-anchor', 'middle')
           .text(this.title);
-      console.log(title)
       utils.expandChartSizeToTitle(svg, title, width, margin);
     },
+    addSelectionBoundingBox: function (svg, plotWidth, plotHeight, index) {
+      const rect = svg.append("svg")
+          .attr("width", plotWidth)
+          .attr("height", plotHeight)
+          .attr("id", "violin-bbox-" + index)
+          .style("cursor", "pointer")
+          .style("opacity", "0")
 
+      rect.append('rect')
+          .attr('x', 0)
+          .attr('y', 0)
+          .attr('width', plotWidth)
+          .attr('height', plotHeight)
+          .attr('stroke', 'black')
+          .attr('fill', 'rgba(0,0,0,0.03)')
+
+      rect.on('mouseenter', function () {
+        d3.select(this.$el).select("#violin-bbox-" + index).style("opacity", "1.0")
+      }.bind(this))
+      rect.on('mouseleave', function () {
+        d3.select(this.$el).select("#violin-bbox-" + index).style("opacity", "0")
+      }.bind(this))
+    },
     selectElement: function selectElement(property) {
       var oControl = this; // Fix for missing oControl
       var aPropertyPath = oControl.propertyPath.split('/');
@@ -317,10 +337,9 @@ export default {
     },
 
     selectElementByValue: function selectElementByValue(value, plotValue) {
-      var oChartObjects = this.oChartObjects;
-      var aData = oChartObjects.oSortedData[plotValue];
-      var oSelection = oChartObjects.oSelections[plotValue];
-      var d3Yscale = oChartObjects.d3YScale;
+      var aData = this.oChartObjects.oSortedData[plotValue];
+      var oSelection = this.oChartObjects.oSelections[plotValue];
+      var d3Yscale = this.oChartObjects.d3YScale;
       var iElementIndex = this._binarySearch(value, aData);
       oSelection.selectionLine
           .attr('y1', d3Yscale(value))
@@ -337,8 +356,7 @@ export default {
     },
 
     removeSelectionMarker: function removeSelectionMarker(plotValue) {
-      var oChartObjects = this.oChartObjects;
-      var oSelection = oChartObjects.oSelections[plotValue];
+      var oSelection = this.oChartObjects.oSelections[plotValue];
       oSelection.selectionLine
           .attr('display', 'none');
       oSelection.selectionLabelTop
@@ -356,11 +374,10 @@ export default {
       var imposeMax = oProperties.imposeMax;
       var violinColor = oProperties.violinColor;
       var resolution = oProperties.resolution;
-      //var interpolation = oProperties.interpolation;
+      //var interpolation = oProperties.interpolation; TODO
       var path = oProperties.path;
       var index = oProperties.index;
 
-      // xScale because its a rotated plot
       var oControl = this;
 
       // this function is local, to access the path reference
@@ -458,7 +475,7 @@ export default {
       // clippath for selection
       var clipPathId = '';
       if (this.clippedSelectionLine) {
-        clipPathId = oControl.sId + '_clip_' + index;
+        clipPathId = 'clip_' + index;
         var clipPath = svg.append('clipPath').attr('id', clipPathId);
 
         var clipPathPlus = clipPath.append('path')
@@ -598,11 +615,10 @@ export default {
     },
 
     addLabel: function addLabel(svg, text, plotHeight, plotWidth, margin, textheight) {
-      var oControl = this; // Fix for missing oControl
       svg.append('text')
           .text(text)
-          .style('font-family', oControl.fontFamily)
-          .style('font-size', oControl.fontSize)
+          .style('font-family', this.fontFamily)
+          .style('font-size', this.fontSize)
           .attr('text-anchor', 'middle')
           .attr('x', plotWidth / 2)
           .attr('y', plotHeight - margin.bottom + textheight);
@@ -645,12 +661,6 @@ export default {
         }
       }
     },
-    _compareValues: function _compareValues(oSet1, oSet2, aPath) {
-      return d3.ascending(this._getElementFromPath(oSet1, aPath), this._getElementFromPath(oSet2, aPath));
-    },
-    svgCleanUp: function svgCleanUp() {
-      this.oChartObjects.svg.selectAll('.violinLabel').remove();
-    },
     /*
      *  Convert log10 EC50 values to pEC50 values
      */
@@ -670,7 +680,7 @@ export default {
   data: function () {
     return {
       selected: null,
-      oChartObjects: {} // maybe use separate attributes instead of object
+      oChartObjects: {}
     }
   },
   computed: {
@@ -693,83 +703,14 @@ export default {
 </script>
 
 <style>
-.area {
-  shape-rendering: geometricPrecision;
-  fill: #ccc !important;
-  cursor: pointer;
+@import './D3ViolinPlot.css.prdb';
+
+.violin-plot-container {
 }
 
-.boxplot {
-  shape-rendering: crispEdges;
-  fill: none;
-  stroke: black;
-  stroke-width: 1px;
-  cursor: pointer;
-}
-
-.boxplot.fill {
-  fill: black;
-}
-
-.thickbox .boxplot {
-  stroke-width: 2;
-}
-
-.boxplot.mean, .boxplot.median {
-  fill: white;
-  stroke: white;
-}
-
-.boxplot.mean {
-  shape-rendering: geometricPrecision;
-}
-
-.violin {
-  shape-rendering: geometricPrecision;
-  fill: none !important;
-  stroke: #777;
-  stroke-width: 1px;
-}
-
-.axis path, .axis line {
-  fill: none;
-  stroke: #000;
-  stroke-width: 1px;
-  color-rendering: optimizeQuality !important;
-  shape-rendering: crispEdges !important;
-  text-rendering: geometricPrecision !important;
-}
-
-.sapProteomicsdbViolinPlot {
-  position: relative;
-}
-
-.violinarea {
-  position: absolute;
-}
-
-.violinbuttonarea.violinhidden {
-  display: none;
-}
-
-.D3ViolinPlotTitle {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 18px;
-}
-
-.selectedTreatment {
-  text-decoration: underline;
-}
-
-.drug-selection {
-  display: flex;
-  flex-wrap: nowrap;
+.drug-label {
   transform: translate(-50%, 0);
   position: absolute;
-
-}
-
-.drug-selection label, input {
-  cursor: pointer;
+  pointer-events: none;
 }
 </style>

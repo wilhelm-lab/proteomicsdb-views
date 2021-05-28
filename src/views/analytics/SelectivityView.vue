@@ -254,16 +254,11 @@ export default {
       const plots = [];
       const fileName = `${this.selectedProtein.protein_name} (${this.selectedProtein.unique_identifier})`;
       plots.push(this.$refs.violinPlot.getSVG());
-      plots.push(this.$refs.IC50Bars.getSVG());
-      plots.push(this.$refs.IC50Plot.getSVG());
 
-      // TODO: Error when no plots/ only some are shown, add if
-      // TODO: drugPlotVisible
-      /*
-      if (this.drugPlotVisible) {
-
+      if (this.$refs.IC50Bars && this.$refs.IC50Plot) {
+        plots.push(this.$refs.IC50Bars.getSVG());
+        plots.push(this.$refs.IC50Plot.getSVG());
       }
-      */
 
       if (plots) {
         utils.downloadSVGs(plots, fileName, type === 'svg', 'canvasId', this.svgCss);
