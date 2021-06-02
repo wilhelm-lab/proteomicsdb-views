@@ -1,11 +1,11 @@
 <template>
-  <div class="sapProteomicsdbIC50Plot" :style="containerStyle"
-       id="ic50plot-container"
-       ref="container"
+  <div
+      class="sapProteomicsdbIC50Plot"
+      id="ic50plot"
+      ref="container"
+      :style="containerStyle"
   >
-
   </div>
-
 </template>
 
 <script>
@@ -55,16 +55,15 @@ export default {
   watch: {
     dataPoints: function (newVal, oldVal) {
       if (newVal !== oldVal) {
-        // TODO: If is only quick hack for now. Debug why loop is triggered inside onAfterRendering
-        this.onAfterRendering()
+        this.render()
       }
     }
   },
   mounted() {
-    this.onAfterRendering()
+    this.render()
   },
   methods: {
-    onAfterRendering: function onAfterRendering() {
+    render: function () {
       // create Curve Function
       var oParameters = this.curveParameters;
       var aDataPoints = this.dataPoints;
@@ -135,8 +134,8 @@ export default {
       return aResult;
     },
     drawPlot: function drawPlot(aData, aPoints, oErrorBarInfo, bShowCurve) {
-      var sPlotId = '#ic50plot-container';//'#' + this.getId();
-      var $Plot = this.$refs.container; //$(sPlotId);
+      var sPlotId = '#ic50plot';
+      var $Plot = this.$refs.container;
       var margin = {
         top: 40,
         right: 30,
@@ -173,7 +172,7 @@ export default {
           .range([height, 0])
           .nice();
 
-      var color = d3.scaleOrdinal(d3.schemeCategory10); //d3.scale.category10();
+      var color = d3.scaleOrdinal(d3.schemeCategory10);
 
       var xAxis = d3.axisBottom()
           .scale(x)
@@ -191,11 +190,9 @@ export default {
           .y(function getY(d) {
             return y(d[1]);
           })
-          .curve(d3.curveBasis)
-      ;
-      //.interpolate('linear')
+          .curve(d3.curveBasis);
 
-      var svg = d3.select(sPlotId).append('svg')
+      var svg = d3.select(sPlotId).append('svg:svg')
           .attr('class', 'sapProteomicsdbIC50Plot')
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom);
@@ -372,46 +369,12 @@ export default {
       utils.expandChartSizeToTitle(svg, title, width, margin);
     },
     getSVG: function getSVG() {
-      return d3.select(this.$el).selectAll('svg').node();
+      return d3.selectAll('svg').node();
     }
   }
 }
 </script>
 
 <style>
-.sapProteomicsdbIC50Plot .axis text {
-  font-family: Arial, Helvetica, sans-serif;
-  font: 10px sans-serif;
-}
-
-.sapProteomicsdbIC50Plot .AxisLabel {
-  font-family: Arial, Helvetica, sans-serif;
-  font: 12px sans-serif;
-}
-
-.sapProteomicsdbIC50Plot .errorbox text {
-  font-family: Arial, Helvetica, sans-serif;
-  font: 12px sans-serif;
-}
-
-.sapProteomicsdbIC50Plot .axis path,
-.sapProteomicsdbIC50Plot .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.sapProteomicsdbIC50Plot .legend line,
-.sapProteomicsdbIC50Plot .lines {
-  fill: none;
-  stroke-width: 1.5px;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-}
-
-.sapProteomicsdbIC50Plot .IC50Title {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 18px;
-}
-
+@import './IC50Plot.css.prdb';
 </style>

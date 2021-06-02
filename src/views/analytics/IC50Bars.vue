@@ -1,7 +1,7 @@
 <template>
   <div
       ref="container"
-      id="ic50bars-container"
+      id="ic50bars"
       class="sapProteomicsdbIC50Bars"
       :style="containerStyle"
   >
@@ -41,7 +41,7 @@ export default {
       default: undefined
     },
     title: {
-      type: String, // TODO: Originall object?
+      type: String,
       default: ""
     }
   },
@@ -64,7 +64,6 @@ export default {
       this.refresh();
     },
     activeProtein: function () {
-      //this.refresh();
       this.updateBarColor();
     }
   },
@@ -99,14 +98,13 @@ export default {
       var barWidth = this.barWidth;
       var width = Math.max(oData.data.length * barWidth, 0);
 
-      d3.select("#ic50bars-container").select("svg").remove();
+      d3.select("#ic50bars").select("svg").remove();
 
-      var svg = d3.select("#ic50bars-container").append('svg')
+      var svg = d3.select("#ic50bars").append('svg:svg')
           .attr('class', 'IC50Bars')
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom);
       this.svg = svg;
-
       var legend = svg.append('g');
 
       var content = svg
@@ -215,7 +213,6 @@ export default {
           .attr('y', 20)
           .attr('text-anchor', 'start')
           .text(this.title);
-
       utils.expandChartSizeToTitle(svg, title, width, margin);
 
       // Legend
@@ -334,78 +331,17 @@ export default {
       return pEC50;
     },
     getSVG: function () {
-      return d3.select(this.$el).selectAll('svg').node();
+      return d3.selectAll('svg').node();
     }
   }
 }
 </script>
 
 <style>
-.IC50ProteinBar {
-  cursor: pointer;
-}
-
-.IC50Bars .IC50ProteinBar,
-.IC50Legend .IC50MoreThanTenfold {
-  fill: lightgrey;
-}
-
-.IC50Bars .IC50ProteinBar.IC50SelectedProtein,
-.IC50Legend .IC50SelectedProtein {
-  fill: red;
-}
-
-.IC50Bars .IC50BetterValue {
-  fill: lightgreen;
-}
-
-.IC50Bars .IC50AtMostTenfold {
-  fill: lightblue;
-}
-
-.IC50Bars .IC50ProteinBar.IC50ActiveProtein {
-  stroke: #000000;
-  stroke-width: 1px;
-}
-
-.IC50Bars a .ProteinLabel {
-  font-family: Arial, Helvetica, sans-serif;
-  font: 10px sans-serif;
-  text-anchor: end;
-  fill: #00679e;
-}
-
-.IC50Bars .Inhibitor {
-  font-family: Arial, Helvetica, sans-serif;
-  font: 12px sans-serif;
-  font-weight: bold;
-  text-anchor: middle;
-}
-
-.IC50Bars .AxisTitle {
-  font-family: Arial, Helvetica, sans-serif;
-  font: 10px sans-serif;
-  text-anchor: middle;
-}
-
-.IC50Legend {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-}
-
-.IC50LegendGroup {
-  font-family: Arial, Helvetica, sans-serif;
-  font: 12px sans-serif;
-}
-
-.IC50Bars .IC50Title {
-  font-size: 18px;
-  font-family: Arial, Helvetica, sans-serif;
-}
+@import './IC50Bars.css.prdb';
 
 .d3-tip {
   font-size: 11px;
   text-align: center;
 }
-
 </style>

@@ -100,5 +100,4 @@ export default {
 .ic50-container {
   padding: 0 !important;
 }
-
 </style>

@@ -6,8 +6,8 @@
           <label
               :key="plot[keyValue]"
               v-if="!simpleLabel && _dataObjectHasChilds()"
-              class="drug-label"
-              :style="buttonStyles[index]"
+              class="violin-label"
+              :style="labelOffsetStyles[index]"
           >{{ plot[plotLabelValue] }}</label>
         </template>
       </div>
@@ -23,13 +23,13 @@ const d3 = require('d3');
 export default {
   name: "D3ViolinPlot",
   props: {
-    plotWidth: {
-      type: Number,
-      default: 200
-    },
-    plotHeight: {
+    height: {
       type: Number,
       default: 300
+    },
+    violinWidth: {
+      type: Number,
+      default: 200
     },
     chartData: {
       type: Array,
@@ -61,11 +61,6 @@ export default {
       type: Number,
       default: 20
     },
-    interpolation: {
-      type: String,
-      // alternative: step-before
-      default: 'basis'
-    },
     selectedElement: {
       type: String,
       default: undefined
@@ -73,10 +68,6 @@ export default {
     plotLabelValue: {
       type: String,
       default: 'TREATMENT'
-    },
-    selectedKey: {
-      type: String,
-      defaulValue: undefined
     },
     simpleLabel: {
       type: Boolean,
@@ -104,9 +95,8 @@ export default {
     this.drawChart();
   },
   methods: {
-    selectDrug: function (key) {
-      this.$emit("select-drug", key);
-      this.selected = key.DRUG_ID;
+    selectViolin: function (key) {
+      this.$emit("select-violin", key);
     },
     _dataObjectHasChilds: function _dataObjectHasChilds() {
       var data = this.chartData;
@@ -119,8 +109,6 @@ export default {
     },
     drawChart: function () {
       if (this.chartData !== undefined && this._dataObjectHasChilds()) {
-        // show Buttons and draw Heatmap
-        //$('#' + this.sId).children('.heatmapbuttonarea').removeClass('heatmaphidden');
         this.drawChartWithData()
       }
     },
@@ -134,12 +122,8 @@ export default {
     },
     drawChartWithData: function drawChartWithData() {
       var oControl = this;
-      //model = oControl.getModel();
-
-      const divContainerName = ".sapProteomicsdbViolinPlot";
-
       // Create SVG element. Remove old ones.
-      var svgs = d3.select(divContainerName).selectAll('svg');
+      var svgs = d3.select(this.$el).select(".sapProteomicsdbViolinPlot").selectAll('svg');
       svgs.remove();
 
       var margin = {
@@ -150,17 +134,14 @@ export default {
       };
       this.oChartObjects.margin = margin;
 
-      var plotHeight = this.plotHeight;
-      var plotWidth = this.plotWidth;
+      var plotHeight = this.height;
+      var plotWidth = this.violinWidth;
       var plotSpacing = 10;
 
-      var svg = d3.select(this.$el).select(".sapProteomicsdbViolinPlot").append(
-          'svg:svg');
-      // Calculate the SVG, when the Labelssize is known
+      var svg = d3.select(this.$el).select(".sapProteomicsdbViolinPlot").append('svg:svg');
       this.oChartObjects.svg = svg;
 
       var resolution = this.resolution;
-      var interpolation = this.interpolation;
       var path = this.valuePath;
 
       var y = d3.scaleLinear()
@@ -227,7 +208,6 @@ export default {
           imposeMax: 0.25,
           violinColor: '#ccc',
           resolution: resolution,
-          interpolation: interpolation,
           path: path,
           index: j
         };
@@ -241,7 +221,7 @@ export default {
           oControl.addLabel(g, results[i][oControl.plotLabelValue], plotHeight, plotWidth, margin, 15);
         }
         g.on("click", function () {
-          oControl.selectDrug(results[i])
+          oControl.selectViolin(results[i])
         })
         j++;
       }
@@ -299,17 +279,12 @@ export default {
       }.bind(this))
     },
     selectElement: function selectElement(property) {
-      var oControl = this; // Fix for missing oControl
+      var oControl = this;
       var aPropertyPath = oControl.propertyPath.split('/');
       var oChartObjects = this.oChartObjects;
 
       var valuePath = oControl.valuePath;
       var aValuePath = valuePath.split('/');
-
-      if (property !== oControl.selectedElement) {
-        // change Property without rerendering
-        //oControl.setProperty('selectedElement', property, true);
-      }
 
       for (const [plotId, plot] of Object.entries(oChartObjects.oSortedData)) {
         // find the Element with the Value of the Property
@@ -366,7 +341,6 @@ export default {
       var imposeMax = oProperties.imposeMax;
       var violinColor = oProperties.violinColor;
       var resolution = oProperties.resolution;
-      //var interpolation = oProperties.interpolation; TODO
       var path = oProperties.path;
       var index = oProperties.index;
 
@@ -417,7 +391,7 @@ export default {
           }))]);
 
       var area = d3.area()
-          .curve(d3.curveBasis) // TODO: Check if we can use it somehow
+          .curve(d3.curveBasis)
           .x(function areaReturnXValue(d) {
             return xScale(d.x + d.dx / 2);
           })
@@ -427,7 +401,7 @@ export default {
           });
 
       var line = d3.line()
-          .curve(d3.curveBasis) //TODO: Check if we can use it somehow
+          .curve(d3.curveBasis)
           .x(function lineReturnXValue(d) {
             return xScale(d.x + d.dx / 2);
           })
@@ -493,7 +467,7 @@ export default {
           .style('stroke-width', 2)
           .attr('display', 'none');
       if (this.clippedSelectionLine) {
-        selectionLine.attr('clip-path', 'url(#' + clipPathId + ')'); // TODO
+        selectionLine.attr('clip-path', 'url(#' + clipPathId + ')');
       }
 
       var selectionLabelTop = svg.append('text')
@@ -676,10 +650,10 @@ export default {
     }
   },
   computed: {
-    buttonStyles: function () {
+    labelOffsetStyles: function () {
       const styles = {};
-      var plotHeight = this.plotHeight;
-      var plotWidth = this.plotWidth;
+      var plotHeight = this.height;
+      var plotWidth = this.violinWidth;
       var plotSpacing = 10;
       var margin = this.oChartObjects.margin;
       for (let index = 0; index < this.chartData.length; index++) {
@@ -697,10 +671,7 @@ export default {
 <style>
 @import './D3ViolinPlot.css.prdb';
 
-.violin-plot-container {
-}
-
-.drug-label {
+.violin-label {
   transform: translate(-50%, 0);
   position: absolute;
   pointer-events: none;

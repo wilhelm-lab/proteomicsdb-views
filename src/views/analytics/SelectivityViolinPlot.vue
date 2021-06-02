@@ -5,12 +5,19 @@
       :plot-height="height"
       :plot-width="violinWidth"
       :chartData="violinData"
-      :selectedKey="selectedKey"
       :selectedElement="selectedTargetProteinIdString"
-      :simple-label="false"
       :title="violinPlotTitle"
-      :clipped-selection-line="false"
-      v-on:select-drug="onSelectDrug"
+      :clippedSelectionLine="clippedSelectionLine"
+      :keyValue="keyValue"
+      :plotLabelValue="plotLabelValue"
+      :propertyPath="propertyPath"
+      :dataPath="dataPath"
+      :valuePath="valuePath"
+      :fontFamily="fontFamily"
+      :fontSize="fontSize"
+      :resolution="resolution"
+      :simpleLabel="simpleLabel"
+      v-on:select-violin="onSelectDrug"
   ></d3-violin-plot>
 </template>
 
@@ -51,16 +58,52 @@ export default {
         return []
       }
     },
-    selectedKey: {
-      type: Object,
-      default: null
-    },
     selectedTargetProtein: {
       type: Object,
       default: () => {
         return {}
       }
-    }
+    },
+    clippedSelectionLine: {
+      type: Boolean,
+      default: false
+    },
+    keyValue: {
+      type: String,
+      default: 'DRUG_ID'
+    },
+    plotLabelValue: {
+      type: String,
+      default: 'TREATMENT'
+    },
+    propertyPath: {
+      type: String,
+      default: 'PROTEIN_ID'
+    },
+    dataPath: {
+      type: String,
+      default: 'data'
+    },
+    valuePath: {
+      type: String,
+      default: 'VALUE'
+    },
+    fontFamily: {
+      type: String,
+      default: 'Arial,Helvetica,sans-serif'
+    },
+    fontSize: {
+      type: String,
+      default: '12px'
+    },
+    resolution: {
+      type: Number,
+      default: 20
+    },
+    simpleLabel: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {
@@ -99,9 +142,9 @@ export default {
           .then(response => {
             this.violinData = response.data
           })
-          .catch(err => {
+          .catch(e => {
             this.violinData = null
-            console.error(err)
+            console.error(e)
           })
     },
     onSelectDrug: function (e) {
@@ -182,5 +225,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

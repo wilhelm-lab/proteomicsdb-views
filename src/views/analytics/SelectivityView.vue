@@ -235,6 +235,8 @@ export default {
             // Automatically select first protein
             if (this.availableTargetProteins && this.availableTargetProteins.length > 0) {
               this.selectedProtein = this.availableTargetProteins[0]
+            } else {
+              this.selectedProtein = null
             }
           })
           .catch(({response}) => {

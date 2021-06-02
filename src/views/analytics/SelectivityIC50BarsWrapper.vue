@@ -42,7 +42,7 @@ export default {
     onSelectActiveProtein: function (e) {
       this.$emit("select-protein", e)
     },
-    getSVG: function() {
+    getSVG: function () {
       return this.$refs.IC50Bars.getSVG();
     }
   },
@@ -55,5 +55,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
