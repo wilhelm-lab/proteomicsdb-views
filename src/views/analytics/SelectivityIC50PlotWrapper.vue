@@ -6,8 +6,8 @@
         :curveParameters="b50PlotData.parameter"
         :data-points="b50PlotData.data"
         :properties="b50PlotData.properties"
-        :plot-height="plotHeight"
-        :plot-width="plotWidth"
+        :height="height"
+        :width="width"
         :title="title"
     >
     </IC50Plot>
@@ -31,11 +31,11 @@ import IC50Plot from "./IC50Plot";
 export default {
   name: "SelectivityIC50Plot",
   props: {
-    plotWidth: {
+    width: {
       type: Number,
       default: 200
     },
-    plotHeight: {
+    height: {
       type: Number,
       default: 200
     },
@@ -98,8 +98,7 @@ export default {
 
 <style>
 .ic50-container {
-  position: relative;
-  padding: 0;
+  padding: 0 !important;
 }
 
 </style>

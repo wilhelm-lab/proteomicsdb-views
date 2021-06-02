@@ -18,7 +18,7 @@ d3.tip = d3tip;
 export default {
   name: "IC50Bars",
   props: {
-    plotHeight: {
+    height: {
       type: Number,
       default: 200
     },
@@ -55,7 +55,7 @@ export default {
   computed: {
     containerStyle: function () {
       return {
-        height: this.plotHeight + "px",
+        height: this.height + "px",
       }
     }
   },

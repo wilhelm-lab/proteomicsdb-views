@@ -5,7 +5,7 @@
       :selected-protein="selectedProtein"
       :active-protein="activeProtein"
       :title="title"
-      :plot-height="plotHeight"
+      :height="height"
       :bar-width="barWidth"
       v-on:select-protein="onSelectActiveProtein">
   </IC50Bars>
@@ -20,7 +20,7 @@ export default {
     IC50Bars
   },
   props: {
-    plotHeight: {
+    height: {
       type: Number,
       default: 200
     },

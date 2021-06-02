@@ -15,11 +15,11 @@ const d3 = require('d3');
 export default {
   name: "IC50Plot",
   props: {
-    plotWidth: {
+    width: {
       type: Number,
       default: 200
     },
-    plotHeight: {
+    height: {
       type: Number,
       default: 200
     },
@@ -47,8 +47,8 @@ export default {
   computed: {
     containerStyle: function () {
       return {
-        width: this.plotWidth + "px",
-        height: this.plotHeight + "px",
+        width: this.width + "px",
+        height: this.height + "px",
       }
     }
   },

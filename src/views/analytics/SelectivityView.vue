@@ -102,7 +102,7 @@
                   :selected-protein="selectedProteinDrugDetails"
                   :active-protein="activeProtein"
                   v-on:select-protein="onSelectActiveProtein"
-                  :plot-height="400"
+                  :height="400"
                   :bar-width="10"
               >
               </SelectivityIC50BarsWrapper>
@@ -113,8 +113,8 @@
                   ref="IC50Plot"
                   :drug="selectedDrug"
                   :selected-protein="activeProtein"
-                  :plot-height="400"
-                  :plot-width="500"
+                  :height="400"
+                  :width="500"
               >
               </SelectivityIC50PlotWrapper>
             </v-card>
