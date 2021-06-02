@@ -18,18 +18,6 @@ d3.tip = d3tip;
 export default {
   name: "IC50Bars",
   props: {
-    minWidth: {
-      type: Number,
-      default: 200
-    },
-    minHeight: {
-      type: Number,
-      default: 400
-    },
-    plotWidth: {
-      type: Number,
-      default: 200
-    },
     plotHeight: {
       type: Number,
       default: 200
@@ -67,10 +55,7 @@ export default {
   computed: {
     containerStyle: function () {
       return {
-        //maxWidth: this.plotWidth + "px",
-        minWidth: this.minWidth + "px",
-        //maxHeight: this.plotHeight + "px",
-        minHeight: this.minHeight + "px",
+        height: this.plotHeight + "px",
       }
     }
   },

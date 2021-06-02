@@ -5,10 +5,8 @@
       :selected-protein="selectedProtein"
       :active-protein="activeProtein"
       :title="title"
-      :min-height="minHeight"
-      :min-width="minWidth"
-      :plot-width="plotWidth"
       :plot-height="plotHeight"
+      :bar-width="barWidth"
       v-on:select-protein="onSelectActiveProtein">
   </IC50Bars>
 </template>
@@ -22,18 +20,6 @@ export default {
     IC50Bars
   },
   props: {
-    minWidth: {
-      type: Number,
-      default: 200
-    },
-    minHeight: {
-      type: Number,
-      default: 400
-    },
-    plotWidth: {
-      type: Number,
-      default: 200
-    },
     plotHeight: {
       type: Number,
       default: 200

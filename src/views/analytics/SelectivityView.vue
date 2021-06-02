@@ -2,7 +2,9 @@
   <v-row class="ml-10 mt-2">
     <v-col>
       <v-row>
-        <h1>INHIBITOR POTENCY/ SELECTIVITY ANALYSIS</h1>
+        <v-col cols="9">
+          <h1>INHIBITOR POTENCY/ SELECTIVITY ANALYSIS</h1>
+        </v-col>
         <v-spacer></v-spacer>
         <downloader top
                     right
@@ -78,10 +80,12 @@
           <v-card
               v-if="selectedProtein"
               ref="card0"
-              class="my-3 py-3"
+              class="my-3 py-5"
               style="overflow: scroll">
             <SelectivityViolinPlot
                 ref="violinPlot"
+                :violin-width="200"
+                :height="300"
                 :ed50-min="rangeEC50[0]"
                 :ed50-max="rangeEC50[1]"
                 :r2-min="selectedR2Min"
@@ -91,27 +95,25 @@
             ></SelectivityViolinPlot>
           </v-card>
           <div v-if="selectedDrug" class="d-flex flex-row flex-wrap b50-container">
-            <v-card class="pa-3 d-flex align-center">
+            <v-card class="pa-3 d-flex">
               <SelectivityIC50BarsWrapper
                   ref="IC50Bars"
                   :selected-drug="selectedDrug"
                   :selected-protein="selectedProteinDrugDetails"
                   :active-protein="activeProtein"
                   v-on:select-protein="onSelectActiveProtein"
-                  :min-height="400"
+                  :plot-height="400"
+                  :bar-width="10"
               >
               </SelectivityIC50BarsWrapper>
             </v-card>
-
-            <v-card class="mt-1 pa-3 d-flex align-center" :loading="$refs.IC50Plot && $refs.IC50Plot.loading">
+            <v-card class="pa-3 d-flex" :loading="$refs.IC50Plot && $refs.IC50Plot.loading">
               <SelectivityIC50PlotWrapper
                   v-if="activeProtein && selectedDrug"
                   ref="IC50Plot"
                   :drug="selectedDrug"
                   :selected-protein="activeProtein"
-                  :min-height="360"
-                  :min-width="500"
-                  :plot-height="360"
+                  :plot-height="400"
                   :plot-width="500"
               >
               </SelectivityIC50PlotWrapper>
@@ -141,9 +143,7 @@
         </v-col>
       </v-row>
     </v-col>
-    <v-snackbar
-        v-model="showSnackbar"
-    >
+    <v-snackbar v-model="showSnackbar">
       {{ snackbarMessage }}
     </v-snackbar>
   </v-row>
@@ -171,9 +171,11 @@ export default {
       selectedProtein: null,
       activeProtein: null,
       selectedDrug: null,
-      svgCss: [require('./D3ViolinPlot.css.prdb'),
+      svgCSS: [
+        require('./D3ViolinPlot.css.prdb'),
         require('./IC50Plot.css.prdb'),
-        require('./IC50Bars.css.prdb')],
+        require('./IC50Bars.css.prdb')
+      ],
       snackbarMessage: null,
       showSnackbar: false
     }
@@ -201,17 +203,16 @@ export default {
       this.activeProtein = this.selectedProteinDrugDetails;
     },
     searchTargetProteins() {
-      // prevent alert when changing filters before searching
       const query = this.proteinSearchText;
       if (!query || query.trim().length === 0) return;
 
-      // oParameters.query must not contain quotation marks
+      // query must not contain quotation marks
       if (/["]/.test(query)) {
         this.showUserWarning('No quotation marks allowed!');
         return;
       }
 
-      // oParameters.query must have at least 3 letters and digits
+      // query must have at least 3 letters and digits
       if (query.length - query.split(/[a-z]|[\d]/i).join('').length < 3) {
         this.showUserWarning('Please provide three or more alphanumeric characters!');
         return;
@@ -261,10 +262,8 @@ export default {
       }
 
       if (plots) {
-        utils.downloadSVGs(plots, fileName, type === 'svg', 'canvasId', this.svgCss);
+        utils.downloadSVGs(plots, fileName, type === 'svg', 'canvasId', this.svgCSS);
       }
-
-      // this.byId('violinPlot').svgCleanUp(); TODO
     },
     getSVG: function () {
       this.downloadPlots('svg');
@@ -279,8 +278,6 @@ export default {
     getCSV: function () {
       this.$refs.violinPlot.getCSV();
     }
-  },
-  mounted() {
   },
   computed: {
     selectedProteinDrugDetails: function () {

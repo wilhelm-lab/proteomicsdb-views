@@ -1,13 +1,11 @@
 <template>
-  <v-container style="position: relative;display: inline-block;">
+  <v-container class="ic50-container">
     <IC50Plot
         v-if="b50PlotData"
         ref="plot"
         :curveParameters="b50PlotData.parameter"
         :data-points="b50PlotData.data"
         :properties="b50PlotData.properties"
-        :min-height="minHeight"
-        :min-width="minWidth"
         :plot-height="plotHeight"
         :plot-width="plotWidth"
         :title="title"
@@ -33,14 +31,6 @@ import IC50Plot from "./IC50Plot";
 export default {
   name: "SelectivityIC50Plot",
   props: {
-    minWidth: {
-      type: Number,
-      default: 200
-    },
-    minHeight: {
-      type: Number,
-      default: 400
-    },
     plotWidth: {
       type: Number,
       default: 200
@@ -106,6 +96,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+.ic50-container {
+  position: relative;
+  padding: 0;
+}
 
 </style>

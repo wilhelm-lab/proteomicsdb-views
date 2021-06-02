@@ -11,7 +11,7 @@
       <v-row dense>
         <v-col>
           <h3>Toolbox</h3>
-          <v-layout class="container-layout" row ma-2>
+          <v-layout row ma-2>
             <div v-for="tool in tools" :key="tool.name">
               <v-hover>
                 <v-card slot-scope="{ hover }" :class="`elevation-${hover ? 8 : 2}`"
@@ -57,12 +57,7 @@ export default {
     openTool({name}) {
       let routeData = this.$router.resolve('/vue/analytics/' + name);
       window.open(routeData.href, '_blank');
-      //this.$router.push()
     }
-  },
-  computed: {},
-  watch: {},
-  mounted() {
   }
 }
 

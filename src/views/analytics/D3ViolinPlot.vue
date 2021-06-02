@@ -23,14 +23,6 @@ const d3 = require('d3');
 export default {
   name: "D3ViolinPlot",
   props: {
-    minWidth: {
-      type: Number,
-      default: 200
-    },
-    minHeight: {
-      type: Number,
-      default: 400
-    },
     plotWidth: {
       type: Number,
       default: 200

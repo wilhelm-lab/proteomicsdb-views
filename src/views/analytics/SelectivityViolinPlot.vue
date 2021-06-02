@@ -2,6 +2,8 @@
   <d3-violin-plot
       id="violinPlot"
       ref="violinPlot"
+      :plot-height="height"
+      :plot-width="violinWidth"
       :chartData="violinData"
       :selectedKey="selectedKey"
       :selectedElement="selectedTargetProteinIdString"
@@ -23,13 +25,13 @@ export default {
     D3ViolinPlot
   },
   props: {
-    minWidth: {
+    height: {
       type: Number,
-      default: 400
+      default: 300
     },
-    minHeight: {
+    violinWidth: {
       type: Number,
-      default: 400
+      default: 200
     },
     ed50Min: {
       type: Number,
