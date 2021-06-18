@@ -9,7 +9,7 @@
       :title="violinPlotTitle"
       :clippedSelectionLine="clippedSelectionLine"
       :keyValue="keyValue"
-      :plotLabelValue="plotLabelValue"
+      :plotLabelValue="drugLabelField"
       :propertyPath="propertyPath"
       :dataPath="dataPath"
       :valuePath="valuePath"
@@ -109,6 +109,7 @@ export default {
     return {
       violinData: undefined,
       selectedElement: undefined,
+      drugLabelField: "TREATMENT"
     }
   },
   watch: {
@@ -139,9 +140,38 @@ export default {
           drug_id_selection: this.drugIdSelection.join(";")
         }
       })
-          .then(response => {
-            this.violinData = response.data
-          })
+          .then(res => res.data)
+          .then(async drugData => {
+                try {
+                  let {data: catdsData} = await axios.get(`${this.$store.state.host}/logic/catds/getCatds.xsjs`, {
+                    params: {
+                      protein: this.selectedTargetProtein.protein_name,
+                      taxcode: this.$store.state.taxcode
+                    }
+                  })
+                  const unsortedViolinData = drugData.map(drug => {
+                    const matchingCatds = catdsData.filter(catds => {
+                      return catds.DRUG_EXPERIMENTAL_FACTOR_CV_ID === drug.DRUG_ID
+                    }).pop();
+                    this.drugLabelField = "treatment_catds"
+                    return {
+                      ...drug,
+                      catds: matchingCatds ? matchingCatds.CATDS : 0.0,
+                      treatment_catds: matchingCatds ? `${drug.TREATMENT} (${matchingCatds.CATDS.toFixed(4)})` : drug.TREATMENT
+                    }
+                  })
+                  this.violinData = unsortedViolinData.sort((a, b) => {
+                    // Descending
+                    if (a.catds < b.catds) return 1;
+                    if (a.catds > b.catds) return -1;
+                    return 0;
+                  })
+                } catch (e) {
+                  this.violinData = drugData
+                  console.error(e)
+                }
+              }
+          )
           .catch(e => {
             this.violinData = null
             console.error(e)
