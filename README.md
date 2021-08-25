@@ -14,6 +14,12 @@ Install dependancies
 npm install
 ```
 
+Specify target backend in `src/store/store.js` e.g.
+```
+host: 'https://q01.proteomicsdb.in.tum.de'
+```
+
+
 ## Compiles and hot-reloads for development
 ```
 npm run serve
