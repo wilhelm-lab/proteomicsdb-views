@@ -5,6 +5,7 @@ import About from '../views/about/AboutUs.vue'
 import Analytics from '../views/Analytics.vue'
 import API from '../views/API.vue'
 import FAQ from '../views/FAQ.vue'
+import Disclaimer from '../views/Disclaimer.vue'
 import ProteinSearch from '../views/search/ProteinSearch.vue'
 import ProteinWrapper from '../views/protein/ProteinWrapper.vue'
 import ProteinSummary from '@/views/protein/ProteinSummary.vue'
@@ -200,6 +201,11 @@ export default new VueRouter({
     path: '/vue/about/',
     name: 'about',
     component: About
+  },
+  {
+    path: '/vue/disclaimer/',
+    name: 'disclaimer',
+    component: Disclaimer
   }
   ],
   mode: 'history'

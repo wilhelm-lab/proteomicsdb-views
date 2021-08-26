@@ -173,7 +173,7 @@
                                         <v-divider vertical></v-divider>
                                         <v-btn x-small text class="white--text" @click="showContact">Contact us</v-btn>
                                         <v-divider vertical></v-divider>
-                                        <v-btn x-small text class="white--text">Terms of use</v-btn>
+                                        <v-btn x-small text class="white--text" @click="showTermsOfUse">Terms of use</v-btn>
                                         <v-divider vertical></v-divider>
                                         <v-btn x-small text class="white--text">Impressum</v-btn>
                                         <v-spacer></v-spacer>
@@ -255,6 +255,9 @@ export default {
     },
     showContact: function(){
       router.push('/vue/about/').catch(()=>{});
+    },
+    showTermsOfUse: function (){
+      router.push('/vue/disclaimer/').catch(()=>{});
     },
     checkForClose: function(data){
       if(this.selectedOrg !== data) {
