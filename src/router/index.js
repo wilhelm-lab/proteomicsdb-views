@@ -2,9 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import About from '../views/about/AboutUs.vue'
-import Analytics from '../views/Analytics.vue'
+// import Analytics from '../views/Analytics.vue'
 import API from '../views/API.vue'
 import FAQ from '../views/FAQ.vue'
+import ComingSoon from '../views/ComingSoon.vue'
 import Disclaimer from '../views/Disclaimer.vue'
 import ProteinSearch from '../views/search/ProteinSearch.vue'
 import ProteinWrapper from '../views/protein/ProteinWrapper.vue'
@@ -22,7 +23,7 @@ import ProteinProjects from '@/views/protein/ProteinProjects.vue'
 import Kinase from '@/views/protein/KinaseInhibitorsView.vue'
 import Meltome from '@/views/protein/MeltomeView.vue'
 import Turnover from '@/views/protein/TurnoverView.vue'
-import ED from '@/views/project/ExperimentDesign.vue'
+// import ED from '@/views/project/ExperimentDesign.vue'
 import axios from 'axios';
 
 Vue.use(VueRouter);
@@ -180,12 +181,12 @@ export default new VueRouter({
   {
     path: '/vue/project/',
     name: 'project',
-    component: ED,
+    component: ComingSoon//ED,
   },
   {
     path: '/vue/analytics/',
     name: 'analytics',
-    component: Analytics
+    component: ComingSoon//Analytics
   },
   {
     path: '/vue/api/',
