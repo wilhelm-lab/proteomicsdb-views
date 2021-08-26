@@ -22,7 +22,7 @@
                   </p>
                 </v-card-subtitle>
                 <v-list>
-                  <template v-for="item in apiList">
+                  <template v-for="item in apis">
                     <v-list-item :key="`${item.title}-item`"></v-list-item>
                     <h3 :key="`${item.title}-title`">{{ item.title }}</h3>
                     <h4 :key="`${item.title}-description-title`">
@@ -105,7 +105,7 @@ export default {
     DxScrolling,
   },
   data: () => ({
-    apiList: [
+    apis: [
       {
         title: "API Element #1",
         description: "The first element of the API",
@@ -169,18 +169,18 @@ export default {
     ],
   }),
   methods: {
-    getApi: function () {
+    getApis: function () {
       let that = this;
 
       axios
         .get(this.$store.state.host + "/proteomicsdb/logic/getAPIs.xsjs")
         .then((response) => {
-          that.apiList = response.data;
+          that.apis = response.data;
         });
     },
   },
   mounted() {
-    this.getApi();
+    this.getApis();
   },
 };
 </script>
