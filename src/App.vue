@@ -175,7 +175,7 @@
                                         <v-divider vertical></v-divider>
                                         <v-btn x-small text class="white--text" @click="showTermsOfUse">Terms of use</v-btn>
                                         <v-divider vertical></v-divider>
-                                        <v-btn x-small text class="white--text">Impressum</v-btn>
+                                        <v-btn x-small text class="white--text" href="https://www1.ls.tum.de/proteomics/home/" target="_blank">Impressum</v-btn>
                                         <v-spacer></v-spacer>
                                         <span> v{{version}} </span>
         </v-footer>
