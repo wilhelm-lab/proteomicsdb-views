@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import About from '../views/about/AboutUs.vue'
 import Analytics from '../views/Analytics.vue'
+import API from '../views/API.vue'
 import ProteinSearch from '../views/search/ProteinSearch.vue'
 import ProteinWrapper from '../views/protein/ProteinWrapper.vue'
 import ProteinSummary from '@/views/protein/ProteinSummary.vue'
@@ -187,7 +188,7 @@ export default new VueRouter({
   {
     path: '/vue/api/',
     name: 'api',
-    component: Home
+    component: API
   },
   {
     path: '/vue/faq/',
