@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import About from '../views/about/AboutUs.vue'
 import Analytics from '../views/Analytics.vue'
+import CellSensitivity from '../views/analytics/CellSensitivity.vue'
 import ProteinSearch from '../views/search/ProteinSearch.vue'
 import ProteinWrapper from '../views/protein/ProteinWrapper.vue'
 import ProteinSummary from '@/views/protein/ProteinSummary.vue'
@@ -183,6 +184,11 @@ export default new VueRouter({
     path: '/vue/analytics/',
     name: 'analytics',
     component: Analytics
+  },
+  {
+    path: '/vue/analytics/cellSensitivity',
+    name: 'cellSensitivity',
+    component: CellSensitivity
   },
   {
     path: '/vue/api/',
