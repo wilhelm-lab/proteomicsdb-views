@@ -254,7 +254,7 @@ export default {
       router.push('/vue/about/').catch(()=>{});
     },
     showContact: function(){
-      router.push('/vue/contact/').catch(()=>{});
+      router.push('/vue/about/').catch(()=>{});
     },
     checkForClose: function(data){
       if(this.selectedOrg !== data) {
