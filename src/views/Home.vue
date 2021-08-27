@@ -2,9 +2,9 @@
   <v-main>
     <v-container fluid>
       <v-row>
-        <!-- right side news section -->
+        <!-- left side statistics section -->
         <v-col cols="3">
-          <v-row dense>
+          <v-row dense justify="start">
             <v-col cols="9">
               <v-card>
                 <v-card-title>Status</v-card-title>
@@ -279,6 +279,7 @@
                     <h4>Recently Uploaded Projects</h4>
                     <template v-for="project in statistics.RECENT_PROJECTS">
                       <a
+                        class="projectlink"
                         :key="project.PROJECT_ID"
                         :href="project.PROJECT_ID"
                         target="_blank"
@@ -294,7 +295,7 @@
           </v-row>
         </v-col>
         <!-- main container -->
-        <v-col cols="7">
+        <v-col cols="6">
           <!-- header -->
           <v-row>
             <v-col cols="12">
@@ -311,9 +312,9 @@
           </v-row>
           <!-- /header -->
           <v-row>
-            <v-col cols="7">
+            <v-col cols="12">
               <v-layout class="container-layout" row ma-2>
-                <v-flex v-for="(t, index) in tiles" :key="index" xs6 md6>
+                <v-flex v-for="(t, index) in tiles" :key="index" xs6 md6 style="margin-bottom:10px;margin-right:10px;max-width:450px">
                   <v-hover>
                     <v-card
                       slot-scope="{ hover }"
@@ -321,7 +322,7 @@
                       class="ma-2"
                     >
                       <div class="d-flex flex-no-wrap justify-space-between">
-                        <v-avatar class="ma-3" size="125" tile :key="t.id">
+                        <v-avatar class="ma-3" size="150" tile :key="t.id">
                           <v-img :src="icons[t.icon]" :key="t.icon"></v-img>
                         </v-avatar>
                         <div>
@@ -336,7 +337,7 @@
                 </v-flex>
               </v-layout>
             </v-col>
-            <v-divider vertical inset></v-divider>
+            <!-- <v-divider vertical inset></v-divider>
             <v-col cols="4">
               <v-layout class="container-layout" row my-2>
                 <v-flex xs6 md6>
@@ -355,13 +356,13 @@
                   </v-hover>
                 </v-flex>
               </v-layout>
-            </v-col>
+            </v-col> -->
           </v-row>
         </v-col>
         <!-- right side news section -->
-        <v-col cols="2">
-          <v-row dense>
-            <v-col cols="12">
+        <v-col cols="3">
+          <v-row dense justify="end">
+            <v-col cols="9">
               <v-card>
                 <v-list two-line>
                   <v-card-title>News</v-card-title>
@@ -592,7 +593,7 @@ h4 {
 }
 
 td,
-a {
+.projectlink {
   margin-left: 15px;
   font-size: 9pt !important;
 }
@@ -609,9 +610,5 @@ a {
 .container-layout {
   width: inherit;
   min-width: inherit;
-}
-
-.stats-card {
-  margin-bottom: 100px;
 }
 </style>
