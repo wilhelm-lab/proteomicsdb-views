@@ -98,6 +98,7 @@
       <v-navigation-drawer
                    v-model="drawerRight"
                    :expand-on-hover="!isMobile()"
+                   width="300px"
                    app
                    clipped
                    right
@@ -118,7 +119,7 @@
                            <v-icon>fas fa-folder</v-icon>
                          </v-list-item-action>
                          <v-list-item-content>
-                           <v-list-item-title>Project</v-list-item-title>
+                           <v-list-item-title style="color:grey">Project (Coming Soon)</v-list-item-title>
                          </v-list-item-content>
                        </v-list-item>
                        <v-list-item @click="showAnalytics">
@@ -126,7 +127,7 @@
                            <v-icon>fas fa-chart-pie</v-icon>
                          </v-list-item-action>
                          <v-list-item-content>
-                           <v-list-item-title>Analytics</v-list-item-title>
+                           <v-list-item-title style="color:grey">Analytics (Coming Soon)</v-list-item-title>
                          </v-list-item-content>
                        </v-list-item>
                        <v-list-item @click="showApi">
