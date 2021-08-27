@@ -215,7 +215,7 @@ export default new VueRouter({
     component: NotFound
   },
   {
-    path: '/vue/:catchAll(.*)',
+    path: '/:pathMatch(.*)',
     redirect: '/vue/404'
   },
   ],

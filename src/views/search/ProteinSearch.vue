@@ -46,6 +46,7 @@ export default {
   },
   computed: {
   },
+  //TODO: I think this watcher is not functional, since cookies are not reactive in Vue by default 
   watch: {
     '$store.state.cookie': function(str) {
       this.taxcode = str;
