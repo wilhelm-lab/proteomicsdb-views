@@ -7,6 +7,7 @@ import API from '../views/API.vue'
 import FAQ from '../views/FAQ.vue'
 import ComingSoon from '../views/ComingSoon.vue'
 import Disclaimer from '../views/Disclaimer.vue'
+import NotFound from '../views/NotFound.vue'
 import ProteinSearch from '../views/search/ProteinSearch.vue'
 import ProteinWrapper from '../views/protein/ProteinWrapper.vue'
 import ProteinSummary from '@/views/protein/ProteinSummary.vue'
@@ -207,7 +208,16 @@ export default new VueRouter({
     path: '/vue/disclaimer/',
     name: 'disclaimer',
     component: Disclaimer
-  }
+  },
+  {
+    path: '/vue/404/',
+    name: '404',
+    component: NotFound
+  },
+  {
+    path: '/vue/:catchAll(.*)',
+    redirect: '/vue/404'
+  },
   ],
   mode: 'history'
 })
