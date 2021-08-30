@@ -314,7 +314,7 @@
           <v-row>
             <v-col cols="12">
               <v-layout class="container-layout" row ma-2>
-                <v-flex v-for="(t, index) in tiles" :key="index" xs6 md6 style="margin-bottom:10px;margin-right:10px;max-width:450px">
+                <v-flex v-for="(t, index) in tiles" :key="index" xs6 md6 style="margin-bottom:10px;margin-right:10px;max-width:425px">
                   <v-hover>
                     <v-card
                       slot-scope="{ hover }"
@@ -585,7 +585,7 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss">
+<style lang="scss">
 h4 {
   margin-top: 10px;
   margin-left: 10px;
