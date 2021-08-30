@@ -314,7 +314,17 @@
           <v-row>
             <v-col cols="12">
               <v-layout class="container-layout" row ma-2>
-                <v-flex v-for="(t, index) in tiles" :key="index" xs6 md6 style="margin-bottom:10px;margin-right:10px;max-width:425px">
+                <v-flex
+                  v-for="(t, index) in tiles"
+                  :key="index"
+                  xs6
+                  md6
+                  style="
+                    margin-bottom: 10px;
+                    margin-right: 10px;
+                    max-width: 425px;
+                  "
+                >
                   <v-hover>
                     <v-card
                       slot-scope="{ hover }"
@@ -370,10 +380,13 @@
                     <v-divider :key="item.SHORT_TITLE"></v-divider>
                     <v-list-item
                       :key="item.NEWS_ID"
-                      @click="openNews"
+                      @click="openNews(item.NEWS_ID)"
                       three-line
                     >
                       <v-list-item-content>
+                        <v-list-item-subtitle
+                          v-html="item.NEWS_DATE"
+                        ></v-list-item-subtitle>
                         <v-list-item-title
                           v-html="item.SHORT_TITLE"
                         ></v-list-item-title>
@@ -392,6 +405,15 @@
           </v-row>
         </v-col>
       </v-row>
+      <!-- modal component for news details -->
+      <div v-if="showDetailedNews" ref="detailedNewsModal" class="modal">
+        <div class="modal-content">
+          <span class="close" @click="showDetailedNews = false">&times;</span>
+          <div>{{ detailedNewsItem.NEWS_DATE }}</div>
+          <h1 style="margin-bottom:1cm">{{ detailedNewsItem.TITLE }}</h1>
+          <span v-html="detailedNewsItem.TEXT"></span>
+        </div>
+      </div>
     </v-container>
   </v-main>
 </template>
@@ -544,9 +566,16 @@ export default {
         id: 3,
       },
     ],
+    showDetailedNews: false,
+    detailedNewsItem: undefined,
   }),
   methods: {
-    openNews: function () {},
+    openNews: function (newsId) {
+      this.showDetailedNews = true;
+      this.detailedNewsItem = this.news.filter(
+        (elem) => elem.NEWS_ID === newsId
+      )[0];
+    },
     getNews: function () {
       let that = this;
 
@@ -582,6 +611,13 @@ export default {
   mounted() {
     this.getNews();
     this.getStatistics();
+
+    //If the modal with the detailed news is shown, close it when clicking on the window outside it
+    window.onclick = (event) => {
+      if (event.target === this.$refs.detailedNewsModal) {
+        this.showDetailedNews = false;
+      }
+    };
   },
 };
 </script>
@@ -610,5 +646,41 @@ td,
 .container-layout {
   width: inherit;
   min-width: inherit;
+}
+
+.modal {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto; /* 5% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>
