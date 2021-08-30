@@ -585,7 +585,7 @@ export default {
   },
 };
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 h4 {
   margin-top: 10px;
   margin-left: 10px;
