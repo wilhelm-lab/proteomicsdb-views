@@ -19,21 +19,6 @@
     </v-row>
     <interactionnetwork ref="mynetwork" :proteinId="proteinId" :proteinAccession="proteinAccession" @dataLoaded="disabled=false"/>
     <canvas id="canvasId" style=display:none></canvas>
-    <v-btn :color="$store.state.selectedOrganismShown.primaryColor"
-           style="right:80px;bottom:130px;"
-           fixed dark bottom right
-           fab small
-           >
-           <v-icon>fas fa-question</v-icon>
-    </v-btn>
-    <v-btn
-           color="red"
-           style="right:80px;bottom:80px;"
-           fixed dark bottom right
-           fab small
-           >
-           <v-icon>fas fa-bug</v-icon>
-    </v-btn>
   </v-container>
 </template>
 
