@@ -531,7 +531,6 @@ export default {
         this.showHelp = false;
         // this.showFeedbackForm = false;
         //2. Update the contents of the help page
-        console.log(`Changing route to ${JSON.stringify(to.path)}`); //DEBUG
         this.getHelpHTML(to.meta.helpKey);
       },
     },
