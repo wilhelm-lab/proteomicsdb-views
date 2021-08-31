@@ -50,9 +50,10 @@ export default {
     proteinSummary: null,
     title: '',
     leftBarItems: [
+    //TODO: Implement the countData badges by wrapping a row counter around the queries
     {text: 'Summary', icon: 'far fa-file-alt', func: 'showSummary', hover: false, countData: 0, value: 'summary'},
     {text: 'Feature viewer', icon: 'fas fa-align-left', func: 'showFeatures', hover: false, countData: 0, value: 'featureViewer'},
-    {text: 'Peptides MS/MS', icon: 'far fa-chart-bar', func: 'showPeptidesMSMS', hover: false, countData: 100, value: 'peptides'},
+    {text: 'Peptides MS/MS', icon: 'far fa-chart-bar', func: 'showPeptidesMSMS', hover: false, countData: 0, value: 'peptides'},
     {text: 'Reference Peptides', icon: 'mdi-chart-bar-stacked', func: 'showReferencePeptides', hover: false, countData: 0, value:'referencePeptides'},
     {text: 'Proteotypicity', icon: 'fas fa-balance-scale-right', func: 'showProteotypicity', hover: false, countData: 0, value: 'proteotypicity'},
     {text: 'FDR estimation', icon: 'fas fa-chart-area', func: 'showFDR', hover: false, countData: 0, value:'fdr'},

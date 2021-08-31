@@ -48,21 +48,6 @@
         <spectrumWrapper :spectrumEntry="selectedIdentification" :peptideId="peptideId" :peptideSequence="peptideSequence" @plottingFinished="stopLoading" isReferenceSpectrum ref="spectrumWrapper" />
       </v-col>
     </v-row>
-    <v-btn :color="$store.state.selectedOrganismShown.primaryColor"
-                       style="right:80px;bottom:130px;"
-                       fixed dark bottom right
-                       fab small
-                       >
-                       <v-icon>fas fa-question</v-icon>
-    </v-btn>
-    <v-btn
-                       color="red"
-                       style="right:80px;bottom:80px;"
-                       fixed dark bottom right
-                       fab small
-                       >
-                       <v-icon>fas fa-bug</v-icon>
-    </v-btn>
   </v-container>
 </template>
 
