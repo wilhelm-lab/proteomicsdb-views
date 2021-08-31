@@ -38,7 +38,7 @@ export default {
       let that = this;
       axios
         .get(
-          this.$store.state.host + "/proteomicsdb/logic/tumDisclaimer.fragment.xml"
+          this.$store.state.host + "/proteomicsdb/logic/tmp/tumDisclaimer.fragment.xml"
         )
         .then((response) => {
           //The tags in the response XML contain "html:" prefixes 

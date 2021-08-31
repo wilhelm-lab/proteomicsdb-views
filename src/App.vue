@@ -213,6 +213,50 @@
       :organisms="organisms"
       @selectedOrganism="selectOrganism"
     />
+    <v-row>
+      <v-btn
+        color="primary"
+        style="right: 80px; bottom: 80px"
+        fixed
+        dark
+        bottom
+        right
+        fab
+        small
+        @click="showHelp = true"
+      >
+        <v-icon>fas fa-question</v-icon>
+      </v-btn>
+      <!-- Feedback functionality is not implemented yet -->
+      <!-- <v-btn
+        color="red"
+        style="right: 80px; bottom: 80px"
+        fixed
+        dark
+        bottom
+        right
+        fab
+        small
+        @click="showFeedbackForm = true"
+      >
+        <v-icon>fas fa-bug</v-icon>
+      </v-btn> -->
+    </v-row>
+    <!-- Modal components for help and feedback -->
+    <div v-if="showHelp" ref="helpModal" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="showHelp = false">&times;</span>
+        <span v-html="helpHTML"></span>
+      </div>
+    </div>
+    <!-- Feedback functionality is not implemented yet -->
+
+    <!-- <div v-if="showFeedbackForm" ref="feedbackFormModal" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="showFeedbackForm = false">&times;</span>
+        <span v-html="feedbackFormHTML"></span>
+      </div>
+    </div> -->
 
     <v-footer
       app
@@ -256,6 +300,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import store from "@/store/store.js";
 import router from "@/router";
 import selectOrganismPopup from "@/views/popup/OrganismSelection";
@@ -291,6 +336,10 @@ export default {
       { text: "Drug (Coming soon)", disabled: true },
       { text: "Cell Line (Coming soon)", disabled: true },
     ],
+    showHelp: false,
+    helpHTML: undefined,
+    // showFeedbackForm: false,
+    // feedbackFormHTML: undefined,
   }),
   methods: {
     CancelAndClose: function () {
@@ -425,6 +474,37 @@ export default {
         this.searchString = this.searchString.replaceAll("/", "");
       }
     },
+    getHelpHTML: function (key) {
+      let that = this;
+      if (key) {
+        axios
+          .get(
+            this.$store.state.host +
+              `/proteomicsdb/logic/tmp/${key}.fragment.html`
+          )
+          .then(function (response) {
+            //First and two last lines are SAP-specific and not valid HTML, so cut them off
+            that.helpHTML = response.data.split("\n").slice(1, -2).join("\n");
+          });
+      } else {
+        that.helpHTML = "<p> Sorry, no help available for this component! </p>";
+      }
+    },
+    // getFeedbackFormHTML: function () {
+    //   let that = this;
+    //   axios
+    //     .get(
+    //       this.$store.state.host +
+    //         "/proteomicsdb/logic/tmp/feedback.fragment.html"
+    //     )
+    //     .then(function (response) {
+    //       //First and two last lines are SAP-specific and not valid HTML, so cut them off
+    //       that.feedbackFormHTML = response.data
+    //         .split("\n")
+    //         .slice(1, -2)
+    //         .join("\n");
+    //     });
+    // },
   },
   computed: {
     ...mapGetters(["organisms"]),
@@ -442,6 +522,18 @@ export default {
       this.$cookie.set("organism", val, { expires: 14, SameSite: "Lax" });
       this.setStoreOrganism();
       this.setStoreShownOrganism(selectedOrganismShown);
+    },
+    $route: {
+      immediate: true,
+      handler(to) {
+        //Whenever the route changes, do two things:
+        //1. Hide all modals
+        this.showHelp = false;
+        // this.showFeedbackForm = false;
+        //2. Update the contents of the help page
+        console.log(`Changing route to ${JSON.stringify(to.path)}`); //DEBUG
+        this.getHelpHTML(to.meta.helpKey);
+      },
     },
   },
   created() {
@@ -461,6 +553,7 @@ export default {
     } else {
       this.selectOrganism(iTaxcode);
     }
+    // this.getFeedbackFormHTML();
   },
 };
 </script>
@@ -472,5 +565,26 @@ export default {
 
 .dx-selection {
   background-color: #b0b0b0 !important;
+}
+
+.modal {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto; /* 5% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
 }
 </style>
