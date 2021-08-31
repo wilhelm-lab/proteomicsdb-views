@@ -330,6 +330,8 @@
                       slot-scope="{ hover }"
                       :class="`elevation-${hover ? 8 : 2}`"
                       class="ma-2"
+                      :disabled="!t.target"
+                      @click="onTileClick(t)"
                     >
                       <div class="d-flex flex-no-wrap justify-space-between">
                         <v-avatar class="ma-3" size="150" tile :key="t.id">
@@ -545,16 +547,18 @@ export default {
         description: "Explore the proteome of your selected organism.",
         icon: "searchIcon",
         id: 0,
+        target: "/vue/search",
+        useRouter: true,
       },
       {
-        title: "Analytics Toolbox",
+        title: "Analytics Toolbox\n(Coming Soon)",
         description:
           "Use our analytics tools to explore co-expression patterns, etc.",
         icon: "analyticsIcon",
         id: 1,
       },
       {
-        title: "Upload your data",
+        title: "Upload your data\n(Coming Soon)",
         description: "Use our analytics and visualization tools on your data.",
         icon: "uploadIcon",
         id: 2,
@@ -564,12 +568,22 @@ export default {
         description: "Predict peptide properties using our online service.",
         icon: "prositIcon",
         id: 3,
+        target: "/prosit",
+        useRouter: false,
       },
     ],
     showDetailedNews: false,
     detailedNewsItem: undefined,
   }),
   methods: {
+    onTileClick: function (tile) {
+      if (tile.useRouter) {
+        this.$router.push(tile.target);
+      } else {
+        window.location = this.$store.state.host + tile.target;
+      }
+    },
+
     openNews: function (newsId) {
       this.showDetailedNews = true;
       this.detailedNewsItem = this.news.filter(
