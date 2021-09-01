@@ -1,6 +1,6 @@
 <template>
   <v-app width="97%">
-    <v-content>
+    <v-main>
       <v-container fluid grid-list-lg>
        <v-layout xs12>
         <v-flex xs3>
@@ -94,8 +94,9 @@
                :selectedDataset="selectedDataset"
                :selectedTissues="selectedTissuesString"
                :selectedDrugs="selectedDrugsString"
+               :violinModel="violinModel"
                @keyChange="onParCoordsChange"
-               @modelUpdate="onViolinUpdate"
+               @getData="getDataForViolinPlots"
                />
           </v-layout>
         </v-flex>
@@ -111,7 +112,9 @@
               :selectedTissues="selectedTissuesString"
               :selectedDrugs="selectedDrugsString"
               :selectedLinesForBarPlot="selectedLinesForBarPlot"
+              :violinModel="violinModel"
               @send-message="onBarSelected"
+              @getData="getDataForViolinPlots"
               />
           </v-layout>
           <v-layout row class="float-left">
@@ -126,7 +129,7 @@
         </v-flex>
        </v-layout>
       </v-container>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
@@ -157,7 +160,7 @@ export default {
       drugs: [],
       selectedDrugs: [],
       selectedKey: null,
-      selectedLinesForBarPlot: null,
+      selectedLinesForBarPlot: "",
       violinModel: null,
       sModelIds: '',
       fittedCurves: 0,
@@ -184,10 +187,24 @@ export default {
       return null
     }
   },
+  watch: {
+    selectedDataset: function() {
+      this.getDataForViolinPlots()
+    },
+    selectedDrugs: function() {
+      this.getDataForViolinPlots()
+    },
+    selectedTissues: function() {
+      this.getDataForViolinPlots()
+    },
+    selectedLinesForBarPlot: function() {
+      this.getDataForViolinPlots()
+    }
+  },
   methods: {
     loadDatasets: function () {
       let that = this
-      let urlDatasets = this.$store.state.host+'/proteomicsdb/logic/cellSelectivity/getAllDatasets.xsjs'
+      let urlDatasets = this.$store.state.host + '/proteomicsdb/logic/cellSelectivity/getAllDatasets.xsjs'
 
       axios.get(urlDatasets, {}).then(function (response) {
         that.datasets = response.data
@@ -212,7 +229,7 @@ export default {
     },
     loadCellLinesAndTreatments: function () {
       let that = this
-      let urlDatasets = this.$store.state.host+'/proteomicsdb/logic/cellSelectivity/getCellLinesAndDrugsByDatasetId.xsjs'
+      let urlDatasets = this.$store.state.host + '/proteomicsdb/logic/cellSelectivity/getCellLinesAndDrugsByDatasetId.xsjs'
 
       axios.get(urlDatasets, {
         params: {
@@ -223,6 +240,35 @@ export default {
           that.drugs = response.data.drug
         })
     },
+    getDataForViolinPlots: function() {
+      if (this.selectedDataset && 
+      this.selectedDrugs.length>0 && 
+      this.selectedTissues.length && 
+      !(this.selectedDrugs[0] === '-1' && this.selectedTissues[0] === 'not')){
+        
+        let urlDatasets = this.$store.state.host+'/proteomicsdb/logic/cellSelectivity/getDataForVioPlots.xsjs'
+        axios.get(urlDatasets, {
+            params: {
+              dataset_id: this.selectedDataset.datasetId,
+              drug_id: this.selectedDrugsString,
+              cell_line_id: this.selectedTissuesString,
+              BIC: 100,
+              R2: 0,
+              Effect: 0,
+              Switch: 1,
+              model_ids: this.selectedLinesForBarPlot,
+            }})
+            .then(response => { 
+            this.violinModel = response.data
+            this.fittedCurves = 0;
+            if (this.violinModel) {
+              this.fittedCurves = this.violinModel[0].data.reduce(function(acc, d) {
+              return acc + d["ModelId"].split(";").length
+              }, 0);
+      }
+            })
+      }
+    },
     onCelllineChange: function (selection) {
       this.selectedTissues = selection
     },
@@ -231,12 +277,7 @@ export default {
     },
     onViolinUpdate: function (violinModel) {
       this.violinModel = violinModel
-      this.fittedCurves = 0;
-      if (this.violinModel) {
-        this.fittedCurves = this.violinModel[0].data.reduce(function(acc, d) {
-          return acc + d["ModelId"].split(";").length
-        }, 0);
-      }
+
     },
     onParCoordsChange: function (selectedLinesForBarPlot, selectedKey) {
       this.selectedKey = selectedKey
@@ -322,4 +363,3 @@ export default {
   color: #2c3e50;
 }
 </style>
-
