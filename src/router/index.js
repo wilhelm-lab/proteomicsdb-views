@@ -259,13 +259,13 @@ export default new VueRouter({
       component: NotFound
     },
     {
-      path: '/:pathMatch(.*)',
-      redirect: '/vue/404'
-    },
-    {
       path: '/vue/analytics/cellSensitivity',
       name: 'cellSensitivity',
       component: CellSensitivity
+    },
+    {
+      path: '/:pathMatch(.*)',
+      redirect: '/vue/404'
     },
   ],
   mode: 'history'
