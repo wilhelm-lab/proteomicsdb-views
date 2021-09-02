@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app id="inspire" style="overflow:hidden">
     <v-app-bar
       app
       clipped-right
@@ -79,7 +79,6 @@
       </v-menu>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-row>
           <v-col cols="7">
             <v-text-field
               v-model="searchString"
@@ -109,7 +108,6 @@
               outlined
             />
           </v-col>
-        </v-row>
       </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
