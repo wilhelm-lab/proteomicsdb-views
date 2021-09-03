@@ -7,6 +7,8 @@
       :show-borders="true"
       :repaint-changes-only="true"
       :column-auto-width="true"
+      :allow-column-resizing="true"
+      column-resizing-mode="widget"
       :allowColumnReordering="false"
       :selection="{ mode: 'single' }"
       @rowClick="onSelectionChanged"

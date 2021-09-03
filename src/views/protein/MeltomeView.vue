@@ -38,6 +38,8 @@
             :show-borders="true"
             :repaint-changes-only="false"
             :column-auto-width="true"
+            :allow-column-resizing="true"
+            column-resizing-mode="widget"
             :selection="{ mode: 'single' }"
           >
             <DxFilterRow :visible="true" />

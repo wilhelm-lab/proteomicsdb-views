@@ -6,6 +6,8 @@
     :data-source="dataSource"
     :show-borders="true"
     :repaint-changes-only="false"
+    :allow-column-resizing="true"
+    column-resizing-mode="widget"
     :column-auto-width="true"
     :selection="{ mode: 'single' }"
     @rowClick="onSelectionChanged"

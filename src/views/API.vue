@@ -75,6 +75,7 @@
                       :show-borders="true"
                       :column-auto-width="true"
                       :allow-column-resizing="true"
+                      column-resizing-mode="widget"
                     >
                       <DxScrolling mode="virtual" />
                     </DxDataGrid>

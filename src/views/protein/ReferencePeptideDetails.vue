@@ -11,6 +11,8 @@
              :cache-enabled="false"
              :repaint-changes-only="true"
              :column-auto-width="true"
+             :allow-column-resizing="true"
+             column-resizing-mode="widget"
              :selection="{ mode: 'single' }"
              :selectedRowKeys="selectedRows"
              @rowClick="onSelectionChanged"

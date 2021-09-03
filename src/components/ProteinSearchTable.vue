@@ -4,6 +4,8 @@
       :data-source="dataSource"
       :show-borders="true"
       :repaint-changes-only="false"
+      :allow-column-resizing="true"
+      column-resizing-mode="widget"
       :column-auto-width="false"
       :selection="{ mode: 'single' }"
       :hoverStateEnabled="true"
