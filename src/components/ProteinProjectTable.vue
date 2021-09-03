@@ -24,13 +24,13 @@
       <a v-bind:href="data.data.EXPERIMENT.PUBMED_LINK" target="_blank">{{data.data.EXPERIMENT.PUBMED_ID}}</a>
     </template>
     <template #projectTemplate="{ data }">
-      <a v-bind:href="'/project/'+data.data.EXPERIMENT.PROJECT_ID" target="_blank">{{data.data.EXPERIMENT.PROJECT}}</a>
+      <a v-bind:href="'/vue/project/'+data.data.EXPERIMENT.PROJECT_ID" target="_blank">{{data.data.EXPERIMENT.PROJECT}}</a>
     </template>
     <template #experimentTemplate="{ data }">
-      <a v-bind:href="'/project/'+data.data.EXPERIMENT.PROJECT_EXPERIMENT_ID" target="_blank">{{data.data.EXPERIMENT.EXPERIMENT}}</a>
+      <a v-bind:href="'/vue/project/'+data.data.EXPERIMENT.PROJECT_EXPERIMENT_ID" target="_blank">{{data.data.EXPERIMENT.EXPERIMENT}}</a>
     </template>
     <template #sampleTemplate="{ data }">
-      <a v-bind:href="'/project/'+data.data.EXPERIMENT.PROJECT_EXPERIMENT_SAMPLE_ID" target="_blank">{{data.data.EXPERIMENT.SAMPLE}}</a>
+      <a v-bind:href="'/vue/project/'+data.data.EXPERIMENT.PROJECT_EXPERIMENT_SAMPLE_ID" target="_blank">{{data.data.EXPERIMENT.SAMPLE}}</a>
     </template>
     <DxPaging :page-size="10"/>
     <DxPager
