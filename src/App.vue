@@ -478,7 +478,7 @@ export default {
         axios
           .get(
             this.$store.state.host +
-              `/proteomicsdb/logic/tmp/${key}.fragment.html`
+              `/proteomicsdb/help/${key}.fragment.html`
           )
           .then(function (response) {
             //First and two last lines are SAP-specific and not valid HTML, so cut them off
@@ -493,7 +493,7 @@ export default {
     //   axios
     //     .get(
     //       this.$store.state.host +
-    //         "/proteomicsdb/logic/tmp/feedback.fragment.html"
+    //         "/proteomicsdb/help/feedback.fragment.html"
     //     )
     //     .then(function (response) {
     //       //First and two last lines are SAP-specific and not valid HTML, so cut them off
