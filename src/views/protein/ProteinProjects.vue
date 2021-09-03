@@ -13,7 +13,7 @@
       />
     </v-row>
     <v-row justify="space-around" align="center">
-      <searchTable ref="searchTable" :proteinId="proteinId" :proteinAccession="proteinAccession"/>
+      <searchTable ref="searchTable" :dataSource="dataIn" :proteinId="proteinId" :proteinAccession="proteinAccession"/>
     </v-row>
     <v-row>
     </v-row>
@@ -27,7 +27,8 @@ export default {
   props: {
     proteinName: String,
     proteinId: String,
-    proteinAccession: String
+    proteinAccession: String,
+    dataIn: Array
   },
   components: {
     searchTable,
@@ -43,12 +44,6 @@ export default {
     getCSV: function () {
       this.$refs.searchTable.onExporting();
     }
-  },
-  computed: {
-  },
-  watch: {
-  },
-  mounted() {
   }
 }
 </script>

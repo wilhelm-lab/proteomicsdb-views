@@ -74,7 +74,8 @@ export default new VueRouter({
           component: ProteinSummary,
           meta: {
             helpKey: 'summaryTab'
-          }
+          },
+          props: true
         },
         {
           path: ':proteinId/summary',
@@ -83,7 +84,8 @@ export default new VueRouter({
           component: ProteinSummary,
           meta: {
             helpKey: 'summaryTab'
-          }
+          },
+          props: true
         },
         {
           path: ':proteinId/featureViewer',
@@ -99,6 +101,7 @@ export default new VueRouter({
           meta: {
             helpKey: 'peptidesTab'
           },
+          props: true,
           children: [
             {
               path: ':peptideId',
@@ -120,6 +123,7 @@ export default new VueRouter({
           meta: {
             helpKey: 'referencePeptidesTab'
           },
+          props: true,
           children: [
             {
               path: ':peptideId',
@@ -142,6 +146,7 @@ export default new VueRouter({
           meta: {
             helpKey: 'proteotypicityTab'
           },
+          props: true,
         },
         {
           path: ':proteinId/projects',
@@ -150,7 +155,9 @@ export default new VueRouter({
           component: ProteinProjects,
           meta: {
             helpKey: 'projectsTab'
-          }
+          },
+          props: true,
+
         },
         {
           path: ':proteinId/expression',
@@ -159,7 +166,8 @@ export default new VueRouter({
           component: Expression,
           meta: {
             helpKey: 'expressionTab'
-          }
+          },
+          props: true,
         },
         {
           path: ':proteinId/fdr',
@@ -168,7 +176,8 @@ export default new VueRouter({
           component: FDR,
           meta: {
             helpKey: 'fdrTab'
-          }
+          },
+          props: true,
         },
         {
           path: ':proteinId/interactions',
@@ -177,7 +186,8 @@ export default new VueRouter({
           component: InteractionNetwork,
           meta: {
             helpKey: 'interactionsTab'
-          }
+          },
+          props: true,
         },
         {
           path: ':proteinId/inhibitors',
@@ -186,13 +196,15 @@ export default new VueRouter({
           component: Kinase,
           meta: {
             helpKey: 'assayTab'
-          }
+          },
+          props: true,
         },
         {
           path: ':proteinId/meltome',
           name: 'Meltome',
           beforeEnter: getProteinId,
-          component: Meltome
+          component: Meltome,
+          props: true,
         },
         {
           path: ':proteinId/turnover',
@@ -201,7 +213,8 @@ export default new VueRouter({
           component: Turnover,
           meta: {
             helpKey: 'assayTab'
-          }
+          },
+          props: true,
         }
       ]
     },
@@ -216,7 +229,6 @@ export default new VueRouter({
       meta: {
         helpKey: 'protein'
       }
-
     },
     {
       path: '/vue/peptide/',
@@ -226,7 +238,12 @@ export default new VueRouter({
     {
       path: '/vue/project/',
       name: 'project',
-      component: ComingSoon//ED,
+      component: ComingSoon,//ED,
+      children: [
+        {
+          path: '/:pathMatch(.*)',
+          component: ComingSoon,
+        },]
     },
     {
       path: '/vue/analytics/',

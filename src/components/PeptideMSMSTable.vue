@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import 'devextreme/data/odata/store';
 import { DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow, DxColumnChooser } from 'devextreme-vue/data-grid';
 
@@ -62,20 +61,16 @@ export default {
     proteinAccession: {
       type: String,
       default: ''
-    }
+    },
+    dataIn: Object
   },
   data: () => ({
     dataGridInstance: null,
-    dataSource: {
-    },
     currentFilter: null
   }),
   methods: {
     saveGridInstance: function(e) {
       this.dataGridInstance = e.component;
-    },
-    stopLoading: function () {
-      this.dataGridInstance.endCustomLoading();
     },
     onExporting: function() {
       var that = this;
@@ -100,25 +95,17 @@ export default {
       var peptideId = row.data.PEPTIDE.PEPTIDE_ID;
       this.$emit('selectedPeptideId', { peptideId: peptideId });
     },
-    setData: function () {
-      this.dataGridInstance.beginCustomLoading();
-      var that = this;
-      axios.get(this.$store.state.host+'/proteomicsdb/logic/getPeptidesByProtein.xsjs', {params: {protein_id: that.proteinId}}).then(function(response) {
-        that.dataSource = response.data.PEPTIDES;
-        that.stopLoading();
-      })
-    },
   },
   computed: {
+    dataSource: function(){
+      return this.dataIn.PEPTIDES;
+    }
   },
   watch: {
     proteinId: function() {
       this.setData();
     }
   },
-  mounted() {
-    this.setData();
-  }
 }
 </script>
 <style lang="scss">

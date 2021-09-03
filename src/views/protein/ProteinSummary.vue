@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid v-if="summaryData">
     <v-row dense no-gutters>
       <v-col cols="9">
         <h1>{{title}}</h1>
@@ -24,14 +24,14 @@
               <v-list-item two-line>
                 <v-list-item-content>
                   <v-list-item-title>Localization</v-list-item-title>
-                  <v-list-item-subtitle>{{summaryIn.LOCALIZATION}}</v-list-item-subtitle>
+                  <v-list-item-subtitle>{{summaryData.LOCALIZATION}}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
               <v-divider/>
                 <v-list-item two-line>
                   <v-list-item-content>
                     <v-list-item-title>Gene Name</v-list-item-title>
-                    <v-list-item-subtitle>{{summaryIn.GENE_NAME}} ({{summaryIn.ALTERNATIVE_GENE_NAMES}})</v-list-item-subtitle>
+                    <v-list-item-subtitle>{{summaryData.GENE_NAME}} ({{summaryData.ALTERNATIVE_GENE_NAMES}})</v-list-item-subtitle>
                   </v-list-item-content>
                   <v-btn small :color="$store.state.selectedOrganismShown.secondaryColor">Gene Relatives</v-btn>
                 </v-list-item>
@@ -39,7 +39,7 @@
                   <v-list-item two-line>
                     <v-list-item-content>
                       <v-list-item-title>UniProt AC/ID</v-list-item-title>
-                      <v-list-item-subtitle>{{summaryIn.UNIPROT_ID}}/{{summaryIn.UNIPROT_AC}}</v-list-item-subtitle>
+                      <v-list-item-subtitle>{{summaryData.UNIPROT_ID}}/{{summaryData.UNIPROT_AC}}</v-list-item-subtitle>
                     </v-list-item-content>
                     <v-btn small :color="$store.state.selectedOrganismShown.secondaryColor">Isoforms</v-btn>
                   </v-list-item>
@@ -47,15 +47,15 @@
                     <v-list-item two-line>
                       <v-list-item-content>
                         <v-list-item-title>Organism</v-list-item-title>
-                        <v-list-item-subtitle>{{summaryIn.ORGANISM}}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{summaryData.ORGANISM}}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider/>
                       <v-list-item two-line>
                         <v-list-item-content>
                           <v-list-item-title>Evidence</v-list-item-title>
-                          <v-list-item-subtitle>{{summaryIn.PROTEIN_EVIDENCE}}
-                            <img :src="summaryIn.PROTEIN_EVIDENCE === 'protein' ? green : (summaryIn.PROTEIN_EVIDENCE === 'isoform' ? yellow : red)">
+                          <v-list-item-subtitle>{{summaryData.PROTEIN_EVIDENCE}}
+                            <img :src="summaryData.PROTEIN_EVIDENCE === 'protein' ? green : (summaryData.PROTEIN_EVIDENCE === 'isoform' ? yellow : red)">
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
@@ -165,7 +165,7 @@
                     </v-toolbar>
                     <v-expand-transition>
                       <div v-show="showLinks">
-                        <v-card-text v-for="(item, i) in summaryIn.LINKS"
+                        <v-card-text v-for="(item, i) in summaryData.LINKS"
                                      :key="i">
                           <a :href="item.LINK">{{item.LINK}}</a>
                         </v-card-text>
@@ -215,15 +215,11 @@ export default {
     seqcov
   },
   data: () => ({
+    summaryData: undefined,
     showSummary: true,
     showStats: false,
     showGO: false,
     showLinks: false,
-    summaryIn: {},
-    subcellLoc: [],
-    molFunc: [],
-    bioProc: [],
-    statistics: [],
     green: require('@/assets/commons/green.png'),
     yellow: require('@/assets/commons/yellow.png'),
     red: require('@/assets/commons/red.png'),
@@ -236,43 +232,28 @@ export default {
       this.showStats = panel === 'stats' ? !this.showStats : false;
 
     },
-    getSummary: function(){
-      let that = this
-
-      if(this.proteinId != null) {
-        axios.get(this.$store.state.host+'/proteomicsdb/logic/getProteinSummary.xsjs', {params: {protein_id: that.proteinId }}).then(function (response) {
-          that.summaryIn = response.data
-
-          that.subcellLoc = response.data.SUBC_LOC.split("\n ").map((x) => {return(x.replace("\n", ""))}).filter((y) => {return y !== ''})
-          that.molFunc = response.data.MOL_FUNC.split("\n ").map((x) => {return(x.replace("\n", ""))}).filter((y) => {return y !== ''})
-          that.bioProc = response.data.BIO_PROC.split("\n ").map((x) => {return(x.replace("\n", ""))}).filter((y) => {return y !== ''})
-
-          that.statistics = []
-          that.statistics.push({name: "Coverage", value: response.data.SEQUENCE_COVERAGE+"%"})
-          that.statistics.push({name: "Unique Peptides", value: response.data.UNIQUE_PEPTIDES})
-          that.statistics.push({name: "Unique Peptide Spectra", value: response.data.UNIQUE_PEPTIDES_SPECTRA})
-          that.statistics.push({name: "Unique Peptides on Protein Level", value: response.data.UNIQUE_PEPTIDES_PROTEIN})
-        })
-      }
-    }
   },
   computed: {
-  },
-  watch: {
-    summary: function(newData) {
-      if (newData !== null) {
-        this.summaryIn = newData;
-      }
+    subcellLoc: function(){
+      return this.summaryData.SUBC_LOC.split("\n ").map((x) => {return(x.replace("\n", ""))}).filter((y) => {return y !== ''})
+    },
+    molFunc: function(){
+      return this.summaryData.MOL_FUNC.split("\n ").map((x) => {return(x.replace("\n", ""))}).filter((y) => {return y !== ''})
+    },
+    bioProc: function(){
+      return this.summaryData.BIO_PROC.split("\n ").map((x) => {return(x.replace("\n", ""))}).filter((y) => {return y !== ''})
+    },
+    statistics: function(){
+      return [{name: "Coverage", value: this.summaryData.SEQUENCE_COVERAGE+"%"},
+          {name: "Unique Peptides", value: this.summaryData.UNIQUE_PEPTIDES},
+          {name: "Unique Peptide Spectra", value: this.summaryData.UNIQUE_PEPTIDES_SPECTRA},
+          {name: "Unique Peptides on Protein Level", value: this.summaryData.UNIQUE_PEPTIDES_PROTEIN}]
     }
   },
   mounted() {
-    if(this.summary === null) {
-      this.getSummary()
-    } else {
-      this.summaryIn = this.summary;
-    }
-  },
-  created() {
+    axios.get(this.$store.state.host+'/proteomicsdb/logic/getProteinSummary.xsjs', {params: {
+      protein_id: this.proteinId }})
+      .then(response => this.summaryData = response.data)
   }
 }
 </script>

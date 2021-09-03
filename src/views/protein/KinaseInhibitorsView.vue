@@ -16,7 +16,7 @@
       <DxDataGrid
              ref="assayGrid"
              @initialized="saveGridInstance"
-             :data-source="dataSource"
+             :data-source="dataIn"
              :show-borders="true"
              :repaint-changes-only="false"
              :column-auto-width="true"
@@ -69,7 +69,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow } from 'devextreme-vue/data-grid';
 import plot from '@/vue-d3-components/GenericLinePlot';
 
@@ -83,7 +82,8 @@ export default {
     proteinName: String,
     title: String,
     proteinId: String,
-    proteinAccession: String
+    proteinAccession: String,
+    dataIn: Array
   },
   components: {
     downloader,
@@ -97,7 +97,6 @@ export default {
   data: () => ({
     rSqFilterValue: 0.8,
     ecFilterValue: 2000,
-    dataSource: null,
     loading: false,
     svgCss: [],
     dataGridInstance: null
@@ -121,45 +120,7 @@ export default {
     searchableRepo: function(data) {
       return data.properties.sanProjectName !== 'private' ? data.properties.sanProjectName + ' ' + data.properties.sanExperimentName + ' ' + data.properties.sanExpDesignName : 'nondisclosure';
     },
-    replaceObjectKey: function (obj, oldKey, newKey) {
-      if (oldKey !== newKey) {
-        Object.defineProperty(obj, newKey,
-        Object.getOwnPropertyDescriptor(obj, oldKey));
-        delete obj[oldKey];
-      }
-    },
-    transformParameters: function(oData){
-      if(oData) {
-        this.replaceObjectKey(oData, 'bottom','Lower Limit');
-        this.replaceObjectKey(oData, 'top','Upper Limit');
-        this.replaceObjectKey(oData, 'slope','Slope');
-        this.replaceObjectKey(oData, 'inflection','ED50, inflection');
-      }
-      return(oData);
-    },
-    getTableData: function () {
-      var that = this;
-      axios.get(this.$store.state.host+'/proteomicsdb/logic/getCurveInformationByProteinID.xsjs', {params: {
-          protein_id: that.proteinId,
-          drug_id: -1,
-          assay_type: 'PDB:101007',
-          assay_variable: 'dose'
-        }
-      })
-      .then(function(response) {
-        let data = response.data;
-        data.map((obj) => {
-          that.transformParameters(obj.parameter);
-        });
-        that.dataSource = data;
-      });
-    }
   },
-  computed: {
-  },
-  mounted() {
-    this.getTableData();
-  }
 }
 </script>
 <style lang="scss">

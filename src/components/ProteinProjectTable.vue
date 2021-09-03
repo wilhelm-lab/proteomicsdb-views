@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import 'devextreme/data/odata/store';
 import { DxDataGrid, DxColumn, DxPaging, DxPager, DxFilterRow, DxColumnChooser } from 'devextreme-vue/data-grid';
 import { exportDataGrid } from 'devextreme/excel_exporter';
@@ -64,12 +63,11 @@ export default {
     proteinAccession: {
       type: String,
       default: 'P00533'
-    }
+    },
+    dataSource: Array
   },
   data: () => ({
     dataGridInstance: null,
-    dataSource: {
-    },
     currentFilter: null
   }),
   methods: {
@@ -95,23 +93,7 @@ export default {
         });
       });
     },
-    setData: function () {
-      var that = this;
-      axios.get(this.$store.state.host+'/proteomicsdb/logic/getProjectsByProtein.xsjs', {params: {protein_id: that.proteinId}}).then(function(response) {
-        that.dataSource = response.data.EXPERIMENT_TABLE;
-      })
-    }
   },
-  computed: {
-  },
-  watch: {
-    proteinId: function() {
-      this.setData();
-    }
-  },
-  mounted() {
-    this.setData();
-  }
 }
 </script>
 <style lang="scss">

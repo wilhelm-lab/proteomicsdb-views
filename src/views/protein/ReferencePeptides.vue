@@ -13,7 +13,7 @@
       />
     </v-row>
     <v-row justify="space-around" align="center">
-      <searchTable ref="searchTable" :proteinId="proteinId" :proteinAccession="proteinAccession" @selectedPeptideId="setPeptideId"/>
+      <searchTable ref="searchTable" :dataIn="dataIn" :proteinId="proteinId" :proteinAccession="proteinAccession" @selectedPeptideId="setPeptideId"/>
       <router-view />
     </v-row>
     <v-row>
@@ -30,7 +30,8 @@ export default {
     proteinName: String,
     proteinId: String,
     peptideId: String,
-    proteinAccession: String
+    proteinAccession: String,
+    dataIn: Object
   },
   components: {
     searchTable,
