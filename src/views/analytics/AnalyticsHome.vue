@@ -13,12 +13,12 @@
           <h3>Toolbox</h3>
           <v-layout row ma-2>
             <div v-for="tool in tools" :key="tool.name">
-              <v-hover>
+              <v-hover style="margin-right:100px">
                 <v-card slot-scope="{ hover }" :class="`elevation-${hover ? 8 : 2}`"
                         max-width="500"
                         max-height="500">
                   <v-card-title>{{ tool.title }}</v-card-title>
-                  <v-img :src="tool.icon" max-height="100%"></v-img>
+                  <v-img contain :src="tool.icon" max-height="200px"></v-img>
                   <v-card-actions class="flex-row-reverse">
                     <v-btn
                         :color="$store.state.selectedOrganismShown.secondaryColor"
@@ -31,7 +31,7 @@
                   </v-card-actions>
                 </v-card>
               </v-hover>
-            </div>
+              </div>
           </v-layout>
         </v-col>
       </v-row>
@@ -50,6 +50,11 @@ export default {
         title: "Selectivity",
         name: "selectivity",
         icon: require('@/assets/selectivity.png'),
+      },
+            {
+        title: "Cell Sensitivity",
+        name: "cellSensitivity",
+        icon: require('@/assets/sensitivity.png'),
       }
     ]
   }),

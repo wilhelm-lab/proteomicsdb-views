@@ -172,8 +172,8 @@
               <v-icon>fas fa-chart-pie</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title style="color: grey"
-                >Analytics (Coming Soon)</v-list-item-title
+              <v-list-item-title
+                >Analytics</v-list-item-title
               >
             </v-list-item-content>
           </v-list-item>

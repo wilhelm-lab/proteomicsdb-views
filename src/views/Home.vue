@@ -551,11 +551,13 @@ export default {
         useRouter: true,
       },
       {
-        title: "Analytics Toolbox\n(Coming Soon)",
+        title: "Analytics Toolbox",
         description:
           "Use our analytics tools to explore co-expression patterns, etc.",
         icon: "analyticsIcon",
         id: 1,
+        target: "/vue/analytics",
+        useRouter: true,
       },
       {
         title: "Upload your data\n(Coming Soon)",
