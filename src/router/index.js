@@ -7,8 +7,8 @@ import FAQ from '../views/FAQ.vue'
 import ComingSoon from '../views/ComingSoon.vue'
 import Disclaimer from '../views/Disclaimer.vue'
 import NotFound from '../views/NotFound.vue'
-// import Analytics from '../views/Analytics.vue'
 import CellSensitivity from '../views/analytics/CellSensitivity.vue'
+import Analytics from '../views/analytics/AnalyticsWrapper.vue'
 import ProteinSearch from '../views/search/ProteinSearch.vue'
 import ProteinWrapper from '../views/protein/ProteinWrapper.vue'
 import ProteinSummary from '@/views/protein/ProteinSummary.vue'
@@ -27,6 +27,8 @@ import Meltome from '@/views/protein/MeltomeView.vue'
 import Turnover from '@/views/protein/TurnoverView.vue'
 // import ED from '@/views/project/ExperimentDesign.vue'
 import axios from 'axios';
+import SelectivityView from "../views/analytics/SelectivityView";
+import AnalyticsHome from "../views/analytics/AnalyticsHome";
 
 Vue.use(VueRouter);
 
@@ -279,6 +281,24 @@ export default new VueRouter({
       path: '/vue/analytics/cellSensitivity',
       name: 'cellSensitivity',
       component: CellSensitivity
+    },
+    {
+      path: '/vue/analytics/',
+      name: 'analytics',
+      component: Analytics,
+      redirect: 'analytics.home',
+      children: [
+        {
+          path: '',
+          name: 'analytics.home',
+          component: AnalyticsHome
+        },
+        {
+          path: 'selectivity',
+          name: 'selectivity',
+          component: SelectivityView
+        }
+      ]
     },
     {
       path: '/:pathMatch(.*)',
