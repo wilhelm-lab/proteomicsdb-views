@@ -243,14 +243,9 @@ export default new VueRouter({
       component: ComingSoon,//ED,
       children: [
         {
-          path: '/:pathMatch(.*)',
+          path: '/vue/project/:pathMatch(.*)',
           component: ComingSoon,
         },]
-    },
-    {
-      path: '/vue/analytics/',
-      name: 'analytics',
-      component: ComingSoon//Analytics
     },
     {
       path: '/vue/api/',
