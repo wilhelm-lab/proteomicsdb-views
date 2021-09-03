@@ -296,7 +296,7 @@ export default {
         focus: "Feature development, Peptide features predictions",
       },
       {
-        name: "Siegfied Gessulat",
+        name: "Siegfried Gessulat",
         role: "Frontend developer, Software developer",
         avatar: "sgessulat.jpg",
         text: "",
