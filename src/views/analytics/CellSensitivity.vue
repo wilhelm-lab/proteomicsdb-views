@@ -261,7 +261,7 @@ export default {
             .then(response => { 
             this.violinModel = response.data
             this.fittedCurves = 0;
-            if (this.violinModel) {
+            if (this.violinModel && this.violinModel.length>0) {
               this.fittedCurves = this.violinModel[0].data.reduce(function(acc, d) {
               return acc + d["ModelId"].split(";").length
               }, 0);
