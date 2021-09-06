@@ -485,7 +485,7 @@ export default {
             that.helpHTML = response.data.split("\n").slice(1, -2).join("\n");
           });
       } else {
-        that.helpHTML = "<p> Sorry, no help available for this component! </p>";
+        that.helpHTML = "<strong> Sorry, no help available for this component! </strong>";
       }
     },
     // getFeedbackFormHTML: function () {
@@ -583,5 +583,6 @@ export default {
   padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
+  font-size: 12pt;
 }
 </style>
