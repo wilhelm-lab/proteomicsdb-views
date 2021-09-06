@@ -55,6 +55,12 @@ export default {
       aSelectedOptions: null
     }
   },
+  watch: {
+    aOptions: function(){
+      this.aSelectedOptions = [];
+      this.onChange();
+    }
+  },
   methods: {
     removeSelected: function (item) {
       this.aSelectedOptions.splice(this.aSelectedOptions.indexOf(item), 1)
