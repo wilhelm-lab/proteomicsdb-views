@@ -545,6 +545,7 @@ export default {
       {
         title: "Protein search",
         description: "Explore the proteome of your selected organism.",
+        value: "protein",
         icon: "searchIcon",
         id: 0,
         target: "/vue/search",
@@ -554,6 +555,7 @@ export default {
         title: "Analytics Toolbox",
         description:
           "Use our analytics tools to explore co-expression patterns, etc.",
+          value: "analytics",
         icon: "analyticsIcon",
         id: 1,
         target: "/vue/analytics",
@@ -562,12 +564,14 @@ export default {
       {
         title: "Upload your data\n(Coming Soon)",
         description: "Use our analytics and visualization tools on your data.",
+        value: "upload",
         icon: "uploadIcon",
         id: 2,
       },
       {
         title: "Prosit",
         description: "Predict peptide properties using our online service.",
+        value: "prosit",
         icon: "prositIcon",
         id: 3,
         target: "/prosit",
@@ -579,6 +583,7 @@ export default {
   }),
   methods: {
     onTileClick: function (tile) {
+      this.$emit('update-selected-page', tile.value)
       if (tile.useRouter) {
         this.$router.push(tile.target);
       } else {
