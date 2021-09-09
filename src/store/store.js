@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import apidocumentation from './apidocumentation';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -13,7 +14,7 @@ const store = new Vuex.Store({
     {id: 2, text: 'Mus musculus', icon: 'fas fa-paw', taxcode: 10090, primaryColor: '#C4071B', secondaryColor: '#db606d'},
     {id: 3, text: 'Oryza sativa subs. japonica', icon: 'fas fa-apple-alt', taxcode: 39947, primaryColor: '#007C30', secondaryColor: '#6fce94'}
     ],
-    host: ''
+    host: 'd31.proteomicsdb.in.tum.de'
   },
   getters: {
     organisms: state => {
@@ -50,6 +51,9 @@ const store = new Vuex.Store({
       context.commit('setSearchString', payload)
     }
     
+  },
+  modules: {
+    apidocumentation,
   }
 })
 
