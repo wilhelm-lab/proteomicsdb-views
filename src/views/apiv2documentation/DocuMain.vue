@@ -42,7 +42,7 @@
                   </p>
                   <p>
                     A Entity is a specific set of data with a narrow focus and is reflected by the highest Tree Nodes. For each Entity, we
-                    provide an example for a GET Request in the "GET Request Example" Node, the Attributes (further refered to "Columns")
+                    provide an example for a GET Request in the "GET Request Example" Node, the Attributes (further referred to "Columns")
                     for each Entity in the "Columns" Node and the Navigation Properties provided by the Entity in the "Navigation Properties"
                     Node.
                   </p>
