@@ -185,6 +185,14 @@
               <v-list-item-title>API</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item @click="showApiv2">
+            <v-list-item-action>
+              <v-icon>mdi-api</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>APIv2</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item @click="showFaq">
             <v-list-item-action>
               <v-icon>fas fa-question-circle</v-icon>
@@ -273,6 +281,10 @@
       <v-divider vertical></v-divider>
       <v-btn x-small text class="white--text" @click="showApi"
         >Programmatic access - API</v-btn
+      >
+      <v-divider vertical></v-divider>
+      <v-btn x-small text class="white--text" @click="showApiv2"
+        >Programmatic access - APIv2 BETA</v-btn
       >
       <v-divider vertical></v-divider>
       <v-btn x-small text class="white--text" @click="showContact"
@@ -373,6 +385,9 @@ export default {
     },
     showApi: function () {
       router.push("/vue/api/").catch(() => {});
+    },
+    showApiv2: function () {
+      router.push("/vue/apiv2/").catch(() => {});
     },
     showFaq: function () {
       router.push("/vue/faq/").catch(() => {});
