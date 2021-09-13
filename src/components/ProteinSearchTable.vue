@@ -9,6 +9,7 @@
       :column-auto-width="false"
       :selection="{ mode: 'single' }"
       :hoverStateEnabled="true"
+      :noDataText="noDataText"
       @rowClick="onSelectionChanged"
       @exporting="onExporting"
     >
@@ -162,7 +163,13 @@ export default {
       };
     },
   },
-  computed: {},
+  computed: {
+    noDataText: function () {
+      return this.searchString && this.searchString !== "null"
+        ? "No proteins found"
+        : "Enter a Protein name, Gene name, or Uniprot ID above and hit 'Enter' to start your search.";
+    },
+  },
   watch: {
     searchString: function () {
       this.setData();
@@ -177,7 +184,7 @@ export default {
 };
 </script>
 <style lang="scss">
-.dx-data-row.dx-state-hover{
+.dx-data-row.dx-state-hover {
   cursor: pointer;
 }
 </style>
