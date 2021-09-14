@@ -40,7 +40,7 @@ export default {
       return Boolean(this.proteinAccession)
     },
     configUrl: function() {
-      return "https://d23.proteomicsdb.in.tum.de/proteomicsdb/" +
+      return `${this.$store.state.host}/proteomicsdb/` +
           `logic/featureViewer/getConfig.xsjs?accession=${this.proteinAccession}`;
     }
   },
