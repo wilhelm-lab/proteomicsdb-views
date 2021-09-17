@@ -2,7 +2,8 @@ import axios from 'axios';
 //import parser from 'fast-xml-parser';
 //import he from 'he';
 
-const baseURL = 'https://d31.proteomicsdb.in.tum.de/proteomicsdb/logic/api_v2/api.xsodata';
+//To be replaced by Path-To-XSODATA on respective productive system. E.g.: https://d31.proteomicsdb.in.tum.de/proteomicsdb/logic/api_v2/api.xsodata
+const baseURL = '';
 
 const storeState = {
 	allEntities: []
