@@ -76,9 +76,9 @@
                   <p> 
                     Examples:
                     <ul>
-                    <li>https://d31.proteomicsdb.in.tum.de/proteomicsdb/logic/api_v2/api.xsodata/Experiment?$orderby=EXPERIMENT_ID</li>
-                    <li>https://d31.proteomicsdb.in.tum.de/proteomicsdb/logic/api_v2/api.xsodata/Experiment?$orderby=EXPERIMENT_ID asc</li>
-                    <li>https://d31.proteomicsdb.in.tum.de/proteomicsdb/logic/api_v2/api.xsodata/Experiment?$orderby=EXPERIMENT_ID desc</li>
+                    <li>https://{{host}}/proteomicsdb/logic/api_v2/api.xsodata/Experiment?$orderby=EXPERIMENT_ID</li>
+                    <li>https://{{host}}/proteomicsdb/logic/api_v2/api.xsodata/Experiment?$orderby=EXPERIMENT_ID asc</li>
+                    <li>https://{{host}}/proteomicsdb/logic/api_v2/api.xsodata/Experiment?$orderby=EXPERIMENT_ID desc</li>
                     </ul>
                   </p>
                   <p>
@@ -93,11 +93,11 @@
                   <p> 
                     Examples:
                     <ul>
-                    <li>https://d31.proteomicsdb.in.tum.de/proteomicsdb/logic/api_v2/api.xsodata/Experiment?$filter=EXPERIMENT_ID lt 2356</li>
-                    <li>https://d31.proteomicsdb.in.tum.de/proteomicsdb/logic/api_v2/api.xsodata/Experiment?$filter=substringof('prot',DESCRIPTION)</li>
+                    <li>https://{{host}}/proteomicsdb/logic/api_v2/api.xsodata/Experiment?$filter=EXPERIMENT_ID lt 2356</li>
+                    <li>https://{{host}}/proteomicsdb/logic/api_v2/api.xsodata/Experiment?$filter=substringof('prot',DESCRIPTION)</li>
                     <li>Combined query:
                       <ul>
-                        <li>https://d31.proteomicsdb.in.tum.de/proteomicsdb/logic/api_v2/api.xsodata/Experiment?$filter=substringof('prot',DESCRIPTION)&$orderby=EXPERIMENT_ID desc</li>
+                        <li>https://{{host}}/proteomicsdb/logic/api_v2/api.xsodata/Experiment?$filter=substringof('prot',DESCRIPTION)&$orderby=EXPERIMENT_ID desc</li>
                       </ul>
                       </li>
                     </ul>
@@ -161,7 +161,6 @@
     </v-card>
     <v-card flat dense>
       <v-card-subtitle style="margin-bottom: 5px">
-        <p>This documentation was created by: Marwin Shraideh, Ludwig Lautenbacher, Prof. Dr. Mathias Wilhelm.</p>
       </v-card-subtitle>
     </v-card>
   </v-main>
@@ -184,7 +183,8 @@ export default {
     items: [],
     open: [],
     search: null,
-    caseSensitive: false
+    caseSensitive: false,
+    host: ''
   }),
   computed: {
     ...mapState("apidocumentation", {
@@ -198,6 +198,7 @@ export default {
     }
   },
   mounted() {
+    this.host = this.$store.state.host;
     this.$store.dispatch("apidocumentation/loadEntities", this.$store.state.host);
     //this.$store.dispatch('apidocumentation/loadEntitiesDetailsAll');
   }
