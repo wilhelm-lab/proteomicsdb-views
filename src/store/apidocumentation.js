@@ -3,7 +3,7 @@ import axios from 'axios';
 //import he from 'he';
 
 //To be replaced by Path-To-XSODATA on respective productive system. E.g.: https://d31.proteomicsdb.in.tum.de/proteomicsdb/logic/api_v2/api.xsodata
-const baseURL = '';
+//const baseURL = store.state.host + '/proteomicsdb/logic/api_v2/api.xsodata';
 
 const storeState = {
 	allEntities: []
@@ -20,10 +20,11 @@ const getters = {
 };
 
 const actions = {
-	loadEntities: ({commit}) => {
+	loadEntities: ({commit},host) => {
 		const allEntities = [];
 		const urlCollection = [];
 		const promises = [];
+		const baseURL ='https://' + host + '/proteomicsdb/logic/api_v2/api.xsodata'
 		axios.get(`${baseURL}?$format=json`)
 			.then((response) => {
 				const result = response.data;

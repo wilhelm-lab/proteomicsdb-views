@@ -198,7 +198,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("apidocumentation/loadEntities");
+    this.$store.dispatch("apidocumentation/loadEntities", this.$store.state.host);
     //this.$store.dispatch('apidocumentation/loadEntitiesDetailsAll');
   }
 };
