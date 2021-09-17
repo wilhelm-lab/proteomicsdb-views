@@ -149,7 +149,7 @@
           :color="$store.state.selectedOrganismShown.secondaryColor"
           mandatory
         >
-          <v-list-item @click="showHome">
+          <v-list-item @click="showHome" value="home">
             <v-list-item-action>
               <v-icon>fas fa-home</v-icon>
             </v-list-item-action>
@@ -157,7 +157,7 @@
               <v-list-item-title>Home</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item @click="showProjects">
+          <v-list-item @click="showProjects" value="projects">
             <v-list-item-action>
               <v-icon>fas fa-folder</v-icon>
             </v-list-item-action>
@@ -167,7 +167,7 @@
               >
             </v-list-item-content>
           </v-list-item>
-          <v-list-item @click="showAnalytics">
+          <v-list-item @click="showAnalytics" value="analytics">
             <v-list-item-action>
               <v-icon>fas fa-chart-pie</v-icon>
             </v-list-item-action>
@@ -177,7 +177,7 @@
               >
             </v-list-item-content>
           </v-list-item>
-          <v-list-item @click="showApi">
+          <v-list-item @click="showApi" value="api">
             <v-list-item-action>
               <v-icon>fas fa-terminal</v-icon>
             </v-list-item-action>
@@ -201,7 +201,7 @@
               <v-list-item-title>FAQ</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item @click="showAbout">
+          <v-list-item @click="showAbout" value="about">
             <v-list-item-action>
               <v-icon>fas fa-info-circle</v-icon>
             </v-list-item-action>
@@ -213,7 +213,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <router-view />
+    <router-view @update-selected-page="updateSelectedPage" />
     <selectOrganismPopup
       :openDialog="noOrganismSelected"
       :organisms="organisms"
@@ -363,6 +363,7 @@ export default {
       router.push("/vue/").catch(() => {});
     },
     showHome: function () {
+      this.selectedPage = "home"
       this.searchString = "";
       router.push("/vue/").catch(() => {});
     },
@@ -378,27 +379,34 @@ export default {
       router.push("/vue/peptide/").catch(() => {});
     },
     showProjects: function () {
+      this.selectedPage = "projects"
       router.push("/vue/project/").catch(() => {});
     },
     showAnalytics: function () {
+      this.selectedPage = "analytics"
       router.push("/vue/analytics/").catch(() => {});
     },
     showApi: function () {
+      this.selectedPage = "api"
       router.push("/vue/api/").catch(() => {});
     },
     showApiv2: function () {
       router.push("/vue/apiv2/").catch(() => {});
     },
     showFaq: function () {
+      this.selectedPage = "faq"
       router.push("/vue/faq/").catch(() => {});
     },
     showAbout: function () {
+      this.selectedPage = "about"
       router.push("/vue/about/").catch(() => {});
     },
     showContact: function () {
+      this.selectedPage = "about"
       router.push("/vue/about/").catch(() => {});
     },
     showTermsOfUse: function () {
+      this.selectedPage = null;
       router.push("/vue/disclaimer/").catch(() => {});
     },
     checkForClose: function (data) {
@@ -500,9 +508,12 @@ export default {
             that.helpHTML = response.data.split("\n").slice(1, -2).join("\n");
           });
       } else {
-        that.helpHTML = "<p> Sorry, no help available for this component! </p>";
+        that.helpHTML = "<strong> Sorry, no help available for this component! </strong>";
       }
     },
+    updateSelectedPage: function(value){
+      this.selectedPage = value
+    }
     // getFeedbackFormHTML: function () {
     //   let that = this;
     //   axios
@@ -598,5 +609,6 @@ export default {
   padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
+  font-size: 12pt;
 }
 </style>
