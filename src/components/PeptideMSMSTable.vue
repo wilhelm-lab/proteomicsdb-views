@@ -67,6 +67,7 @@ export default {
     dataIn: Object
   },
   data: () => ({
+    dataSource: null,
     dataGridInstance: null,
     currentFilter: null
   }),
@@ -98,16 +99,16 @@ export default {
       this.$emit('selectedPeptideId', { peptideId: peptideId });
     },
   },
-  computed: {
-    dataSource: function(){
-      return this.dataIn.PEPTIDES;
-    }
-  },
   watch: {
     proteinId: function() {
       this.setData();
     }
   },
+  mounted() {
+    if(this.dataIn){
+      this.dataSource = this.dataIn.PEPTIDES;
+    }
+  }
 }
 </script>
 <style lang="scss">

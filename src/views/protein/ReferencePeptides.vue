@@ -37,17 +37,10 @@ export default {
     searchTable,
     downloader
   },
-  data: () => ({
-    openPopUp: false,
-    peptideIdIn: null
-  }),
   methods: {
-    closePopUp: function() {
-      this.openPopUp = false;
-    },
     setPeptideId: function(o) {
-      this.peptideIdIn = o.peptideId + ''; 
-      router.push('referencePeptides/'  +this.peptideIdIn).catch(()=>{});
+      router.push({name: 'RefPeptideDetails', params: {proteinId: this.proteinId, peptideId: o.peptideId.toString()}}).catch(()=>{});
+
     },
     getCSV: function () {
       this.$refs.searchTable.onExporting();
@@ -56,15 +49,9 @@ export default {
   computed: {
   },
   watch: {
-    peptideId: function (newId) {
-      this.setPeptideId(newId);
+    peptideId: function (newData) {
+      if (newData && newData.peptideId) this.setPeptideId(newData);
     },
-    peptideIdIn: function(newId) {
-      if (!isNaN(newId) && newId !== null) {
-        this.peptideIdIn = newId;
-        this.openPopUp = true;
-      }
-    }
   },
   mounted() {
   }

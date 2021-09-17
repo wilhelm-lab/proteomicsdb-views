@@ -13,7 +13,7 @@
               item-text="datasetName"
               item-value="datasetId"
               label="Dataset:"
-              v-on:change="loadCellLinesAndTreatments" 
+              @change="onDatasetChange" 
               />
             
             <v-simple-table dense v-if="selectedDataset">
@@ -88,7 +88,8 @@
           </v-layout>
         
           <v-layout row>
-            <sensitivityparallelplot  
+            <sensitivityparallelplot
+                v-if="selectedTissues.length>0 && selectedDrugs.length>0"  
                :minWidth="1000" 
                :minHeight="400"
                :selectedDataset="selectedDataset"
@@ -96,7 +97,6 @@
                :selectedDrugs="selectedDrugsString"
                :violinModel="violinModel"
                @keyChange="onParCoordsChange"
-               @getData="getDataForViolinPlots"
                />
           </v-layout>
         </v-flex>
@@ -106,6 +106,7 @@
         <v-flex xs12>
           <v-layout row class="float-left">
             <sensitivitybarplot
+              v-if="selectedTissues.length>0 && selectedDrugs.length>0"  
               :minHeight="450"
               :selectedKey="selectedKey"
               :selectedDataset="selectedDataset"
@@ -114,11 +115,11 @@
               :selectedLinesForBarPlot="selectedLinesForBarPlot"
               :violinModel="violinModel"
               @send-message="onBarSelected"
-              @getData="getDataForViolinPlots"
               />
           </v-layout>
           <v-layout row class="float-left">
             <responsecurve
+                v-if="selectedTissues.length>0 && selectedDrugs.length>0"  
                 :minHeight="450"
                 :minWidth="750"
                 title="Dose response curve for selected drug/cell line combination"
@@ -243,7 +244,7 @@ export default {
     getDataForViolinPlots: function() {
       if (this.selectedDataset && 
       this.selectedDrugs.length>0 && 
-      this.selectedTissues.length && 
+      this.selectedTissues.length>0 && 
       !(this.selectedDrugs[0] === '-1' && this.selectedTissues[0] === 'not')){
         
         let urlDatasets = this.$store.state.host+'/proteomicsdb/logic/cellSelectivity/getDataForVioPlots.xsjs'
@@ -268,6 +269,11 @@ export default {
       }
             })
       }
+    },
+    onDatasetChange: function () {
+      this.celllines = []
+      this.drugs = []
+      this.loadCellLinesAndTreatments()
     },
     onCelllineChange: function (selection) {
       this.selectedTissues = selection

@@ -245,6 +245,29 @@ export default {
         ],
         focus: "Feature development, data integration",
       },
+
+      {
+        name: "Marwin Shraideh",
+        role: "Software architect, Product manager",
+        avatar: "mshraideh.jpg",
+        affiliation:
+          "Chair of Information Systems and Business Process Management ",
+        position: "Research Associate",
+        text: "",
+        social: [
+          {
+            social: "Website",
+            link: "https://www.in.tum.de/i17/wittges-lab/staff/shraideh-marwin/",
+            icon: "fas fa-external-link-alt",
+          },
+          {
+            social: "LinkedIn",
+            link: "https://www.linkedin.com/in/marwin-shraideh/",
+            icon: "fab fa-linkedin",
+          },
+        ],
+        focus: "Big Data, Platform Architecture, Business Intelligence",
+      },
     ],
     coreTeamEmeriti: [
       {
