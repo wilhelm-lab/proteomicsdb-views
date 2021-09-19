@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import About from '../views/about/AboutUs.vue'
 import API from '../views/API.vue'
+import API2Documentation from '../views/apiv2documentation/DocuMain.vue';
 import FAQ from '../views/FAQ.vue'
 import ComingSoon from '../views/ComingSoon.vue'
 import Disclaimer from '../views/Disclaimer.vue'
@@ -261,6 +262,11 @@ export default new VueRouter({
       path: '/vue/about/',
       name: 'about',
       component: About
+    },
+    {
+      path: '/vue/apiv2/',
+      name: 'apiv2',
+      component: API2Documentation
     },
     {
       path: '/vue/disclaimer/',

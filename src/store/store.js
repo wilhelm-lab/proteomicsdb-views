@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import apidocumentation from './apidocumentation';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -50,6 +51,9 @@ const store = new Vuex.Store({
       context.commit('setSearchString', payload)
     }
     
+  },
+  modules: {
+    apidocumentation,
   }
 })
 
